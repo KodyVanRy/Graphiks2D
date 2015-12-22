@@ -1,0 +1,102 @@
+{
+    "widget" : "linear layout",
+    "name" : "myLayout",
+    "width" : "100.0",
+    "height" : "100.0",
+    "x" : "0",
+    "y" : "0",
+    "background" : "badlogic.jpg",
+    "orientation" : "vertical",
+    "spacing" : "5",
+    "children" : [
+        {
+            "widget" : "button",
+            "name" : "button1",
+            "width" : "match parent",
+            "height" : "10.0",
+            "x" : "0",
+            "y" : "0",
+            "background" : "button_rest.png",
+        },
+        {
+            "widget" : "button",
+            "name" : "button2",
+            "width" : "match parent",
+            "height" : "10.0",
+            "x" : "0",
+            "y" : "0",
+            "background" : "button_rest.png",
+            "texture_hover" : "button_hover.png"
+        },
+        {
+            "widget" : "edit text",
+            "name" : "edit text",
+            "width" : "match parent",
+            "height" : "10.0",
+            "x" : "0",
+            "y" : "0",
+            "background" : "#f00000f0",
+            "font": "font",
+            "request focus": "true",
+            "text": "JSON is cool",
+            "hint": "JSON test",
+            "blink_on": "0.9",
+            "alignment": "center",
+            "blink_off": "0.1"
+        },
+        {
+            "widget" : "linear layout",
+            "name" : "my otherlayout",
+            "width" : "match parent",
+            "height" : "10.0",
+            "x" : "0",
+            "y" : "0",
+            "background" : "badlogic.jpg",
+            "orientation" : "horizontal",
+            "spacing" : "5",
+            "children" : [
+                {
+                    "widget" : "button",
+                    "name" : "name",
+                    "width" : "10",
+                    "height" : "match parent",
+                    "x" : "0",
+                    "y" : "0",
+                    "background" : "button_rest.png",
+                },
+                {
+                    "widget" : "button",
+                    "name" : "name2",
+                    "width" : "10",
+                    "height" : "match parent",
+                    "x" : "0",
+                    "y" : "0",
+                    "background" : "button_rest.png",
+                    "texture_hover" : "button_hover.png"
+                },
+                {
+                    "widget" : "button",
+                    "name" : "name",
+                    "width" : "10",
+                    "height" : "match parent",
+                    "x" : "0",
+                    "y" : "0",
+                    "background" : "button_rest.png",
+                    "texture_hover" : "button_hover.png"
+                    "texture_click" : "button_down.png"
+                },
+                {
+                    "widget" : "button",
+                    "name" : "name",
+                    "width" : "10",
+                    "height" : "match parent",
+                    "x" : "0",
+                    "y" : "0",
+                    "background" : "button_rest.png",
+                    "texture_hover" : "button_hover.png"
+                    "texture_click" : "badlogic.jpg"
+                }
+            ]
+        }
+    ]
+}
