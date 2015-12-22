@@ -45,6 +45,7 @@ public abstract class Animator {
                 if (timeInAnimation >= 1) {
                     timeInAnimation = 1;
                     running = false;
+                    ran = true;
                     if (onAnimationFinishedListener != null) {
                         onAnimationFinishedListener.onAnimationFinished(this);
                     }
