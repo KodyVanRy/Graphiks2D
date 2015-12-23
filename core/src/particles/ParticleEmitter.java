@@ -172,6 +172,7 @@ public class ParticleEmitter {
         }
 
         for (Particle particle : particlesToRemove) {
+            particle.dispose();
             particles.remove(particle);
         }
 

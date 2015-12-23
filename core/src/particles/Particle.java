@@ -62,4 +62,8 @@ public class Particle extends Sprite {
             anim.start(false);
         }
     }
+
+    public void dispose() {
+        animators.clear();
+    }
 }
