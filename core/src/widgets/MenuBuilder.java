@@ -33,6 +33,7 @@ public class MenuBuilder {
     public static final String HEIGHT = "height";
     public static final String X = "x";
     public static final String Y = "y";
+    public static final String Z = "z";
 
     // Layout specifics
     public static final String ORIENTATION = "orientation";
@@ -51,6 +52,9 @@ public class MenuBuilder {
     // Button specifics
     public static final String HOVER_TEXTURE = "texture_hover";
     public static final String CLICK_TEXTURE = "texture_click";
+
+    // FAB specifics
+    public static final String SHADOW_TEXTURE = "texture_shadow";
 
     //Edit Text
     public static final String FOCUS = "request focus";
@@ -97,10 +101,12 @@ public class MenuBuilder {
         String widthString = (String) jsonObject.get(WIDTH);
         String heightString = (String) jsonObject.get(HEIGHT);
         String background = (String) jsonObject.get(BACKGROUND);
-        Texture backgroundTexture;
+        Texture backgroundTexture = null;
+        Texture shadowTexture = null;
 
         float x = (float) (jsonObject.get(X) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(X)));
         float y = (float) (jsonObject.get(Y) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(Y)));
+        float z = (float) (jsonObject.get(Z) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(Z)));
         float width = 0;
         float height = 0;
 
@@ -131,6 +137,9 @@ public class MenuBuilder {
         } else {
             backgroundTexture = new Texture(background);
         }
+        if (jsonObject.get(SHADOW_TEXTURE) != null) {
+            shadowTexture = new Texture((String) jsonObject.get(SHADOW_TEXTURE));
+        }
         // endregion
 
         //region LinearLayout
@@ -153,15 +162,19 @@ public class MenuBuilder {
         // endregion
 
         //region Button
-        else if (widgetType.equals(Widget.BUTTON)) {
-            returnWidget = new Button(backgroundTexture, name, width, height, x, y, cam);
-
+        else if (widgetType.equals(Widget.BUTTON) || widgetType.equals(Widget.FLOATING_BUTTON)) {
+            if (widgetType.equals(Widget.BUTTON))
+                returnWidget = new Button(backgroundTexture, name, width, height, x, y, cam);
+            else returnWidget = new FloatingButton(backgroundTexture, shadowTexture, name,
+                    width, height, x, y, z, cam);
             if (jsonObject.get(HOVER_TEXTURE) != null) {
                 ((Button) returnWidget).setHoverTexture(new Texture((String) jsonObject.get(HOVER_TEXTURE)));
             }
             if (jsonObject.get(CLICK_TEXTURE) != null) {
                 ((Button) returnWidget).setClickTexture(new Texture((String) jsonObject.get(CLICK_TEXTURE)));
             }
+
+
         }
         //endregion
 
@@ -228,7 +241,13 @@ public class MenuBuilder {
         //endregion
 
 
-        if (parent != null && parent instanceof Layout) ((Layout) parent).addWidget(returnWidget);
+        if (parent != null && parent instanceof Layout) {
+            if (returnWidget instanceof FloatingButton) {
+                ((Layout) parent).addFloatingWidget(returnWidget);
+            } else {
+                ((Layout) parent).addWidget(returnWidget);
+            }
+        }
 
         return returnWidget;
     }

@@ -62,7 +62,7 @@ public class LinearLayout extends Layout {
         widget.setParent(this);
         float posX = 0;
         float posY = getHeight() - (getWidgets().size() >= 1 ? getWidgets().get(0).getHeight() : widget.getHeight());
-        for (Widget preWidget : getWidgets()) {
+        for (Widget preWidget : getAllWidgets()) {
             posX += preWidget.getWidth() + spacing;
             posY -= preWidget.getHeight() + spacing;
         }
@@ -86,5 +86,37 @@ public class LinearLayout extends Layout {
         widget.setMyX(posX);
         widget.setMyY(posY);
         super.addWidget(widget);
+    }
+
+    @Override
+    public void addFloatingWidget(Widget widget) {
+        widget.setParent(this);
+        System.out.println("Went through here");
+        float posX = 0;
+        float posY = getHeight() - (getWidgets().size() >= 1 ? getWidgets().get(0).getHeight() : widget.getHeight());
+        for (Widget preWidget : getAllWidgets()) {
+            posX += preWidget.getWidth() + spacing;
+            posY -= preWidget.getHeight() + spacing;
+        }
+        if (orientation == HORIZONTAL_ORIENTATION) {
+            if (alignment == ALIGNMENT_TOP) {
+                posY = this.getHeight() - widget.getHeight();
+            } else if (alignment == ALIGNMENT_CENTER) {
+                posY = this.getHeight() / 2 - widget.getHeight() / 2;
+            } else if (alignment == ALIGNMENT_BOTTOM) {
+                posY = 0;
+            }
+        } else if (orientation == VERTICAL_ORIENTATION) {
+            if (alignment == ALIGNMENT_LEFT) {
+                posX = 0;
+            } else if (alignment == ALIGNMENT_CENTER) {
+                posX = this.getWidth() / 2 - widget.getWidth() / 2;
+            } else if (alignment == ALIGNMENT_RIGHT) {
+                posX = this.getWidth() - widget.getWidth();
+            }
+        }
+        widget.setMyX(posX);
+        widget.setMyY(posY);
+        super.addFloatingWidget(widget);
     }
 }

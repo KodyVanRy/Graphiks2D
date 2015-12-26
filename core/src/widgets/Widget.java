@@ -3,6 +3,7 @@ package widgets;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 
@@ -20,6 +21,7 @@ public class Widget extends Sprite {
 
     public static final String WIDGET = "widget";
     public static final String BUTTON = "button";
+    public static final String FLOATING_BUTTON = "floating button";
     public static final String EDIT_TEXT = "edit text";
     public static final String LINEAR_LAYOUT = "linear layout";
     public static final String SLIDER = "slider";
@@ -30,6 +32,8 @@ public class Widget extends Sprite {
     private float myScaleY;
     private float myX;
     private float myY;
+    private float z;
+    private Texture shadow;
     private Layout parent;
     private boolean enabled;
 
@@ -102,6 +106,19 @@ public class Widget extends Sprite {
             }
             //TODO need to add in Rotate Animation! Should be fun with Labels and Edit Text :/
         }
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        if (getParent() == null) drawShadow(batch);
+        super.draw(batch);
+    }
+
+    public void drawShadow(Batch spriteBatch) {
+        if (shadow == null) return;
+        spriteBatch.draw(shadow, getX(), getY() - getHeight() * (z / 6.0f), getWidth() / 2, getHeight() / 2,
+                getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation(), 0, 0,
+                shadow.getWidth(), shadow.getHeight(), false, false);
     }
 
     public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
@@ -197,6 +214,22 @@ public class Widget extends Sprite {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
+    }
+
+    public Texture getShadow() {
+        return shadow;
+    }
+
+    public void setShadow(Texture shadow) {
+        this.shadow = shadow;
     }
 
     public void addIncomingAnimator(Animator animator) {

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public abstract class Layout extends Widget {
 
     private ArrayList<Widget> widgets;
+    private ArrayList<Widget> floatingWidgets;
 
     private float paddingLeft, paddingRight, paddingBottom, paddingTop, padding;
 
@@ -21,11 +22,18 @@ public abstract class Layout extends Widget {
         super(text, name, width, height, X, Y, camera);
 
         widgets = new ArrayList<Widget>();
+        floatingWidgets = new ArrayList<Widget>();
     }
 
     @Override
     public void draw(Batch batch) {
         super.draw(batch);
+        for (Widget floatingWidget : floatingWidgets) {
+            floatingWidget.drawShadow(batch);
+        }
+        for (Widget floatingWidget : floatingWidgets) {
+            floatingWidget.draw(batch);
+        }
         for (Widget widget : widgets) {
             widget.draw(batch);
         }
@@ -65,8 +73,17 @@ public abstract class Layout extends Widget {
         widgets.add(widget);
     }
 
+    public void addFloatingWidget(Widget widget) {
+        widget.setParent(this);
+        floatingWidgets.add(widget);
+    }
+
     public ArrayList<Widget> getWidgets() {
         return widgets;
+    }
+
+    public ArrayList<Widget> getFloatingWidgets() {
+        return floatingWidgets;
     }
 
     @Override
@@ -74,6 +91,9 @@ public abstract class Layout extends Widget {
         super.update(delta);
 
         for (Widget widget : widgets) {
+            widget.update(delta);
+        }
+        for (Widget widget : floatingWidgets) {
             widget.update(delta);
         }
     }
@@ -91,6 +111,14 @@ public abstract class Layout extends Widget {
     public ArrayList<Widget> tree(ArrayList<Widget> widgets1) {
         if (widgets1 == null) widgets1 = new ArrayList<Widget>();
         for (Widget widget : widgets) widgets1 = widget.tree(widgets1);
-        return super.tree(widgets);
+        for (Widget widget : floatingWidgets) widgets1 = widget.tree(widgets1);
+        return super.tree(widgets1);
+    }
+
+    public ArrayList<Widget> getAllWidgets() {
+        ArrayList<Widget> all = new ArrayList<Widget>();
+        all.addAll(widgets);
+        all.addAll(floatingWidgets);
+        return all;
     }
 }

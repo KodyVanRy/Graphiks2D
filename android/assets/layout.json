@@ -5,7 +5,7 @@
     "height" : "100.0",
     "x" : "0",
     "y" : "0",
-    "background" : "badlogic.jpg",
+    "background" : "#ff0000",
     "orientation" : "vertical",
     "spacing" : "5",
     "children" : [
@@ -86,13 +86,15 @@
                     "texture_click" : "button_down.png"
                 },
                 {
-                    "widget" : "button",
+                    "widget" : "floating button",
                     "name" : "name",
                     "width" : "10",
                     "height" : "match parent",
                     "x" : "0",
                     "y" : "0",
+                    "z" : "1",
                     "background" : "button_rest.png",
+                    "texture_shadow" : "circle_shadow.png",
                     "texture_hover" : "button_hover.png"
                     "texture_click" : "badlogic.jpg"
                 }
