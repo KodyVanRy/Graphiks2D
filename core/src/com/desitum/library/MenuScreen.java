@@ -8,9 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import widgets.Widget;
-import world.World;
+import com.desitum.library.widgets.Widget;
+import com.desitum.library.world.World;
 
 /**
  * Created by kody on 12/12/15.
