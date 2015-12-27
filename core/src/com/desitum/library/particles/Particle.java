@@ -11,6 +11,24 @@ import java.util.ArrayList;
  * can be used by kody and people in []
  */
 public class Particle extends Sprite {
+    /*
+    TODO I need to make a new Particle... I think this one creates too many objects for such a simple thing
+    I believe this can be done with simply using values such as...
+
+    - lifespan
+    - gravityX
+    - gravityY
+    - velocityX
+    - velocityY
+    - rotationAmount
+    - opacity
+    - boundaryRectangle
+
+    By just giving the Particle these values you end up dealing with more primitives and less objects.
+    This also cuts down on expensive calls such as update(delta) for 4 separate animators
+    Animators aren't the cheapest thing in the world, they're cool and useful, but shouldn't be
+    used everywhere.
+     */
 
     private ArrayList<Animator> animators;
 
