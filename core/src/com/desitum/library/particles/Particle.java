@@ -2,13 +2,10 @@ package com.desitum.library.particles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.desitum.library.animation.Animator;
-
-import java.util.ArrayList;
 
 /**
- * Created by kody on 4/7/15.
- * can be used by kody and people in []
+ * Created by kody on 12/26/15.
+ * can be used by kody and people in [kody}]
  */
 public class Particle extends Sprite {
     /*
@@ -30,57 +27,129 @@ public class Particle extends Sprite {
     used everywhere.
      */
 
-    private ArrayList<Animator> animators;
+    private float currentLife, lifespan, gravityX, gravityY, velocityX, velocityY, rotationAmount, opacity;
+    private boolean fadeOut, remove;
 
-    private float lifetime;
+    public Particle(Texture texture, float width, float height, float lifespan) {
+        super(texture);
 
-    private ParticleEmitter particleEmitter;
-
-    public Particle(Texture texture, ParticleEmitter pe, ParticleSettings ps) {
-        super(texture, 0, 0, texture.getWidth(), texture.getHeight());
-
-        this.setSize(ps.getHeight(), ps.getWidth());
-        this.setPosition(ps.getXAnimator().getCurrentAmount(), ps.getYAnimator().getCurrentAmount());
-
-        this.setOriginCenter();
-
-        this.animators = ps.getAnimators();
-
-        for (Animator animator : animators) {
-            animator.setSprite(this);
-        }
-
-        this.particleEmitter = pe;
-
-        startAllAnimators();
-
-        this.lifetime = ps.getDuration();
+        setSize(width, height);
+        setup(lifespan, 0, 0, 0, 0, 0, 1, true);
     }
 
+    public Particle(Texture texture, float width, float height, float lifespan, float gravityX,
+                    float gravityY, float velocityX, float velocityY, float rotationAmount,
+                    float opacity, boolean fadeOut) {
+        super(texture);
+
+        setSize(width, height);
+        setup(lifespan, gravityX, gravityY, velocityX, velocityY, rotationAmount, opacity, fadeOut);
+    }
 
     public void update(float delta) {
-        for (Animator anim : animators) {
-            anim.update(delta);
+        currentLife += delta;
+        if (currentLife >= lifespan) {
+            currentLife = lifespan;
+            remove = true;
         }
-
-        lifetime -= delta;
-
-        if (lifetime < 0) {
-            particleEmitter.remove(this);
-        }
+        velocityX += gravityX * delta;
+        velocityY += gravityY * delta;
+        this.setX(getX() + velocityX * delta);
+        this.setY(getY() + velocityY * delta);
+        this.setRotation(getRotationAmount() + rotationAmount * delta);
+        if (fadeOut) this.setColor(1, 1, 1, opacity - opacity * (lifespan - currentLife) / 1);
     }
 
-    public float getLifetime() {
-        return lifetime;
+    private void setup(float lifespan, float gravityX, float gravityY, float velocityX,
+                       float velocityY, float rotationAmount, float opacity, boolean fadeOut) {
+
+        remove = false;
+        this.currentLife = 0;
+        this.lifespan = lifespan;
+        this.gravityX = gravityX;
+        this.gravityY = gravityY;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
+        this.rotationAmount = rotationAmount;
+        this.opacity = opacity;
+        this.fadeOut = fadeOut;
+
+        setOrigin(getWidth() / 2, getHeight() / 2);
     }
 
-    public void startAllAnimators() {
-        for (Animator anim : animators) {
-            anim.start(false);
-        }
+    public float getCurrentLife() {
+        return currentLife;
     }
 
-    public void dispose() {
-        animators.clear();
+    public void setCurrentLife(float currentLife) {
+        this.currentLife = currentLife;
+    }
+
+    public float getLifespan() {
+        return lifespan;
+    }
+
+    public void setLifespan(float lifespan) {
+        this.lifespan = lifespan;
+    }
+
+    public float getGravityX() {
+        return gravityX;
+    }
+
+    public void setGravityX(float gravityX) {
+        this.gravityX = gravityX;
+    }
+
+    public float getGravityY() {
+        return gravityY;
+    }
+
+    public void setGravityY(float gravityY) {
+        this.gravityY = gravityY;
+    }
+
+    public float getVelocityX() {
+        return velocityX;
+    }
+
+    public void setVelocityX(float velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public float getVelocityY() {
+        return velocityY;
+    }
+
+    public void setVelocityY(float velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public float getRotationAmount() {
+        return rotationAmount;
+    }
+
+    public void setRotationAmount(float rotationAmount) {
+        this.rotationAmount = rotationAmount;
+    }
+
+    public float getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+    }
+
+    public boolean isFadeOut() {
+        return fadeOut;
+    }
+
+    public void setFadeOut(boolean fadeOut) {
+        this.fadeOut = fadeOut;
+    }
+
+    public boolean needToRemove() {
+        return remove;
     }
 }
