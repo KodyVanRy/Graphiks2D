@@ -105,6 +105,9 @@ public abstract class Layout extends Widget {
         for (Widget widget : widgets) {
             widget.updateTouchInput(mousePos, clickDown);
         }
+        for (Widget widget : floatingWidgets) {
+            widget.updateTouchInput(mousePos, clickDown);
+        }
     }
 
     @Override
