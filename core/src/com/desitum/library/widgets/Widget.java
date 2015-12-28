@@ -252,6 +252,17 @@ public class Widget extends Sprite {
         animators.add(animator);
     }
 
+    public void addAnimator(Animator animator) {
+        animator.setSprite(this);
+        animators.add(animator);
+    }
+
+    public void startAnimators() {
+        for (Animator animator : animators) {
+            animator.start(true);
+        }
+    }
+
     public Widget findByName(String name) {
         if (this.name.equals(name)) {
             return this;
