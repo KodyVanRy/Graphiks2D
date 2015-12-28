@@ -123,4 +123,14 @@ public abstract class Layout extends Widget {
         all.addAll(floatingWidgets);
         return all;
     }
+
+    @Override
+    public Widget findByName(String name) {
+        for (Widget widget : widgets) {
+            if (widget.findByName(name) != null) {
+                return widget.findByName(name);
+            }
+        }
+        return super.findByName(name);
+    }
 }
