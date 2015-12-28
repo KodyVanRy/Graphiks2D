@@ -9,6 +9,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]
@@ -23,6 +26,27 @@ public class GameScreen implements Screen {
 
     private Vector3 touchPos;
 
+    public GameScreen(float viewportWidth, float viewportHeight, Constructor<World> worldClass) {
+        spriteBatch = new SpriteBatch();
+        cam = new OrthographicCamera(viewportWidth, viewportHeight);
+        cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        viewport = new FitViewport(viewportWidth, viewportHeight, cam);
+
+        touchPos = new Vector3(0, 0, 0);
+
+        world = new World(cam); // Hmmm annoying to create it and then recreate it later
+        try {
+            world = worldClass.newInstance(cam);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        worldRenderer = new WorldRenderer(world);
+    }
+
     public GameScreen(float viewportWidth, float viewportHeight) {
         spriteBatch = new SpriteBatch();
         cam = new OrthographicCamera(viewportWidth, viewportHeight);
@@ -31,7 +55,7 @@ public class GameScreen implements Screen {
 
         touchPos = new Vector3(0, 0, 0);
 
-        world = new World(cam);
+        world = new World(cam); // Hmmm annoying to create it and then recreate it later, use above to only create one
         worldRenderer = new WorldRenderer(world);
     }
 
@@ -88,5 +112,54 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public OrthographicCamera getCam() {
+        return cam;
+    }
+
+    public void setCam(OrthographicCamera cam) {
+        this.cam = cam;
+    }
+
+    public Viewport getViewport() {
+        return viewport;
+    }
+
+    public void setViewport(Viewport viewport) {
+        this.viewport = viewport;
+    }
+
+    public SpriteBatch getSpriteBatch() {
+        return spriteBatch;
+    }
+
+    public void setSpriteBatch(SpriteBatch spriteBatch) {
+        this.spriteBatch = spriteBatch;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+        this.worldRenderer = new WorldRenderer(world);
+    }
+
+    public WorldRenderer getWorldRenderer() {
+        return worldRenderer;
+    }
+
+    public void setWorldRenderer(WorldRenderer worldRenderer) {
+        this.worldRenderer = worldRenderer;
+    }
+
+    public Vector3 getTouchPos() {
+        return touchPos;
+    }
+
+    public void setTouchPos(Vector3 touchPos) {
+        this.touchPos = touchPos;
     }
 }
