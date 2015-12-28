@@ -1,6 +1,5 @@
 package com.desitum.library.widgets;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.listener.OnClickListener;
@@ -18,8 +17,8 @@ public class Button extends Widget {
     private Texture hoverTexture;
     private Texture clickTexture;
 
-    public Button(Texture text, String name, float width, float height, float X, float Y, Camera camera) {
-        super(text, name, width, height, X, Y, camera);
+    public Button(Texture text, String name, float width, float height, float X, float Y) {
+        super(text, name, width, height, X, Y);
         restTexture = text;
     }
 

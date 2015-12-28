@@ -1,7 +1,5 @@
 package com.desitum.library.widgets;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,7 +22,6 @@ public class Widget extends Sprite {
     public static final String EDIT_TEXT = "edit text";
     public static final String LINEAR_LAYOUT = "linear layout";
     public static final String SLIDER = "slider";
-    private Camera cam;
 
     private String name;
     private float myScaleX;
@@ -44,7 +41,7 @@ public class Widget extends Sprite {
 
     private ArrayList<Animator> outgoingAnimators;
 
-    public Widget(Texture text, String name, float width, float height, float X, float Y, Camera camera) {
+    public Widget(Texture text, String name, float width, float height, float X, float Y) {
         super(text, text.getWidth(), text.getHeight());
         setSize(width, height);
         this.name = name;
@@ -55,8 +52,6 @@ public class Widget extends Sprite {
 
         enabled = true;
         clickIsDown = false;
-
-        this.cam = camera;
 
         this.incomingAnimators = new ArrayList<Animator>();
         this.animators = new ArrayList<Animator>();
@@ -249,14 +244,6 @@ public class Widget extends Sprite {
         for (Animator anim : outgoingAnimators) {
             anim.start(false);
         }
-    }
-
-    public Camera getCam() {
-        return cam;
-    }
-
-    public void setCam(OrthographicCamera cam) {
-        this.cam = cam;
     }
 
     public Widget findByName(String name) {

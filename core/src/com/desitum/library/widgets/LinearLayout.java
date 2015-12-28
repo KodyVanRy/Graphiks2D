@@ -1,6 +1,5 @@
 package com.desitum.library.widgets;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
@@ -21,14 +20,14 @@ public class LinearLayout extends Layout {
     private float spacing;
     private int alignment;
 
-    public LinearLayout(Texture text, String name, float width, float height, float X, float Y, Widget parent, Camera cam) {
-        super(text, name, width, height, X, Y, parent, cam);
+    public LinearLayout(Texture text, String name, float width, float height, float X, float Y, Widget parent) {
+        super(text, name, width, height, X, Y, parent);
         orientation = HORIZONTAL_ORIENTATION;
         this.spacing = 0;
     }
 
-    public LinearLayout(Texture text, String name, float width, float height, float X, float Y, Widget parent, int orientation, Camera cam) {
-        super(text, name, width, height, X, Y, parent, cam);
+    public LinearLayout(Texture text, String name, float width, float height, float X, float Y, Widget parent, int orientation) {
+        super(text, name, width, height, X, Y, parent);
         this.orientation = orientation;
         this.spacing = 0;
     }

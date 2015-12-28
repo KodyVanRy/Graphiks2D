@@ -3,7 +3,6 @@ package com.desitum.library.widgets;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -35,8 +34,8 @@ public class EditText extends Widget {
     private Color textColor;
     private Color hintColor;
 
-    public EditText(Texture background, String name, float width, float height, float X, float Y, Camera camera, BitmapFont font) {
-        super(background, name, width, height, X, Y, camera);
+    public EditText(Texture background, String name, float width, float height, float X, float Y, BitmapFont font) {
+        super(background, name, width, height, X, Y);
         this.text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         this.font = font;
         glyphLayout = new GlyphLayout(font, text);

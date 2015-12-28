@@ -146,7 +146,7 @@ public class MenuBuilder {
             int orientation = jsonObject.get(ORIENTATION).equals(VERTICAL) ? LinearLayout.VERTICAL_ORIENTATION : LinearLayout.HORIZONTAL_ORIENTATION;
             float spacing = (float) (jsonObject.get(SPACING) == null ? 0 : Float.parseFloat((String) jsonObject.get(SPACING)));
             int alignment = jsonObject.get(ALIGNMENT) != null ? getAlignment((String) jsonObject.get(ALIGNMENT)) : LinearLayout.ALIGNMENT_LEFT;
-            returnWidget = new LinearLayout(backgroundTexture, name, width, height, x, y, parent, orientation, cam);
+            returnWidget = new LinearLayout(backgroundTexture, name, width, height, x, y, parent, orientation);
 
             ((LinearLayout) returnWidget).setSpacing(spacing);
             ((LinearLayout) returnWidget).setAlignment(alignment);
@@ -163,9 +163,9 @@ public class MenuBuilder {
         //region Button
         else if (widgetType.equals(Widget.BUTTON) || widgetType.equals(Widget.FLOATING_BUTTON)) {
             if (widgetType.equals(Widget.BUTTON))
-                returnWidget = new Button(backgroundTexture, name, width, height, x, y, cam);
+                returnWidget = new Button(backgroundTexture, name, width, height, x, y);
             else returnWidget = new FloatingButton(backgroundTexture, shadowTexture, name,
-                    width, height, x, y, z, cam);
+                    width, height, x, y, z);
             if (jsonObject.get(HOVER_TEXTURE) != null) {
                 ((Button) returnWidget).setHoverTexture(new Texture((String) jsonObject.get(HOVER_TEXTURE)));
             }
@@ -186,7 +186,7 @@ public class MenuBuilder {
             } else {
                 throw new JSONException("No font associated with Edit Text");
             }
-            returnWidget = new EditText(backgroundTexture, name, width, height, x, y, cam, bitmapFont);
+            returnWidget = new EditText(backgroundTexture, name, width, height, x, y, bitmapFont);
 
             if (jsonObject.get(FOCUS) != null) {
                 ((EditText) returnWidget).setFocus(Boolean.parseBoolean((String) jsonObject.get(FOCUS)));
@@ -220,7 +220,7 @@ public class MenuBuilder {
 
         //region Slider
         else if (widgetType.equals(Widget.SLIDER)) {
-            returnWidget = new Slider(backgroundTexture, name, width, height, x, y, cam);
+            returnWidget = new Slider(backgroundTexture, name, width, height, x, y);
 
             if (jsonObject.get(VALUE) != null)
                 ((Slider) returnWidget).setValue(Float.parseFloat((String) jsonObject.get(VALUE)));

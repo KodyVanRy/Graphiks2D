@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.widgets.Widget;
-import com.desitum.library.world.World;
+import com.desitum.library.world.KodyWorld;
 
 /**
  * Created by kody on 12/12/15.
@@ -21,7 +21,7 @@ public class MenuScreen implements Screen {
     public static final float SCREEN_HEIGHT = 100.0f;
     LibraryTest library;
     Vector3 mousePos;
-    World world;
+    KodyWorld kodyWorld;
     private OrthographicCamera cam;
     private Viewport viewport;
     private SpriteBatch spriteBatch;
@@ -36,7 +36,7 @@ public class MenuScreen implements Screen {
 
         mousePos = new Vector3(0, 0, 0);
 
-        world = new World(cam);
+        kodyWorld = new KodyWorld(cam);
     }
 
     @Override
@@ -46,9 +46,9 @@ public class MenuScreen implements Screen {
 
     private void update(float delta) {
         mousePos = viewport.unproject(mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        world.updateTouchInput(mousePos, Gdx.input.isTouched());
+        kodyWorld.updateTouchInput(mousePos, Gdx.input.isTouched());
 
-        world.update(delta);
+        kodyWorld.update(delta);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class MenuScreen implements Screen {
 
         spriteBatch.begin();
         //TODO need MenuRenderer
-        for (Widget widget : world.getWidgets()) {
+        for (Widget widget : kodyWorld.getWidgets()) {
             widget.draw(spriteBatch);
         }
         spriteBatch.end();

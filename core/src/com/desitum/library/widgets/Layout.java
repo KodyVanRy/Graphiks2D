@@ -1,6 +1,5 @@
 package com.desitum.library.widgets;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
@@ -18,8 +17,8 @@ public abstract class Layout extends Widget {
 
     private float paddingLeft, paddingRight, paddingBottom, paddingTop, padding;
 
-    public Layout(Texture text, String name, float width, float height, float X, float Y, Widget parent, Camera camera) {
-        super(text, name, width, height, X, Y, camera);
+    public Layout(Texture text, String name, float width, float height, float X, float Y, Widget parent) {
+        super(text, name, width, height, X, Y);
 
         widgets = new ArrayList<Widget>();
         floatingWidgets = new ArrayList<Widget>();

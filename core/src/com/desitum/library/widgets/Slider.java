@@ -1,6 +1,5 @@
 package com.desitum.library.widgets;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -19,8 +18,8 @@ public class Slider extends Widget {
     private Texture sliderImage, barImage;
     private OnValueChangeListener onValueChangeListener;
 
-    public Slider(Texture text, String name, float width, float height, float X, float Y, Camera camera) {
-        super(text, name, width, height, X, Y, camera);
+    public Slider(Texture text, String name, float width, float height, float X, float Y) {
+        super(text, name, width, height, X, Y);
 
         sliderImage = Drawing.getDiamondFilled(50, 50, Color.WHITE);
         sliderWidth = height / 2;
@@ -30,8 +29,8 @@ public class Slider extends Widget {
         barImageHeight = height / 10;
     }
 
-    public Slider(Texture text, Texture sliderText, Texture barText, String name, float width, float height, float X, float Y, Camera camera) {
-        super(text, name, width, height, X, Y, camera);
+    public Slider(Texture text, Texture sliderText, Texture barText, String name, float width, float height, float X, float Y) {
+        super(text, name, width, height, X, Y);
 
         this.sliderImage = sliderText;
         sliderWidth = height / 2;

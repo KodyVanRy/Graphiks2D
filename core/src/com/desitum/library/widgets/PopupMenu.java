@@ -13,8 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
  */
 public class PopupMenu extends Layout {
 
+    private Camera camera;
+
     public PopupMenu(Texture text, String name, float width, float height, float X, float Y, Widget parent, Camera cam) {
-        super(text, name, width, height, X, Y, parent, cam);
+        super(text, name, width, height, X, Y, parent);
+        this.camera = cam;
     }
 
     @Override
@@ -22,7 +25,7 @@ public class PopupMenu extends Layout {
         Rectangle scissor = new Rectangle();
         Rectangle clipBounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
 
-        ScissorStack.calculateScissors(getCam(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), batch.getTransformMatrix(), clipBounds, scissor);
+        ScissorStack.calculateScissors(camera, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), batch.getTransformMatrix(), clipBounds, scissor);
         ScissorStack.pushScissors(scissor);
 
         super.draw(batch);
