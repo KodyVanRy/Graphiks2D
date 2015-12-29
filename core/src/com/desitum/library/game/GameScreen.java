@@ -2,6 +2,7 @@ package com.desitum.library.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,6 +26,7 @@ public class GameScreen implements Screen {
     private WorldRenderer worldRenderer;
 
     private Vector3 touchPos;
+    private Color clearColor;
 
     public GameScreen(float viewportWidth, float viewportHeight, Constructor<World> worldClass) {
         spriteBatch = new SpriteBatch();
@@ -45,6 +47,7 @@ public class GameScreen implements Screen {
             e.printStackTrace();
         }
         worldRenderer = new WorldRenderer(world);
+        clearColor = new Color(0, 0, 0, 1);
     }
 
     public GameScreen(float viewportWidth, float viewportHeight) {
@@ -67,7 +70,7 @@ public class GameScreen implements Screen {
 
     public void update(float delta) {
         world.update(delta);
-        cam.unproject(touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+        touchPos = viewport.unproject(touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         world.updateTouchInput(touchPos, Gdx.input.isTouched());
     }
 
@@ -75,7 +78,7 @@ public class GameScreen implements Screen {
         cam.update();
         spriteBatch.setProjectionMatrix(cam.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 
         spriteBatch.begin();
 
@@ -161,5 +164,9 @@ public class GameScreen implements Screen {
 
     public void setTouchPos(Vector3 touchPos) {
         this.touchPos = touchPos;
+    }
+
+    public void setClearColor(Color clearColor) {
+        this.clearColor = clearColor;
     }
 }

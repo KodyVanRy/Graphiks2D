@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.interpolation.Interpolation;
+import com.desitum.library.widgets.Button;
 import com.desitum.library.widgets.LinearLayout;
 import com.desitum.library.widgets.MenuBuilder;
 import com.desitum.library.widgets.Slider;
@@ -38,6 +39,9 @@ public class KodyWorld implements InputProcessor {
 
         Slider mSlider = new Slider(Drawing.getFilledRectangle(1, 1, Color.BLUE), "", 100, 10, 0, 0);
         ll.addWidget(mSlider);
+
+        Button button1 = (Button) ll.findByName("button1");
+        System.out.println(button1.getName());
 
         ll.startIncomingAnimators();
         widgets.add(ll);

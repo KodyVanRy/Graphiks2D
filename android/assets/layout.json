@@ -3,9 +3,9 @@
     "name" : "myLayout",
     "width" : "100.0",
     "height" : "100.0",
-    "x" : "0",
+    "x" : "30",
     "y" : "0",
-    "background" : "#ff0000",
+    "background" : "#ffffff",
     "orientation" : "vertical",
     "spacing" : "5",
     "children" : [

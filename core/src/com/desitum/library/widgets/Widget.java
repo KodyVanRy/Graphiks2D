@@ -53,6 +53,8 @@ public class Widget extends Sprite {
         enabled = true;
         clickIsDown = false;
 
+        this.setOriginCenter();
+
         this.incomingAnimators = new ArrayList<Animator>();
         this.animators = new ArrayList<Animator>();
         this.outgoingAnimators = new ArrayList<Animator>();

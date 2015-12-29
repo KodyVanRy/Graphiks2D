@@ -47,6 +47,7 @@ public class MenuBuilder {
     public static final String ALIGNMENT_CENTER = "center";
     public static final String ALIGNMENT_RIGHT = "right";
     public static final String ALIGNMENT_LEFT = "left";
+    public static final String REVERSE_FILL = "reverse_fill";
 
     // Button specifics
     public static final String HOVER_TEXTURE = "texture_hover";
@@ -131,8 +132,7 @@ public class MenuBuilder {
         }
 
         if (background.startsWith("#")) {
-            backgroundTexture = Drawing.getFilledRectangle(((int) width * (width < 1 ? 100 : 50)),
-                    ((int) height * (height < 1 ? 100 : 50)), Color.valueOf(background));
+            backgroundTexture = Drawing.getFilledRectangle(1, 1, Color.valueOf(background));
         } else {
             backgroundTexture = new Texture(background);
         }
@@ -150,6 +150,10 @@ public class MenuBuilder {
 
             ((LinearLayout) returnWidget).setSpacing(spacing);
             ((LinearLayout) returnWidget).setAlignment(alignment);
+
+            if (jsonObject.get(REVERSE_FILL) != null) {
+                ((LinearLayout) returnWidget).setReverseFill(Boolean.parseBoolean((String) jsonObject.get(REVERSE_FILL)));
+            }
 
             JSONArray children = (JSONArray) jsonObject.get(CHILDREN);
             if (children != null) {
@@ -241,11 +245,7 @@ public class MenuBuilder {
 
 
         if (parent != null && parent instanceof Layout) {
-            if (returnWidget instanceof FloatingButton) {
-                ((Layout) parent).addFloatingWidget(returnWidget);
-            } else {
-                ((Layout) parent).addWidget(returnWidget);
-            }
+            ((Layout) parent).addWidget(returnWidget);
         }
 
         return returnWidget;
