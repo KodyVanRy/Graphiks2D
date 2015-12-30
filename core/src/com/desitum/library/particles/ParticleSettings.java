@@ -6,10 +6,11 @@ package com.desitum.library.particles;
  */
 public class ParticleSettings {
 
+    private static float lastWidth;
     private float minWidth, maxWidth, minHeight, maxHeight, minGravityX, maxGravityX, minGravityY,
             maxGravityY, minVelocityX, maxVelocityX, minVelocityY, maxVelocityY,
             minRotationAmount, maxRotationAmount, opacity, lifespan;
-    private boolean fadeOut;
+    private boolean fadeOut, square;
 
     public ParticleSettings(float minWidth, float maxWidth, float minHeight, float maxHeight,
                             float minGravityX, float maxGravityX, float minGravityY, float maxGravityY,
@@ -43,7 +44,8 @@ public class ParticleSettings {
     }
 
     public float getWidth() {
-        return ((float) Math.random() * (maxWidth - minWidth) + minWidth);
+        lastWidth = ((float) Math.random() * (maxWidth - minWidth) + minWidth);
+        return lastWidth;
     }
 
     public float getMinHeight() {
@@ -55,6 +57,7 @@ public class ParticleSettings {
     }
 
     public float getHeight() {
+        if (square) return lastWidth;
         return ((float) Math.random() * (maxHeight - minHeight) + minHeight);
     }
 
@@ -128,5 +131,9 @@ public class ParticleSettings {
 
     public boolean isFadeOut() {
         return fadeOut;
+    }
+
+    public void setSquare(boolean square) {
+        this.square = square;
     }
 }

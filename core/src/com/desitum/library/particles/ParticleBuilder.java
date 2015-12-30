@@ -20,6 +20,7 @@ public class ParticleBuilder {
     public static final String PARTICLES_PER_SECOND = "particles_per_second";
     public static final String WIDTH = "width";
     public static final String HEIGHT = "height";
+    public static final String MAKE_SQUARE = "make_square";
     public static final String X = "x";
     public static final String Y = "y";
     public static final String PARTICLE_TEXTURE = "particle_texture";
