@@ -24,6 +24,7 @@ public class ParticleEmitter {
 
     public ParticleEmitter(float x, float y, float particlesPerSecond) {
         this.particles = new ArrayList<Particle>();
+        this.particleSettingsArrayList = new ArrayList<ParticleSettings>();
         this.randomSettingsChooser = new Random();
 
         this.x = x;
@@ -35,6 +36,7 @@ public class ParticleEmitter {
 
     public ParticleEmitter() {
         this.particles = new ArrayList<Particle>();
+        this.particleSettingsArrayList = new ArrayList<ParticleSettings>();
         this.randomSettingsChooser = new Random();
 
         this.x = 0;

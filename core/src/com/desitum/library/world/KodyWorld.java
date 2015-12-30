@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.interpolation.Interpolation;
+import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.widgets.Button;
 import com.desitum.library.widgets.LinearLayout;
 import com.desitum.library.widgets.MenuBuilder;
@@ -46,6 +47,7 @@ public class KodyWorld implements InputProcessor {
         ll.startIncomingAnimators();
         widgets.add(ll);
 
+        ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt"));
     }
 
     public void update(float delta) {
