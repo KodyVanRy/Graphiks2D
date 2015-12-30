@@ -15,7 +15,8 @@ public class ParticleSettings {
     public ParticleSettings(float minWidth, float maxWidth, float minHeight, float maxHeight,
                             float minGravityX, float maxGravityX, float minGravityY, float maxGravityY,
                             float minVelocityX, float maxVelocityX, float minVelocityY, float maxVelocityY,
-                            float minRotationAmount, float maxRotationAmount, float opacity, float lifespan, boolean fadeOut) {
+                            float minRotationAmount, float maxRotationAmount, float opacity, float lifespan,
+                            boolean fadeOut, boolean makeSquare) {
         this.minWidth = minWidth;
         this.maxWidth = maxWidth;
         this.minHeight = minHeight;
@@ -33,6 +34,7 @@ public class ParticleSettings {
         this.opacity = opacity;
         this.lifespan = lifespan;
         this.fadeOut = fadeOut;
+        this.square = makeSquare;
     }
 
     public float getMinWidth() {

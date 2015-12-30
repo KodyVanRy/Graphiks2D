@@ -107,7 +107,7 @@ public class ParticleBuilder {
         float minWidth, maxWidth, minHeight, maxHeight, minGravityX, maxGravityX, minGravityY,
                 maxGravityY, minVelocityX, maxVelocityX, minVelocityY, maxVelocityY,
                 minRotationAmount, maxRotationAmount, opacity, lifespan;
-        boolean fadeOut;
+        boolean fadeOut, square;
 
         minWidth = 0;
         maxWidth = 0;
@@ -125,7 +125,8 @@ public class ParticleBuilder {
         maxRotationAmount = 0;
         opacity = 0;
         lifespan = 0;
-        fadeOut = true;
+        fadeOut = false;
+        square = false;
 
         if (jsonObject.get(MIN_PARTICLE_WIDTH) != null) {
             minWidth = Float.parseFloat((String) jsonObject.get(MIN_PARTICLE_WIDTH));
@@ -167,7 +168,7 @@ public class ParticleBuilder {
             minRotationAmount = Float.parseFloat((String) jsonObject.get(MIN_PARTICLE_ROTATION));
         }
         if (jsonObject.get(MAX_PARTICLE_ROTATION) != null) {
-            maxRotationAmount = Float.parseFloat((String) jsonObject.get(MIN_PARTICLE_ROTATION));
+            maxRotationAmount = Float.parseFloat((String) jsonObject.get(MAX_PARTICLE_ROTATION));
         }
         if (jsonObject.get(OPACITY) != null) {
             opacity = Float.parseFloat((String) jsonObject.get(OPACITY));
@@ -178,7 +179,10 @@ public class ParticleBuilder {
         if (jsonObject.get(FADE_OUT) != null) {
             fadeOut = Boolean.parseBoolean((String) jsonObject.get(FADE_OUT));
         }
+        if (jsonObject.get(MAKE_SQUARE) != null) {
+            square = Boolean.parseBoolean((String) jsonObject.get(MAKE_SQUARE));
+        }
 
-        return new ParticleSettings(minWidth, maxWidth, minHeight, maxHeight, minGravityX, maxGravityX, minGravityY, maxGravityY, minVelocityX, maxVelocityX, minVelocityY, maxVelocityY, minRotationAmount, maxRotationAmount, opacity, lifespan, fadeOut);
+        return new ParticleSettings(minWidth, maxWidth, minHeight, maxHeight, minGravityX, maxGravityX, minGravityY, maxGravityY, minVelocityX, maxVelocityX, minVelocityY, maxVelocityY, minRotationAmount, maxRotationAmount, opacity, lifespan, fadeOut, square);
     }
 }

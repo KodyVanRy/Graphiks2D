@@ -9,6 +9,7 @@ import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.particles.ParticleBuilder;
+import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.widgets.Button;
 import com.desitum.library.widgets.LinearLayout;
 import com.desitum.library.widgets.MenuBuilder;
@@ -26,6 +27,7 @@ public class KodyWorld implements InputProcessor {
     private OrthographicCamera cam;
 
     private ArrayList<Widget> widgets;
+    private ParticleEmitter pEmitter;
 
     public KodyWorld(OrthographicCamera cam) {
         widgets = new ArrayList<Widget>();
@@ -47,13 +49,15 @@ public class KodyWorld implements InputProcessor {
         ll.startIncomingAnimators();
         widgets.add(ll);
 
-        ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt"));
+        pEmitter = ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt"));
+        pEmitter.turnOn();
     }
 
     public void update(float delta) {
         for (Widget widget : widgets) {
             widget.update(delta);
         }
+        pEmitter.update(delta);
     }
 
     public OrthographicCamera getCam() {
@@ -112,5 +116,9 @@ public class KodyWorld implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    public ParticleEmitter getParticles() {
+        return pEmitter;
     }
 }

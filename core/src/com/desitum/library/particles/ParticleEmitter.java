@@ -58,7 +58,7 @@ public class ParticleEmitter {
         if (on) {
             currentTime += delta;
             while (currentTime >= 1.0f / particlesPerSecond) {
-                createNewParticle();
+                addParticle(createNewParticle());
                 currentTime -= 1.0f / particlesPerSecond;
             }
         }
@@ -69,8 +69,10 @@ public class ParticleEmitter {
         if (particleSettings == null) return null;
         Particle returnParticle = null;
 
-        returnParticle = new Particle(particleTexture, particleSettings.getWidth(),
-                particleSettings.getHeight(), particleSettings.getLifespan(),
+        System.out.println(getRandomParticleX());
+
+        returnParticle = new Particle(particleTexture, getRandomParticleX(), getRandomParticleY(),
+                particleSettings.getWidth(), particleSettings.getHeight(), particleSettings.getLifespan(),
                 particleSettings.getGravityX(), particleSettings.getGravityY(),
                 particleSettings.getVelocityX(), particleSettings.getVelocityY(),
                 particleSettings.getRotationAmount(), particleSettings.getOpacity(),
@@ -85,6 +87,7 @@ public class ParticleEmitter {
     public void draw(SpriteBatch batch) {
         for (Particle particle : particles) {
             particle.draw(batch);
+
         }
     }
 
@@ -108,12 +111,20 @@ public class ParticleEmitter {
         this.x = x;
     }
 
+    private float getRandomParticleX() {
+        return ((float) Math.random() * getWidth()) + getX();
+    }
+
     public float getY() {
         return y;
     }
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    private float getRandomParticleY() {
+        return (float) Math.random() * getHeight() + getY();
     }
 
     public float getWidth() {

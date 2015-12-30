@@ -37,12 +37,13 @@ public class Particle extends Sprite {
         setup(lifespan, 0, 0, 0, 0, 0, 1, true);
     }
 
-    public Particle(Texture texture, float width, float height, float lifespan, float gravityX,
+    public Particle(Texture texture, float x, float y, float width, float height, float lifespan, float gravityX,
                     float gravityY, float velocityX, float velocityY, float rotationAmount,
                     float opacity, boolean fadeOut) {
         super(texture);
 
         setSize(width, height);
+        setPosition(x, y);
         setup(lifespan, gravityX, gravityY, velocityX, velocityY, rotationAmount, opacity, fadeOut);
     }
 
@@ -56,7 +57,7 @@ public class Particle extends Sprite {
         velocityY += gravityY * delta;
         this.setX(getX() + velocityX * delta);
         this.setY(getY() + velocityY * delta);
-        this.setRotation(getRotationAmount() + rotationAmount * delta);
+        this.setRotation(rotationAmount * currentLife / lifespan);
         if (fadeOut) this.setColor(1, 1, 1, opacity - opacity * (lifespan - currentLife) / 1);
     }
 

@@ -1,5 +1,5 @@
 {
-    "particles_per_second" : "0",
+    "particles_per_second" : "40",
     "x" : "0",
     "y" : "0",
     "width" : "80",
@@ -20,9 +20,7 @@
             "max_velocity_y" : "4",
             "min_rotation" : "100",
             "max_rotation" : "600",
-            "opacity" : "1",
-            "lifespan" : "0.7",
-            "fade_out" : "true"
+            "lifespan" : "0.7"
         },
         {
             "min_width" : "2",
@@ -38,9 +36,7 @@
             "max_velocity_y" : "4",
             "min_rotation" : "100",
             "max_rotation" : "600",
-            "opacity" : "1",
             "lifespan" : "0.7",
-            "fade_out" : "true"
         },
     ]
 }
