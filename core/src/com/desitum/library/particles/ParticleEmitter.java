@@ -130,15 +130,7 @@ public class ParticleEmitter {
         this.height = height;
     }
 
-    public void setParticlesPerSecond(float particlesPerSecond) {
-        this.particlesPerSecond = particlesPerSecond;
-    }
-
-    public void setParticleTexture(Texture particleTexture) {
-        this.particleTexture = particleTexture;
-    }
-
-    public void addParticleSettins(ParticleSettings ps) {
+    public void addParticleSettings(ParticleSettings ps) {
         particleSettingsArrayList.add(ps);
     }
 
@@ -150,7 +142,27 @@ public class ParticleEmitter {
         particles.add(particle);
     }
 
+    public ArrayList<ParticleSettings> getParticleSettingsArrayList() {
+        return particleSettingsArrayList;
+    }
+
     public void setParticleSettingsArrayList(ArrayList<ParticleSettings> particleSettingsArrayList) {
         this.particleSettingsArrayList = particleSettingsArrayList;
+    }
+
+    public float getParticlesPerSecond() {
+        return particlesPerSecond;
+    }
+
+    public void setParticlesPerSecond(float particlesPerSecond) {
+        this.particlesPerSecond = particlesPerSecond;
+    }
+
+    public Texture getParticleTexture() {
+        return particleTexture;
+    }
+
+    public void setParticleTexture(Texture particleTexture) {
+        this.particleTexture = particleTexture;
     }
 }

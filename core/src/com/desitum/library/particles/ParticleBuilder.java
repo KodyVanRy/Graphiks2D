@@ -95,7 +95,7 @@ public class ParticleBuilder {
         JSONArray children = (JSONArray) jsonObject.get(PARTICLE_SETTINGS);
         if (children != null) {
             for (int i = 0; i < children.size(); i++) {
-                particleEmitter.add(getParticleSettings((JSONObject) children.get(i)));
+                particleEmitter.addParticleSettings(getParticleSettings((JSONObject) children.get(i)));
             }
         }
 
