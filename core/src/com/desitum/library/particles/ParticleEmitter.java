@@ -138,7 +138,7 @@ public class ParticleEmitter {
         this.particleTexture = particleTexture;
     }
 
-    public void add(ParticleSettings ps) {
+    public void addParticleSettins(ParticleSettings ps) {
         particleSettingsArrayList.add(ps);
     }
 
@@ -148,5 +148,9 @@ public class ParticleEmitter {
 
     public void addParticle(Particle particle) {
         particles.add(particle);
+    }
+
+    public void setParticleSettingsArrayList(ArrayList<ParticleSettings> particleSettingsArrayList) {
+        this.particleSettingsArrayList = particleSettingsArrayList;
     }
 }
