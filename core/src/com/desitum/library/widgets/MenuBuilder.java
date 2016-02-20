@@ -1,7 +1,5 @@
 package com.desitum.library.widgets;
 
-import android.util.Log;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -11,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.desitum.library.drawing.Drawing;
 
-import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -80,19 +77,16 @@ public class MenuBuilder {
         Widget returnWidget = null;
         try {
             String json = file.readString();
-            System.out.println(json);
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
             returnWidget = getWidget(jsonObject, null, cam);
         } catch (ParseException e) {
-            Log.d("MenuBuilder", "Error parsing json file");
-        } catch (JSONException e) {
-            Log.d("MenuBuilder", "Error parsing json file");
+            e.printStackTrace();
         }
         return returnWidget;
     }
 
-    private static Widget getWidget(JSONObject jsonObject, Widget parent, OrthographicCamera cam) throws JSONException {
+    private static Widget getWidget(JSONObject jsonObject, Widget parent, OrthographicCamera cam) {
         Widget returnWidget = null;
 
         // region Widget Basics
@@ -183,12 +177,10 @@ public class MenuBuilder {
 
         // region EditText
         else if (widgetType.equals(Widget.EDIT_TEXT)) {
-            BitmapFont bitmapFont;
+            BitmapFont bitmapFont = null;
             if (jsonObject.get(FONT) != null) {
                 String fontBasic = (String) jsonObject.get(FONT);
                 bitmapFont = new BitmapFont(Gdx.files.internal(fontBasic + ".fnt"), new TextureRegion(new Texture(fontBasic + ".png")));
-            } else {
-                throw new JSONException("No font associated with Edit Text");
             }
             returnWidget = new EditText(backgroundTexture, name, width, height, x, y, bitmapFont);
 

@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Particle extends Sprite {
     /*
-    TODO I need to make a new Particle... I think this one creates too many objects for such a simple thing
-    I believe this can be done with simply using values such as...
 
     - lifespan
     - gravityX

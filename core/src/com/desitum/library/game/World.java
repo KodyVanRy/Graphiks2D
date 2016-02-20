@@ -59,4 +59,8 @@ public class World {
     public ArrayList<Widget> getWidgets() {
         return widgets;
     }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 }

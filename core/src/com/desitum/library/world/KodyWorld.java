@@ -44,7 +44,6 @@ public class KodyWorld implements InputProcessor {
         ll.addWidget(mSlider);
 
         Button button1 = (Button) ll.findByName("button1");
-        System.out.println(button1.getName());
 
         ll.startIncomingAnimators();
         widgets.add(ll);

@@ -111,7 +111,6 @@ public class EditText extends Widget {
             z += 0.01f;
             font.getData().setScale(z);
             x = font.getCapHeight();
-            System.out.println("size = " + x);
         }
         font.getData().setScale(z - 0.01f);
     }

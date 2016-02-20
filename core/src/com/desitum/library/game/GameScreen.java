@@ -28,7 +28,13 @@ public class GameScreen implements Screen {
     private Vector3 touchPos;
     private Color clearColor;
 
+    private float viewportWidth;
+    private float viewportHeight;
+
     public GameScreen(float viewportWidth, float viewportHeight, Constructor<World> worldClass) {
+        this.viewportWidth = viewportWidth;
+        this.viewportHeight = viewportHeight;
+
         spriteBatch = new SpriteBatch();
         cam = new OrthographicCamera(viewportWidth, viewportHeight);
         cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
@@ -51,6 +57,9 @@ public class GameScreen implements Screen {
     }
 
     public GameScreen(float viewportWidth, float viewportHeight) {
+        this.viewportWidth = viewportWidth;
+        this.viewportHeight = viewportHeight;
+
         spriteBatch = new SpriteBatch();
         cam = new OrthographicCamera(viewportWidth, viewportHeight);
         cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
@@ -60,6 +69,7 @@ public class GameScreen implements Screen {
 
         world = new World(cam); // Hmmm annoying to create it and then recreate it later, use above to only create one
         worldRenderer = new WorldRenderer(world);
+        clearColor = new Color(0, 0, 0, 1);
     }
 
     @Override
@@ -114,7 +124,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        try {
+            spriteBatch.dispose();
+        } catch (IllegalArgumentException e) {
+            // Never got initialized
+        }
     }
 
     public OrthographicCamera getCam() {

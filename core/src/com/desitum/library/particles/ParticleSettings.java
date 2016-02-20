@@ -51,10 +51,12 @@ public class ParticleSettings {
     }
 
     public float getMinHeight() {
+        if (square) return minWidth;
         return minHeight;
     }
 
     public float getMaxHeight() {
+        if (square) return maxWidth;
         return maxHeight;
     }
 
@@ -137,5 +139,73 @@ public class ParticleSettings {
 
     public void setSquare(boolean square) {
         this.square = square;
+    }
+
+    public void setMinWidth(float minWidth) {
+        this.minWidth = minWidth;
+    }
+
+    public void setMaxWidth(float maxWidth) {
+        this.maxWidth = maxWidth;
+    }
+
+    public void setMinHeight(float minHeight) {
+        this.minHeight = minHeight;
+    }
+
+    public void setMaxHeight(float maxHeight) {
+        this.maxHeight = maxHeight;
+    }
+
+    public void setMinGravityX(float minGravityX) {
+        this.minGravityX = minGravityX;
+    }
+
+    public void setMaxGravityX(float maxGravityX) {
+        this.maxGravityX = maxGravityX;
+    }
+
+    public void setMinGravityY(float minGravityY) {
+        this.minGravityY = minGravityY;
+    }
+
+    public void setMaxGravityY(float maxGravityY) {
+        this.maxGravityY = maxGravityY;
+    }
+
+    public void setMinVelocityX(float minVelocityX) {
+        this.minVelocityX = minVelocityX;
+    }
+
+    public void setMaxVelocityX(float maxVelocityX) {
+        this.maxVelocityX = maxVelocityX;
+    }
+
+    public void setMinVelocityY(float minVelocityY) {
+        this.minVelocityY = minVelocityY;
+    }
+
+    public void setMaxVelocityY(float maxVelocityY) {
+        this.maxVelocityY = maxVelocityY;
+    }
+
+    public void setMinRotationAmount(float minRotationAmount) {
+        this.minRotationAmount = minRotationAmount;
+    }
+
+    public void setMaxRotationAmount(float maxRotationAmount) {
+        this.maxRotationAmount = maxRotationAmount;
+    }
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+    }
+
+    public void setLifespan(float lifespan) {
+        this.lifespan = lifespan;
+    }
+
+    public void setFadeOut(boolean fadeOut) {
+        this.fadeOut = fadeOut;
     }
 }

@@ -1,7 +1,8 @@
 package com.desitum.library.particles;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ public class ParticleEmitter {
     private Texture particleTexture;
     private ArrayList<ParticleSettings> particleSettingsArrayList;
     private Random randomSettingsChooser;
+    private Color color;
 
     private boolean on;
 
@@ -43,6 +45,7 @@ public class ParticleEmitter {
         this.y = 0;
         this.width = 0;
         this.height = 0;
+        this.color = new Color(1, 1, 1, 1);
     }
 
     public void update(float delta) {
@@ -69,8 +72,6 @@ public class ParticleEmitter {
         if (particleSettings == null) return null;
         Particle returnParticle = null;
 
-        System.out.println(getRandomParticleX());
-
         returnParticle = new Particle(particleTexture, getRandomParticleX(), getRandomParticleY(),
                 particleSettings.getWidth(), particleSettings.getHeight(), particleSettings.getLifespan(),
                 particleSettings.getGravityX(), particleSettings.getGravityY(),
@@ -84,7 +85,7 @@ public class ParticleEmitter {
         return particles;
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(Batch batch) {
         for (Particle particle : particles) {
             particle.draw(batch);
 
@@ -152,6 +153,7 @@ public class ParticleEmitter {
     }
 
     public void addParticle(Particle particle) {
+        particle.setColor(color);
         particles.add(particle);
     }
 
@@ -176,6 +178,20 @@ public class ParticleEmitter {
     }
 
     public void setParticleTexture(Texture particleTexture) {
+//        this.particleTexture.dispose();
         this.particleTexture = particleTexture;
+    }
+
+    public void clearAndAddSettings(ParticleSettings particleSettings) {
+        this.particleSettingsArrayList.clear();
+        particleSettingsArrayList.add(particleSettings);
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void dispose() {
+        particleTexture.dispose();
     }
 }

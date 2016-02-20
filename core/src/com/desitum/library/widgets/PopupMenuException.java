@@ -11,7 +11,6 @@ public class PopupMenuException extends Exception {
 
     public PopupMenuException(String message) {
         super(message);
-        System.out.println("Can't add PopupMenu inside a PopupMenu");
     }
 
     public PopupMenuException(String message, Throwable cause) {

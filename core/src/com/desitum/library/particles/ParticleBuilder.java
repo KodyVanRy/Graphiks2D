@@ -1,7 +1,5 @@
 package com.desitum.library.particles;
 
-import android.util.Log;
-
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -54,12 +52,11 @@ public class ParticleBuilder {
         ParticleEmitter returnEmitter = null;
         try {
             String json = file.readString();
-            System.out.println(json);
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
             returnEmitter = getEmitter(jsonObject);
         } catch (ParseException e) {
-            Log.d("MenuBuilder", "Error parsing json file");
+//            Log.d("MenuBuilder", "Error parsing json file");
         }
 
         return returnEmitter;
