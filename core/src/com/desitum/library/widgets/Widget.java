@@ -218,6 +218,9 @@ public class Widget extends Sprite {
 
     public void setZ(float z) {
         this.z = z;
+        if (getZ() < parent.getZ()) {
+            throw new LayeringException("Can't place widget beneath parent");
+        }
     }
 
     public Texture getShadow() {

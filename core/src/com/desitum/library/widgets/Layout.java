@@ -65,6 +65,9 @@ public abstract class Layout extends Widget {
     }
 
     public void addWidget(Widget widget) {
+        if (widget.getZ() < getZ()) {
+            throw new LayeringException("Can't place widget beneath parent");
+        }
         widget.setParent(this);
         widgets.add(widget);
     }
@@ -73,6 +76,15 @@ public abstract class Layout extends Widget {
         return widgets;
     }
 
+    @Override
+    public void setZ(float z) {
+        super.setZ(z);
+        for (Widget widget : widgets) {
+            if (widget.getZ() < getZ()) {
+                throw new LayeringException("Can't place parent above children");
+            }
+        }
+    }
 
     @Override
     public void update(float delta) {

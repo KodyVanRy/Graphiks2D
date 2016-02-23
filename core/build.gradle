@@ -12,4 +12,5 @@ eclipse.project {
 
 dependencies {
     compile files('/home/kody/Coding/json-simple.jar')
+    compile files('build/libs/libgdxLibrary.jar')
 }
