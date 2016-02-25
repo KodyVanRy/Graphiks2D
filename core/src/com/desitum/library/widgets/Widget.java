@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by kody on 12/11/15.
  * can be used by kody and people in [kody}]
  */
-public class Widget extends Sprite {
+public class Widget extends Sprite implements Comparable<Widget> {
 
     public static final String WIDGET = "widget";
     public static final String BUTTON = "button";
@@ -41,6 +41,15 @@ public class Widget extends Sprite {
 
     private ArrayList<Animator> outgoingAnimators;
 
+    /**
+     * Create a new {@link Widget}
+     * @param text {@link Texture} to be used as the background
+     * @param name String used to identify {@link Widget}
+     * @param width Width of widget
+     * @param height height of widget
+     * @param X x position of widget
+     * @param Y y position of widget
+     */
     public Widget(Texture text, String name, float width, float height, float X, float Y) {
         super(text, text.getWidth(), text.getHeight());
         setSize(width, height);
@@ -60,6 +69,10 @@ public class Widget extends Sprite {
         this.outgoingAnimators = new ArrayList<Animator>();
     }
 
+    /**
+     * update every frame
+     * @param delta time since last update
+     */
     public void update(float delta) {
         for (Animator anim : incomingAnimators) {
             anim.update(delta);
@@ -89,6 +102,10 @@ public class Widget extends Sprite {
         }
     }
 
+    /**
+     * update the widget based on animations, usually used in a for loop
+     * @param anim Animator to update
+     */
     private void updateAnim(Animator anim) {
         if (anim.isRunning()) {
             if (anim instanceof MovementAnimator && ((MovementAnimator) anim).isControllingX()) {
@@ -281,5 +298,9 @@ public class Widget extends Sprite {
         return widgets;
     }
 
+    @Override
+    public int compareTo(Widget widget) {
+        return (int) (this.getZ() - widget.getZ());
+    }
     //endregion
 }

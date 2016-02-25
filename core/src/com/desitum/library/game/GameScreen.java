@@ -31,6 +31,12 @@ public class GameScreen implements Screen {
     private float viewportWidth;
     private float viewportHeight;
 
+    /**
+     * Create a new {@link GameScreen} object
+     * @param viewportWidth Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     * @param worldClass world class controller
+     */
     public GameScreen(float viewportWidth, float viewportHeight, Constructor<World> worldClass) {
         this.viewportWidth = viewportWidth;
         this.viewportHeight = viewportHeight;
@@ -56,6 +62,11 @@ public class GameScreen implements Screen {
         clearColor = new Color(0, 0, 0, 1);
     }
 
+    /**
+     * Create a new {@link GameScreen} object
+     * @param viewportWidth Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     */
     public GameScreen(float viewportWidth, float viewportHeight) {
         this.viewportWidth = viewportWidth;
         this.viewportHeight = viewportHeight;
@@ -78,12 +89,19 @@ public class GameScreen implements Screen {
         draw();
     }
 
+    /**
+     * Update based on time since last frame
+     * @param delta time since last frame
+     */
     public void update(float delta) {
         world.update(delta);
         touchPos = viewport.unproject(touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         world.updateTouchInput(touchPos, Gdx.input.isTouched());
     }
 
+    /**
+     * Draw the world to the screen
+     */
     public void draw() {
         cam.update();
         spriteBatch.setProjectionMatrix(cam.combined);

@@ -14,18 +14,18 @@ import java.util.Iterator;
  */
 public class GameObject extends Sprite implements Comparable<GameObject> {
 
-    public static final int DEFAULT_LEVEL = 0;
+    public static final int DEFAULT_Z = 0;
     private ArrayList<Animator> animators;
-    private int level;
+    private int z;
 
     public GameObject() {
         animators = new ArrayList<Animator>();
-        level = DEFAULT_LEVEL;
+        z = DEFAULT_Z;
     }
 
-    public GameObject(int level) {
+    public GameObject(int z) {
         animators = new ArrayList<Animator>();
-        this.level = level;
+        this.z = z;
     }
 
     public void update(float delta) {
@@ -59,12 +59,12 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         animators.add(anim);
     }
 
-    public int getLevel() {
-        return level;
+    public int getZ() {
+        return z;
     }
 
     @Override
     public int compareTo(GameObject gameObject) {
-        return this.getLevel() - gameObject.getLevel();
+        return this.getZ() - gameObject.getZ();
     }
 }
