@@ -235,7 +235,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     public void setZ(float z) {
         this.z = z;
-        if (getZ() < parent.getZ()) {
+        if (parent != null && getZ() < parent.getZ()) {
             throw new LayeringException("Can't place widget beneath parent");
         }
     }
