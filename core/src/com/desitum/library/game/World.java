@@ -2,6 +2,7 @@ package com.desitum.library.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.desitum.library.widgets.Layout;
 import com.desitum.library.widgets.Widget;
 
 import java.util.ArrayList;
@@ -67,6 +68,9 @@ public class World {
         this.widgets.add(widget);
         if (layerWidgets) {
             Collections.sort(widgets);
+            if (widget instanceof Layout) {
+                ((Layout) widget).sortWidgets();
+            }
         }
     }
 

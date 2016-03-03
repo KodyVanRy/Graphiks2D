@@ -10,12 +10,13 @@
     "spacing" : "5",
     "children" : [
         {
-            "widget" : "button",
+            "widget" : "floating button",
             "name" : "button1",
             "width" : "match parent",
             "height" : "10.0",
             "x" : "0",
             "y" : "0",
+            "z" : "3",
             "background" : "button_rest.png",
         },
         {

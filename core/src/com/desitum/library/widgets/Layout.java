@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by kody on 12/11/15.
@@ -120,5 +121,9 @@ public abstract class Layout extends Widget {
         }
 
         return super.findByName(name);
+    }
+
+    public void sortWidgets() {
+        Collections.sort(widgets);
     }
 }

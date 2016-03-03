@@ -28,22 +28,24 @@ public class KodyWorld implements InputProcessor {
 
     private ArrayList<Widget> widgets;
     private ParticleEmitter pEmitter;
+    LinearLayout ll;
 
     public KodyWorld(OrthographicCamera cam) {
         widgets = new ArrayList<Widget>();
         this.cam = cam;
 
         Widget widget = MenuBuilder.build(Gdx.files.internal("layout.json"), cam);
-        LinearLayout ll = (LinearLayout) widget.findByName("myLayout");
+        ll = (LinearLayout) widget.findByName("myLayout");
 
-        MovementAnimator animator = new MovementAnimator(-100, 0, 0.9f, Interpolation.DECELERATE_INTERPOLATOR);
+        MovementAnimator animator = new MovementAnimator(-100, 90, 0.9f, Interpolation.DECELERATE_INTERPOLATOR);
         animator.setControllingY(true);
-        ll.addIncomingAnimator(animator);
 
         Slider mSlider = new Slider(Drawing.getFilledRectangle(1, 1, Color.BLUE), "", 100, 10, 0, 0);
         ll.addWidget(mSlider);
 
         Button button1 = (Button) ll.findByName("button1");
+        button1.addIncomingAnimator(animator);
+        button1.startIncomingAnimators();
 
         ll.startIncomingAnimators();
         widgets.add(ll);
@@ -53,9 +55,11 @@ public class KodyWorld implements InputProcessor {
     }
 
     public void update(float delta) {
+        delta = delta / 10;
         for (Widget widget : widgets) {
             widget.update(delta);
         }
+        ll.sortWidgets();
         pEmitter.update(delta);
     }
 

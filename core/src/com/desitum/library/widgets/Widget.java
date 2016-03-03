@@ -300,7 +300,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     @Override
     public int compareTo(Widget widget) {
-        return (int) (this.getZ() - widget.getZ());
+        return Float.compare(this.getZ(), widget.getZ());
     }
     //endregion
 }
