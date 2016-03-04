@@ -318,5 +318,9 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public int compareTo(Widget widget) {
         return Float.compare(this.getZ(), widget.getZ());
     }
+
+    public boolean isVisible() {
+        return this.visibility == VISIBLE;
+    }
     //endregion
 }

@@ -94,9 +94,9 @@ public class GameScreen implements Screen {
      * @param delta time since last frame
      */
     public void update(float delta) {
-        world.update(delta);
         touchPos = viewport.unproject(touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         world.updateTouchInput(touchPos, Gdx.input.isTouched());
+        world.update(delta);
     }
 
     /**

@@ -27,6 +27,9 @@ public abstract class Layout extends Widget {
     public void draw(Batch batch) {
         super.draw(batch);
         for (Widget widget : widgets) {
+            if (!widget.isVisible()) {
+                continue;
+            }
             if (widget instanceof FloatingButton) {
                 widget.drawShadow(batch);
             }
