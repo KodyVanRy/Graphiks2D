@@ -23,7 +23,12 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public static final String LINEAR_LAYOUT = "linear layout";
     public static final String SLIDER = "slider";
 
+    public static final int VISIBLE = 0;
+    public static final int INVISIBLE = 1;
+    public static final int GONE = 2;
+
     private String name;
+    private int visibility;
     private float myScaleX;
     private float myScaleY;
     private float myX;
@@ -58,6 +63,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
         this.myScaleY = 1.0f;
         this.myX = X;
         this.myY = Y;
+        this.visibility = VISIBLE;
 
         enabled = true;
         clickIsDown = false;
@@ -123,8 +129,18 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     @Override
     public void draw(Batch batch) {
-        if (getParent() == null) drawShadow(batch);
-        super.draw(batch);
+        if (visibility == VISIBLE) {
+            if (getParent() == null) drawShadow(batch);
+            super.draw(batch);
+        }
+    }
+
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
+    }
+
+    public int getVisibility() {
+        return visibility;
     }
 
     public void drawShadow(Batch spriteBatch) {

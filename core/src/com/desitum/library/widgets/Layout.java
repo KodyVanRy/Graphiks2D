@@ -30,6 +30,7 @@ public abstract class Layout extends Widget {
             if (widget instanceof FloatingButton) {
                 widget.drawShadow(batch);
             }
+            // TODO add more for each widget that is floating draw a shadow
         }
         for (Widget widget : widgets) {
             widget.draw(batch);
