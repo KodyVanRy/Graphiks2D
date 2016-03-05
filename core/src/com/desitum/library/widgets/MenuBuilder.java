@@ -250,7 +250,9 @@ public class MenuBuilder {
     }
 
     private static int getVisibility(String visibility) {
-        if (visibility.equals("visible")) {
+        if (visibility == null) {
+            return Widget.VISIBLE;
+        } else if (visibility.equals("visible")) {
             return Widget.VISIBLE;
         } else if (visibility.equals("invisible")) {
             return Widget.INVISIBLE;
