@@ -42,14 +42,16 @@ public class Slider extends Widget {
 
     @Override
     public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
-        if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
-            if (clickDown) {
-                value = (mousePos.x - getX()) / getWidth();
-            } else if (getClickIsDown()) {
-                if (onValueChangeListener != null) onValueChangeListener.onChange(this, value);
+        if (isVisible()) {
+            if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
+                if (clickDown) {
+                    value = (mousePos.x - getX()) / getWidth();
+                } else if (getClickIsDown()) {
+                    if (onValueChangeListener != null) onValueChangeListener.onChange(this, value);
+                }
             }
+            super.updateTouchInput(mousePos, clickDown);
         }
-        super.updateTouchInput(mousePos, clickDown);
     }
 
     @Override

@@ -75,30 +75,32 @@ public class EditText extends Widget {
     @Override
     public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
         // Android has to come before super.updateTouchInput due to complications with 4 popups.
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            if (getClickIsDown() && !clickDown && CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
-                Input.TextInputListener inputListener = new Input.TextInputListener() {
-                    @Override
-                    public void input(String input) {
-                        text = input;
-                    }
+        if (isVisible()) {
+            if (Gdx.app.getType() == Application.ApplicationType.Android) {
+                if (getClickIsDown() && !clickDown && CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
+                    Input.TextInputListener inputListener = new Input.TextInputListener() {
+                        @Override
+                        public void input(String input) {
+                            text = input;
+                        }
 
-                    @Override
-                    public void canceled() {
+                        @Override
+                        public void canceled() {
 
-                    }
-                };
-                Gdx.input.getTextInput(inputListener, hint, text, "");
+                        }
+                    };
+                    Gdx.input.getTextInput(inputListener, hint, text, "");
+                }
             }
-        }
 
-        super.updateTouchInput(mousePos, clickDown);
+            super.updateTouchInput(mousePos, clickDown);
 
-        if (clickDown) {
-            focus = false;
-            if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
-                if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
-                    focus = true;
+            if (clickDown) {
+                focus = false;
+                if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
+                    if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+                        focus = true;
+                    }
                 }
             }
         }

@@ -103,10 +103,12 @@ public abstract class Layout extends Widget {
 
     @Override
     public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
-        super.updateTouchInput(mousePos, clickDown);
+        if (isVisible()) {
+            super.updateTouchInput(mousePos, clickDown);
 
-        for (Widget widget : widgets) {
-            widget.updateTouchInput(mousePos, clickDown);
+            for (Widget widget : widgets) {
+                widget.updateTouchInput(mousePos, clickDown);
+            }
         }
     }
 

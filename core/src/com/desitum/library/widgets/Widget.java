@@ -151,7 +151,9 @@ public class Widget extends Sprite implements Comparable<Widget> {
     }
 
     public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
-        clickIsDown = clickDown;
+        if (isVisible()) {
+            clickIsDown = clickDown;
+        }
     }
 
     //region Getters and Setters

@@ -24,22 +24,24 @@ public class Button extends Widget {
 
     @Override
     public void updateTouchInput(Vector3 mousePos, boolean touchDown) {
-        if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos) && isEnabled() && getClickIsDown() && !touchDown) {
-            if (onClickListener != null) onClickListener.onClick(this);
-        }
+        if (isVisible()) {
+            if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos) && isEnabled() && getClickIsDown() && !touchDown) {
+                if (onClickListener != null) onClickListener.onClick(this);
+            }
 
-        if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
-            if (touchDown && getClickTexture() != null) {
-                setTexture(getClickTexture());
-            } else if (getHoverTexture() != null) {
-                setTexture(getHoverTexture());
+            if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
+                if (touchDown && getClickTexture() != null) {
+                    setTexture(getClickTexture());
+                } else if (getHoverTexture() != null) {
+                    setTexture(getHoverTexture());
+                } else {
+                    setTexture(getRestTexture());
+                }
             } else {
                 setTexture(getRestTexture());
             }
-        } else {
-            setTexture(getRestTexture());
+            super.updateTouchInput(mousePos, touchDown);
         }
-        super.updateTouchInput(mousePos, touchDown);
     }
 
     public Texture getRestTexture() {
