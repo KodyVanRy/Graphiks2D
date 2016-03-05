@@ -25,7 +25,7 @@ public class Button extends Widget {
     @Override
     public void updateTouchInput(Vector3 mousePos, boolean touchDown) {
         if (isVisible()) {
-            if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos) && isEnabled() && getClickIsDown() && !touchDown) {
+            if (pointInWidget(mousePos) && isEnabled() && getClickIsDown() && !touchDown) {
                 if (onClickListener != null) onClickListener.onClick(this);
             }
 

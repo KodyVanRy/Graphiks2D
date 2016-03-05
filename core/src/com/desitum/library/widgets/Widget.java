@@ -167,6 +167,10 @@ public class Widget extends Sprite implements Comparable<Widget> {
         }
     }
 
+    public boolean pointInWidget(Vector3 point) {
+        return getBoundingRectangle().contains(point.x, point.y);
+    }
+
     public float getMyScaleX() {
         return myScaleX;
     }

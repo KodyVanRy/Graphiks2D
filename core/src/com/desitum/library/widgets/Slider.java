@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.listener.OnValueChangeListener;
-import com.desitum.library.math.CollisionDetection;
 
 /**
  * Created by kody on 12/17/15.
@@ -43,7 +42,7 @@ public class Slider extends Widget {
     @Override
     public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
         if (isVisible()) {
-            if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
+            if (pointInWidget(mousePos)) {
                 if (clickDown) {
                     value = (mousePos.x - getX()) / getWidth();
                 } else if (getClickIsDown()) {

@@ -77,7 +77,7 @@ public class EditText extends Widget {
         // Android has to come before super.updateTouchInput due to complications with 4 popups.
         if (isVisible()) {
             if (Gdx.app.getType() == Application.ApplicationType.Android) {
-                if (getClickIsDown() && !clickDown && CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
+                if (getClickIsDown() && !clickDown && pointInWidget(mousePos)) {
                     Input.TextInputListener inputListener = new Input.TextInputListener() {
                         @Override
                         public void input(String input) {

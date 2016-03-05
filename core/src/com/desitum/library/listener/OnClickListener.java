@@ -8,6 +8,8 @@ import com.desitum.library.widgets.Widget;
  */
 public interface OnClickListener {
 
+    public void onClickDown(Widget widget);
+
     public void onClick(Widget widget);
 
 }
