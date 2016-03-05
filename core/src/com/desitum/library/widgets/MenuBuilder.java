@@ -30,6 +30,7 @@ public class MenuBuilder {
     public static final String X = "x";
     public static final String Y = "y";
     public static final String Z = "z";
+    public static final String VISIBILITY = "visibility";
 
     // Layout specifics
     public static final String ORIENTATION = "orientation";
@@ -89,23 +90,24 @@ public class MenuBuilder {
     private static Widget getWidget(JSONObject jsonObject, Widget parent, OrthographicCamera cam) {
         Widget returnWidget = null;
 
+        //todo clean up this method. Maybe branch it out. I don't like how messy it has gotten. Do on a day I'm not wired in.
+
         // region Widget Basics
-        String widgetType = (String) jsonObject.get(WIDGET_TYPE);
-        String name = (String) jsonObject.get(NAME);
+        String widgetType = (String) (jsonObject.get(WIDGET_TYPE) == null ? Widget.WIDGET : jsonObject.get(WIDGET_TYPE));
+        String name = (String) (jsonObject.get(NAME) == null ? "" : jsonObject.get(NAME));
         String widthString = (String) jsonObject.get(WIDTH);
         String heightString = (String) jsonObject.get(HEIGHT);
         String background = (String) jsonObject.get(BACKGROUND);
-        Texture backgroundTexture = null;
+        String visibilityString = (String) jsonObject.get(VISIBILITY);
+        Texture backgroundTexture;
         Texture shadowTexture = null;
 
-        float x = (float) (jsonObject.get(X) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(X)));
-        float y = (float) (jsonObject.get(Y) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(Y)));
-        float z = (float) (jsonObject.get(Z) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(Z)));
-        float width = 0;
-        float height = 0;
+        float x = (jsonObject.get(X) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(X)));
+        float y = (jsonObject.get(Y) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(Y)));
+        float z = (jsonObject.get(Z) == null ? 0.0f : Float.parseFloat((String) jsonObject.get(Z)));
+        float width;
+        float height;
 
-        if (widgetType == null) widgetType = Widget.WIDGET;
-        if (name == null) name = "";
         if (widthString.equals(MATCH_PARENT)) {
             if (parent == null) {
                 width = cam.viewportWidth;
@@ -115,6 +117,7 @@ public class MenuBuilder {
         } else {
             width = Float.parseFloat(widthString);
         }
+
         if (heightString.equals(MATCH_PARENT)) {
             if (parent == null) {
                 height = cam.viewportHeight;
@@ -138,7 +141,7 @@ public class MenuBuilder {
         //region LinearLayout
         if (widgetType.equals(Widget.LINEAR_LAYOUT)) {
             int orientation = jsonObject.get(ORIENTATION).equals(VERTICAL) ? LinearLayout.VERTICAL_ORIENTATION : LinearLayout.HORIZONTAL_ORIENTATION;
-            float spacing = (float) (jsonObject.get(SPACING) == null ? 0 : Float.parseFloat((String) jsonObject.get(SPACING)));
+            float spacing = (jsonObject.get(SPACING) == null ? 0 : Float.parseFloat((String) jsonObject.get(SPACING)));
             int alignment = jsonObject.get(ALIGNMENT) != null ? getAlignment((String) jsonObject.get(ALIGNMENT)) : LinearLayout.ALIGNMENT_LEFT;
             returnWidget = new LinearLayout(backgroundTexture, name, width, height, x, y, parent, orientation);
 
@@ -152,7 +155,7 @@ public class MenuBuilder {
             JSONArray children = (JSONArray) jsonObject.get(CHILDREN);
             if (children != null) {
                 for (int i = 0; i < children.size(); i++) {
-                    Widget child = getWidget((JSONObject) children.get(i), returnWidget, cam);
+                    getWidget((JSONObject) children.get(i), returnWidget, cam);
                 }
             }
         }
@@ -240,7 +243,22 @@ public class MenuBuilder {
             ((Layout) parent).addWidget(returnWidget);
         }
 
+        if (returnWidget != null) {
+            returnWidget.setVisibility(getVisibility(visibilityString));
+        }
         return returnWidget;
+    }
+
+    private static int getVisibility(String visibility) {
+        if (visibility.equals("visible")) {
+            return Widget.VISIBLE;
+        } else if (visibility.equals("invisible")) {
+            return Widget.INVISIBLE;
+        } else if (visibility.equals("gone")) {
+            return Widget.GONE;
+        }
+        // TODO throw exception
+        return Widget.VISIBLE;
     }
 
     private static int getAlignment(String alignment) {

@@ -26,19 +26,20 @@ public abstract class Layout extends Widget {
     @Override
     public void draw(Batch batch) {
         super.draw(batch);
-        for (Widget widget : widgets) {
-            if (!widget.isVisible()) {
-                continue;
+        if (isVisible()) {
+            for (Widget widget : widgets) {
+                if (!widget.isVisible()) {
+                    continue;
+                }
+                if (widget instanceof FloatingButton) {
+                    widget.drawShadow(batch);
+                }
+                // TODO add more for each widget that is floating draw a shadow
             }
-            if (widget instanceof FloatingButton) {
-                widget.drawShadow(batch);
+            for (Widget widget : widgets) {
+                widget.draw(batch);
             }
-            // TODO add more for each widget that is floating draw a shadow
         }
-        for (Widget widget : widgets) {
-            widget.draw(batch);
-        }
-
     }
 
     public float getBaseX() {
