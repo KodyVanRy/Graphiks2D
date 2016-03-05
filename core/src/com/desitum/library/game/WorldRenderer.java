@@ -1,6 +1,7 @@
 package com.desitum.library.game;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.widgets.Widget;
 
 /**

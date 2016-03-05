@@ -28,9 +28,6 @@ public class GameScreen implements Screen {
     private Vector3 touchPos;
     private Color clearColor;
 
-    private float viewportWidth;
-    private float viewportHeight;
-
     /**
      * Create a new {@link GameScreen} object
      * @param viewportWidth Viewport width to fit to screen
@@ -38,9 +35,6 @@ public class GameScreen implements Screen {
      * @param worldClass world class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, Constructor<World> worldClass) {
-        this.viewportWidth = viewportWidth;
-        this.viewportHeight = viewportHeight;
-
         spriteBatch = new SpriteBatch();
         cam = new OrthographicCamera(viewportWidth, viewportHeight);
         cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
@@ -68,8 +62,6 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
-        this.viewportWidth = viewportWidth;
-        this.viewportHeight = viewportHeight;
 
         spriteBatch = new SpriteBatch();
         cam = new OrthographicCamera(viewportWidth, viewportHeight);

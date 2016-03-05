@@ -2,6 +2,7 @@ package com.desitum.library.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.widgets.Layout;
 import com.desitum.library.widgets.Widget;
 
@@ -55,8 +56,8 @@ public class World {
         for (Widget widget : widgets) {
             widget.updateTouchInput(touchPos, touchDown);
         }
-        for (GameObject gameObject : gameObjects) {
-            gameObject.updateTouchInput(touchPos, touchDown);
+        for (GameObject gameObject2D : gameObjects) {
+            gameObject2D.updateTouchInput(touchPos, touchDown);
         }
     }
 
@@ -76,10 +77,10 @@ public class World {
 
     /**
      * Add a {@link GameObject} to be handled by {@link World}
-     * @param gameObject {@link GameObject} to be handled
+     * @param gameObject2D {@link GameObject} to be handled
      */
-    public void addGameObject(GameObject gameObject) {
-        this.gameObjects.add(gameObject);
+    public void addGameObject(GameObject gameObject2D) {
+        this.gameObjects.add(gameObject2D);
         if (layerGameObjects) {
             Collections.sort(gameObjects);
         }
