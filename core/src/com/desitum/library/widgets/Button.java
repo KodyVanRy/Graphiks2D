@@ -27,6 +27,8 @@ public class Button extends Widget {
         if (isVisible()) {
             if (pointInWidget(mousePos) && isEnabled() && getClickIsDown() && !touchDown) {
                 if (onClickListener != null) onClickListener.onClick(this);
+            } else if (pointInWidget(mousePos) && touchDown && !getClickIsDown()) {
+                if (onClickListener != null) onClickListener.onClickDown(this);
             }
 
             if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {

@@ -18,6 +18,7 @@ public class World {
 
     public boolean layerWidgets = true;
     public boolean layerGameObjects = true;
+    private boolean clickDown = false;
 
     private List<Widget> widgets;
     private List<GameObject> gameObjects;
@@ -53,6 +54,12 @@ public class World {
      * @param touchDown is clicking or if currently touching screen
      */
     public void updateTouchInput(Vector3 touchPos, boolean touchDown) {
+        if (touchDown && !clickDown) {
+            onClickDown(touchPos);
+        } else if (!touchDown && clickDown) {
+            onClickUp(touchPos);
+        }
+        clickDown = touchDown;
         for (Widget widget : widgets) {
             widget.updateTouchInput(touchPos, touchDown);
         }
@@ -108,5 +115,13 @@ public class World {
      */
     public OrthographicCamera getCamera() {
         return camera;
+    }
+
+    public void onClickDown(Vector3 clickPos) {
+
+    }
+
+    public void onClickUp(Vector3 clickPos) {
+
     }
 }
