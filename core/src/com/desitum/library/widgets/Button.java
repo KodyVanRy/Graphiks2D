@@ -3,7 +3,6 @@ package com.desitum.library.widgets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.listener.OnClickListener;
-import com.desitum.library.math.CollisionDetection;
 
 /**
  * Created by kody on 12/12/15.
@@ -31,7 +30,7 @@ public class Button extends Widget {
                 if (onClickListener != null) onClickListener.onClickDown(this);
             }
 
-            if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
+            if (pointInWidget(mousePos)) {
                 if (touchDown && getClickTexture() != null) {
                     setTexture(getClickTexture());
                 } else if (getHoverTexture() != null) {
@@ -42,8 +41,8 @@ public class Button extends Widget {
             } else {
                 setTexture(getRestTexture());
             }
-            super.updateTouchInput(mousePos, touchDown);
         }
+        super.updateTouchInput(mousePos, touchDown);
     }
 
     public Texture getRestTexture() {

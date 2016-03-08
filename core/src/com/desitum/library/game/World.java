@@ -8,6 +8,7 @@ import com.desitum.library.widgets.Widget;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -90,6 +91,24 @@ public class World {
         this.gameObjects.add(gameObject2D);
         if (layerGameObjects) {
             Collections.sort(gameObjects);
+        }
+    }
+
+    public void removeGameObject(GameObject gameObject) {
+        Iterator<GameObject> iterator = gameObjects.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(gameObject)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void removeWidget(Widget widget) {
+        Iterator<Widget> iterator = widgets.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().equals(widget)) {
+                iterator.remove();
+            }
         }
     }
 

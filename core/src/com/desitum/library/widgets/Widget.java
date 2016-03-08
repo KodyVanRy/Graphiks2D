@@ -150,10 +150,8 @@ public class Widget extends Sprite implements Comparable<Widget> {
                 shadow.getWidth(), shadow.getHeight(), false, false);
     }
 
-    public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
-        if (isVisible()) {
-            clickIsDown = clickDown;
-        }
+    public void updateTouchInput(Vector3 mousePos, boolean touchDown) {
+        clickIsDown = touchDown;
     }
 
     //region Getters and Setters
