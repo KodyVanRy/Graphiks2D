@@ -3,7 +3,7 @@ package com.desitum.library.animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
- * Created by dvan6234 on 2/24/2015.
+ * Created by kody on 2/24/2015
  */
 public abstract class Animator {
 
@@ -39,37 +39,36 @@ public abstract class Animator {
     }
 
     public void update(float delta) {
-        if (running) {
-            if (currentDelay >= delay) {
-                timeInAnimation += delta / duration;
-                if (timeInAnimation >= 1) {
-                    timeInAnimation = 1;
-                    running = false;
-                    ran = true;
-                    if (onAnimationFinishedListener != null) {
-                        onAnimationFinishedListener.onAnimationFinished(this);
-                    }
-                }
-            } else {
-                currentDelay += delta;
-            }
-            updateAnimation();
+        if (!running) {
+            return;
         }
+        currentDelay += delta;
+        if (currentDelay >= delay) {
+            timeInAnimation += delta / duration;
+        }
+        if (timeInAnimation >= 1) {
+            timeInAnimation = 1;
+            running = false;
+            ran = true;
+            if (onAnimationFinishedListener != null) {
+                onAnimationFinishedListener.onAnimationFinished(this);
+            }
+        }
+        updateAnimation();
     }
 
     public void start(boolean isProtectedWhileRunning) {
-        if (isProtectedWhileRunning) {
-            if (!running) {
-                reset();
-                running = true;
-            }
-        } else {
+        if (isProtectedWhileRunning && running) {
+            reset();
+            running = true;
+        } else if (!isProtectedWhileRunning) {
             reset();
             running = true;
         }
     }
 
     public void reset() {
+        this.running = false;
         this.timeInAnimation = 0;
         this.currentDelay = 0;
     }
@@ -78,10 +77,7 @@ public abstract class Animator {
 
     // region getters and setters
     public boolean didFinish() {
-        if (ran && !running) {
-            return true;
-        }
-        return false;
+        return ran && !running;
     }
 
     public abstract float getCurrentAmount();

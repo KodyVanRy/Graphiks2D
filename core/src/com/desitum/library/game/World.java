@@ -3,12 +3,12 @@ package com.desitum.library.game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.game_objects.GameObject;
+import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.widgets.Layout;
 import com.desitum.library.widgets.Widget;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -23,6 +23,7 @@ public class World {
 
     private List<Widget> widgets;
     private List<GameObject> gameObjects;
+    private List<ParticleEmitter> particleEmitters;
     private OrthographicCamera camera;
 
     /**
@@ -33,6 +34,7 @@ public class World {
         this.camera = camera;
         this.widgets = new ArrayList<Widget>();
         this.gameObjects = new ArrayList<GameObject>();
+        this.particleEmitters = new ArrayList<ParticleEmitter>();
     }
 
     /**
@@ -94,22 +96,20 @@ public class World {
         }
     }
 
+    /**
+     * Remove a game object from the screen
+     * @param gameObject {@link GameObject} to remove
+     */
     public void removeGameObject(GameObject gameObject) {
-        Iterator<GameObject> iterator = gameObjects.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().equals(gameObject)) {
-                iterator.remove();
-            }
-        }
+        gameObjects.remove(gameObject);
     }
 
+    /**
+     * Remove a widget from the screen
+     * @param widget {@link Widget} to remove
+     */
     public void removeWidget(Widget widget) {
-        Iterator<Widget> iterator = widgets.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().equals(widget)) {
-                iterator.remove();
-            }
-        }
+        widgets.remove(widget);
     }
 
     /**
@@ -142,5 +142,25 @@ public class World {
 
     public void onClickUp(Vector3 clickPos) {
 
+    }
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public void dispose() {
+        for (ParticleEmitter particleEmitter: particleEmitters) {
+            particleEmitter.dispose();
+        }
+        for (Widget widget: widgets) {
+            widget.dispose();
+        }
+        for (GameObject gameObject: gameObjects) {
+            gameObject.dispose();
+        }
+    }
+
+    public List<ParticleEmitter> getParticleEmitters() {
+        return particleEmitters;
     }
 }

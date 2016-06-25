@@ -327,4 +327,13 @@ public class Widget extends Sprite implements Comparable<Widget> {
         return this.visibility == VISIBLE;
     }
     //endregion
+
+    public void dispose() {
+        try {
+            shadow.dispose();
+            getTexture().dispose();
+        } catch (Exception e) {
+            // Texture or shadow have been disposed elsewhere
+        }
+    }
 }

@@ -6,7 +6,6 @@ import com.desitum.library.animation.Animator;
 import com.desitum.library.animation.MovementAnimator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created by kody on 12/27/15.
@@ -16,6 +15,7 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
 
     public static final int DEFAULT_Z = 0;
     private ArrayList<Animator> animators;
+    private ArrayList<Animator> animatorsToRemove;
     private OnFinishedMovingListener onFinishedMovingListener;
     private int z;
 
@@ -25,6 +25,7 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     @SuppressWarnings("unused")
     public GameObject() {
         animators = new ArrayList<Animator>();
+        animatorsToRemove = new ArrayList<Animator>();
         z = DEFAULT_Z;
     }
 
@@ -35,18 +36,11 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     }
 
     public void update(float delta) {
-        // update animators (Rotate, Scale, Movement)
-        if (animators.size() > 0) {
-            Iterator<Animator> iterator = animators.iterator();
-            while (iterator.hasNext()) {
-                Animator animator = iterator.next();
-                animator.update(delta);
-                if (animator.didFinish()) {
-                    iterator.remove();
-                }
-            }
-        }
-        // update position
+        updateAnimators(delta);
+        updatePosition(delta);
+    }
+
+    private void updatePosition(float delta) {
         setSpeedX(getSpeedX() + getGravityX() * delta);
         setSpeedY(getSpeedY() + getGravityY() * delta);
         setX(getX() + getSpeedX());
@@ -54,6 +48,21 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         setRotationSpeed(getRotationSpeed() * rotationResistance);
         if (moveTo != null) {
             updateMovement();
+        }
+    }
+
+    private void updateAnimators(float delta) {
+        if (animators.size() > 0) {
+            for (Animator animator: animators) {
+                animator.update(delta);
+                if (animator.didFinish()) {
+                    animatorsToRemove.add(animator);
+                }
+            }
+            for (Animator animator: animatorsToRemove) {
+                animators.remove(animator);
+            }
+            animatorsToRemove.clear();
         }
     }
 
@@ -67,7 +76,7 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
                 if (getX() > moveTo[0]) {
                     moveFinished();
                 }
-            } else if (speedY < 0) {
+            } if (speedY < 0) {
                 if (getY() < moveTo[1]) {
                     moveFinished();
                 }
@@ -99,13 +108,18 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         speedY = (float) Math.sin(angle) * speed;
     }
 
+    /**
+     * Called when user touches the {@link GameObject}
+     * @param touchPos position of touch in {@link com.badlogic.gdx.graphics.Camera} coordinates
+     * @param touchDown whether the touch was down or not (touchDown, touchUp)
+     */
     @SuppressWarnings("unused")
     public void updateTouchInput(Vector3 touchPos, boolean touchDown) {
 
     }
 
     @SuppressWarnings("unused")
-    public void moveTo(float x, float y, float duration, int interpolation) {
+    public void smoothMoveTo(float x, float y, float duration, int interpolation) {
         MovementAnimator xAnimator = new MovementAnimator(this, getX(), x, duration, 0, interpolation, true, false);
         MovementAnimator yAnimator = new MovementAnimator(this, getY(), y, duration, 0, interpolation, false, true);
         xAnimator.start(true);
@@ -218,5 +232,13 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     @SuppressWarnings("unused")
     public OnFinishedMovingListener getOnFinishedMovingListener() {
         return onFinishedMovingListener;
+    }
+
+    public void dispose() {
+        try {
+            getTexture().dispose();
+        } catch (Exception e) {
+            // Texture has been disposed of elsewhere
+        }
     }
 }

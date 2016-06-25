@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -17,6 +16,8 @@ public class ParticleEmitter {
     private float x, y, width, height, particlesPerSecond, currentTime;
 
     private ArrayList<Particle> particles;
+    private ArrayList<Particle> particlesToRemove;
+    private ArrayList<Particle> deadParticles;
     private Texture particleTexture;
     private ArrayList<ParticleSettings> particleSettingsArrayList;
     private Random randomSettingsChooser;
@@ -26,6 +27,8 @@ public class ParticleEmitter {
 
     public ParticleEmitter(float x, float y, float particlesPerSecond) {
         this.particles = new ArrayList<Particle>();
+        this.particlesToRemove = new ArrayList<Particle>();
+        this.deadParticles = new ArrayList<Particle>();
         this.particleSettingsArrayList = new ArrayList<ParticleSettings>();
         this.randomSettingsChooser = new Random();
 
@@ -49,15 +52,24 @@ public class ParticleEmitter {
     }
 
     public void update(float delta) {
-        Iterator<Particle> iterator = particles.iterator();
-        while (iterator.hasNext()) {
-            Particle particle = iterator.next();
+        updateParticles(delta);
+        updateEmitter(delta);
+    }
+
+    private void updateParticles(float delta) {
+        for (Particle particle : particles) {
             particle.update(delta);
             if (particle.needToRemove()) {
-                iterator.remove();
+                deadParticles.add(particle);
             }
         }
+        for (Particle particle : particlesToRemove) {
+            deadParticles.add(particle);
+            particles.remove(particle);
+        }
+    }
 
+    private void updateEmitter(float delta) {
         if (on) {
             currentTime += delta;
             while (currentTime >= 1.0f / particlesPerSecond) {
@@ -67,17 +79,31 @@ public class ParticleEmitter {
         }
     }
 
-    protected Particle createNewParticle() {
+    /**
+     * Recycles old particle or if there are no spare particles, it creates a new one
+     * @return {@link Particle}
+     */
+    public Particle createNewParticle() {
         ParticleSettings particleSettings = particleSettingsArrayList.get(randomSettingsChooser.nextInt(particleSettingsArrayList.size()));
         if (particleSettings == null) return null;
         Particle returnParticle = null;
-
-        returnParticle = new Particle(particleTexture, getRandomParticleX(), getRandomParticleY(),
-                particleSettings.getWidth(), particleSettings.getHeight(), particleSettings.getLifespan(),
-                particleSettings.getGravityX(), particleSettings.getGravityY(),
-                particleSettings.getVelocityX(), particleSettings.getVelocityY(),
-                particleSettings.getRotationAmount(), particleSettings.getOpacity(),
-                particleSettings.isFadeOut());
+        if (deadParticles.size() > 0) {
+            returnParticle = deadParticles.get(0);
+            deadParticles.remove(0);
+            returnParticle.setCurrentLife(particleSettings.getLifespan());
+            returnParticle.setRotationAmount(particleSettings.getRotationAmount());
+            returnParticle.setOpacity(particleSettings.getOpacity());
+            returnParticle.setVelocityX(particleSettings.getVelocityX());
+            returnParticle.setVelocityY(particleSettings.getVelocityY());
+        }
+        if (returnParticle == null) {
+            returnParticle = new Particle(particleTexture, getRandomParticleX(), getRandomParticleY(),
+                    particleSettings.getWidth(), particleSettings.getHeight(), particleSettings.getLifespan(),
+                    particleSettings.getGravityX(), particleSettings.getGravityY(),
+                    particleSettings.getVelocityX(), particleSettings.getVelocityY(),
+                    particleSettings.getRotationAmount(), particleSettings.getOpacity(),
+                    particleSettings.isFadeOut());
+        }
         return returnParticle;
     }
 
@@ -88,7 +114,6 @@ public class ParticleEmitter {
     public void draw(Batch batch) {
         for (Particle particle : particles) {
             particle.draw(batch);
-
         }
     }
 
@@ -178,7 +203,6 @@ public class ParticleEmitter {
     }
 
     public void setParticleTexture(Texture particleTexture) {
-//        this.particleTexture.dispose();
         this.particleTexture = particleTexture;
     }
 
@@ -192,6 +216,10 @@ public class ParticleEmitter {
     }
 
     public void dispose() {
-        particleTexture.dispose();
+        try {
+            particleTexture.dispose();
+        } catch (Exception n) {
+            // Particle has already been disposed elsewhere
+        }
     }
 }

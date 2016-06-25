@@ -32,9 +32,9 @@ public class GameScreen implements Screen {
      * Create a new {@link GameScreen} object
      * @param viewportWidth Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
-     * @param worldClass world class controller
+     * @param world world class controller
      */
-    public GameScreen(float viewportWidth, float viewportHeight, Constructor<World> worldClass) {
+    public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer) {
         spriteBatch = new SpriteBatch();
         cam = new OrthographicCamera(viewportWidth, viewportHeight);
         cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
@@ -42,16 +42,26 @@ public class GameScreen implements Screen {
 
         touchPos = new Vector3(0, 0, 0);
 
-        world = new World(cam); // Hmmm annoying to create it and then recreate it later
-        try {
-            world = worldClass.newInstance(cam);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        world.setCamera(cam);
+        worldRenderer.setWorld(world);
+        clearColor = new Color(0, 0, 0, 1);
+    }
+
+    /**
+     * Create a new {@link GameScreen} object
+     * @param viewportWidth Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     * @param world world class controller
+     */
+    public GameScreen(float viewportWidth, float viewportHeight, World world) {
+        spriteBatch = new SpriteBatch();
+        cam = new OrthographicCamera(viewportWidth, viewportHeight);
+        cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        viewport = new FitViewport(viewportWidth, viewportHeight, cam);
+
+        touchPos = new Vector3(0, 0, 0);
+
+        world.setCamera(cam);
         worldRenderer = new WorldRenderer(world);
         clearColor = new Color(0, 0, 0, 1);
     }
@@ -62,7 +72,6 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
-
         spriteBatch = new SpriteBatch();
         cam = new OrthographicCamera(viewportWidth, viewportHeight);
         cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
@@ -70,7 +79,7 @@ public class GameScreen implements Screen {
 
         touchPos = new Vector3(0, 0, 0);
 
-        world = new World(cam); // Hmmm annoying to create it and then recreate it later, use above to only create one
+        world = new World(cam);
         worldRenderer = new WorldRenderer(world);
         clearColor = new Color(0, 0, 0, 1);
     }
@@ -136,6 +145,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         try {
             spriteBatch.dispose();
+            world.dispose();
         } catch (IllegalArgumentException e) {
             // Never got initialized
         }
