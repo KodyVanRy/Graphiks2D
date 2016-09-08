@@ -242,6 +242,10 @@ public class EditText extends Widget {
             toAppend = "8";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
             toAppend = "9";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SEMICOLON)) {
+            toAppend = ";";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.COLON)) {
+            toAppend = ":";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             toAppend = " ";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {

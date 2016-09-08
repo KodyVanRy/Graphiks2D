@@ -62,7 +62,7 @@ public class ParticleEmitter {
         for (Particle particle : particles) {
             particle.update(delta);
             if (particle.needToRemove()) {
-                deadParticles.add(particle);
+                particlesToRemove.add(particle);
             }
         }
         for (Particle particle : particlesToRemove) {

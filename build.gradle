@@ -76,7 +76,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        compile files('C://Users/Dakota Van Ry/Android Studio/libGDXLibrary/android/libs/json-simple-1.1.1.jar')
+        compile files('libraries/json-simple.jar')
     }
 }
 tasks.eclipse.doLast {

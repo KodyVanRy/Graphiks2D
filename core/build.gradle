@@ -11,6 +11,6 @@ eclipse.project {
 }
 
 dependencies {
-    compile files('../../android/libs/json-simple-1.1.1.jar')
+    compile files('../../android/libs/json-simple.jar')
     compile files('build/libs/libgdxLibrary.jar')
 }

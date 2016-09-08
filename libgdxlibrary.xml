@@ -68,8 +68,8 @@
 
     <!-- Project Libraries -->
 
-    <path id="library.json-simple-1.1.1.classpath">
-        <pathelement location="${basedir}/../../../json-simple-1.1.1.jar" />
+    <path id="library.json-simple.classpath">
+        <pathelement location="${basedir}/../../../json-simple.jar" />
     </path>
     <!-- Register Custom Compiler Taskdefs -->
     <property name="javac2.home" value="${idea.home}/lib" />
@@ -134,7 +134,7 @@
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-bullet/1.7.1/294b0b585e3bb2ca20b0b6218a158c4e0115243b/gdx-bullet-1.7.1.jar" />
         <pathelement
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-ai/1.6.0/a1a3b25a3485affab88be13ab8c1a920537f7d8c/gdx-ai-1.6.0.jar" />
-        <path refid="library.json-simple-1.1.1.classpath" />
+        <path refid="library.json-simple.classpath" />
     </path>
 
     <path id="core.module.classpath">
@@ -166,7 +166,7 @@
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-bullet/1.7.1/294b0b585e3bb2ca20b0b6218a158c4e0115243b/gdx-bullet-1.7.1.jar" />
         <pathelement
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-ai/1.6.0/a1a3b25a3485affab88be13ab8c1a920537f7d8c/gdx-ai-1.6.0.jar" />
-        <path refid="library.json-simple-1.1.1.classpath" />
+        <path refid="library.json-simple.classpath" />
     </path>
 
 
@@ -248,7 +248,7 @@
 
     <path id="libgdxlibrary.runtime.production.module.classpath">
         <pathelement location="${libgdxlibrary.output.dir}" />
-        <path refid="library.json-simple-1.1.1.classpath" />
+        <path refid="library.json-simple.classpath" />
     </path>
 
     <path id="libgdxlibrary.module.classpath">
@@ -259,8 +259,7 @@
 
     <path id="libgdxlibrary.runtime.module.classpath">
         <pathelement location="${libgdxlibrary.testoutput.dir}" />
-        <pathelement location="${libgdxlibrary.output.dir}" />
-        <path refid="library.json-simple-1.1.1.classpath" />
+        <pathelement location="${libgdxl.classpath" />
     </path>
 
 
@@ -351,7 +350,7 @@
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-ai/1.6.0/a1a3b25a3485affab88be13ab8c1a920537f7d8c/gdx-ai-1.6.0.jar" />
         <pathelement
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.7.1/2179cc613447c297623a4a6d2ba6692c3aaff804/gdx-1.7.1.jar" />
-        <path refid="library.json-simple-1.1.1.classpath" />
+        <path refid="library.json-simple.classpath" />
     </path>
 
     <path id="android.module.classpath">
@@ -400,7 +399,7 @@
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-ai/1.6.0/a1a3b25a3485affab88be13ab8c1a920537f7d8c/gdx-ai-1.6.0.jar" />
         <pathelement
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.7.1/2179cc613447c297623a4a6d2ba6692c3aaff804/gdx-1.7.1.jar" />
-        <path refid="library.json-simple-1.1.1.classpath" />
+        <path refid="library.json-simple.classpath" />
     </path>
 
 
@@ -573,7 +572,7 @@
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/385ee093e01f587f30ee1c8a2ee7d408fd732e16/jinput-platform-2.0.5-natives-windows.jar" />
         <pathelement
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/53f9c919f34d2ca9de8c51fc4e1e8282029a9232/jinput-platform-2.0.5-natives-osx.jar" />
-        <path refid="library.json-simple-1.1.1.classpath" />
+        <path refid="library.json-simple.classpath" />
     </path>
 
     <path id="desktop.module.classpath">
@@ -674,7 +673,7 @@
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/385ee093e01f587f30ee1c8a2ee7d408fd732e16/jinput-platform-2.0.5-natives-windows.jar" />
         <pathelement
             location="${basedir}/../../../../.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/53f9c919f34d2ca9de8c51fc4e1e8282029a9232/jinput-platform-2.0.5-natives-osx.jar" />
-        <path refid="library.json-simple-1.1.1.classpath" />
+        <path refid="library.json-simple.classpath" />
     </path>
 
 

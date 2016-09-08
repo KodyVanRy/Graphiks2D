@@ -19,7 +19,6 @@ android {
         instrumentTest.setRoot('tests')
     }
 }
-
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
 // so they get packed with the APK.
@@ -42,7 +41,6 @@ task copyAndroidNatives() {
         }
     }
 }
-
 task run(type: Exec) {
     def path
     def localProperties = project.file("../local.properties")
@@ -64,7 +62,6 @@ task run(type: Exec) {
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.desitum.library.android/com.desitum.library.android.AndroidLauncher'
 }
-
 // sets up the Android Eclipse project, using the old Ant based build.
 eclipse {
     // need to specify Java source sets explicitely, SpringSource Gradle Eclipse plugin
@@ -95,7 +92,6 @@ eclipse {
         buildCommand "com.android.ide.eclipse.adt.ApkBuilder"
     }
 }
-
 // sets up the Android Idea project, using the old Ant based build.
 idea {
     module {
@@ -117,4 +113,8 @@ idea {
             }
         }
     }
+}
+
+dependencies {
+    compile files('libs/jsonsimple.jar')
 }

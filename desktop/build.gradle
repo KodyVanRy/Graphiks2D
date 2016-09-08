@@ -47,5 +47,5 @@ task afterEclipseImport(description: "Post processing after project generation",
 
 
 dependencies {
-    compile files('/home/kody/Coding/json-simple.jar')
+    compile files('libs/json-simple.jar')
 }

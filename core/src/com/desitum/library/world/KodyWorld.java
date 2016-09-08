@@ -51,7 +51,7 @@ public class KodyWorld implements InputProcessor {
         widgets.add(ll);
 
         pEmitter = ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt"));
-        pEmitter.turnOn();
+//        pEmitter.turnOn();
     }
 
     public void update(float delta) {

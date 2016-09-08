@@ -132,7 +132,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public void draw(Batch batch, Camera camera) {
         if (visibility == VISIBLE) {
             if (getParent() == null) drawShadow(batch);
-            super.draw(batch);
+            draw(batch);
         }
     }
 

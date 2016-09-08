@@ -66,7 +66,7 @@ public class MenuScreen implements Screen {
 
         spriteBatch.begin();
         for (Widget widget : kodyWorld.getWidgets()) {
-            widget.draw(spriteBatch);
+            widget.draw(spriteBatch, cam);
         }
         kodyWorld.getParticles().draw(spriteBatch);
         spriteBatch.end();
