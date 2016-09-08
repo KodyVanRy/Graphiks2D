@@ -40,14 +40,11 @@ public class KodyWorld implements InputProcessor {
         MovementAnimator animator = new MovementAnimator(-100, 90, 0.9f, Interpolation.DECELERATE_INTERPOLATOR);
         animator.setControllingY(true);
 
-        Slider mSlider = new Slider(Drawing.getFilledRectangle(1, 1, Color.BLUE), "", 100, 10, 0, 0);
+        Slider mSlider = new Slider(Drawing.getFilledRectangle(1, 1, Color.BLUE), "", 100, 10, 0, 0, null);
         ll.addWidget(mSlider);
 
         Button button1 = (Button) ll.findByName("button1");
-        button1.addIncomingAnimator(animator);
-        button1.startIncomingAnimators();
-
-        ll.startIncomingAnimators();
+        button1.startAnimator(animator);
         widgets.add(ll);
 
         pEmitter = ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt"));

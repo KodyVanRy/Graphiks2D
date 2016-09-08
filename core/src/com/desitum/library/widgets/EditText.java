@@ -35,8 +35,8 @@ public class EditText extends Widget {
     private Color textColor;
     private Color hintColor;
 
-    public EditText(Texture background, String name, float width, float height, float X, float Y, BitmapFont font) {
-        super(background, name, width, height, X, Y);
+    public EditText(Texture background, String name, float width, float height, float x, float y, Layout parent, BitmapFont font) {
+        super(background, name, width, height, x, y, parent);
         this.text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         this.font = font;
         glyphLayout = new GlyphLayout(font, text);
@@ -78,7 +78,7 @@ public class EditText extends Widget {
         // Android has to come before super.updateTouchInput due to complications with 4 popups.
         if (isVisible()) {
             if (Gdx.app.getType() == Application.ApplicationType.Android) {
-                if (getClickIsDown() && !clickDown && pointInWidget(mousePos)) {
+                if (isClickDown() && !clickDown && isPointInWidget(mousePos)) {
                     Input.TextInputListener inputListener = new Input.TextInputListener() {
                         @Override
                         public void input(String input) {
@@ -242,10 +242,28 @@ public class EditText extends Widget {
             toAppend = "8";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
             toAppend = "9";
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SEMICOLON)) {
-            toAppend = ";";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.COLON)) {
             toAppend = ":";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SEMICOLON)) {
+            toAppend = ";";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.COMMA)) {
+            toAppend = ",";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.PERIOD)) {
+            toAppend = ".";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.POUND)) {
+            toAppend = "#";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.APOSTROPHE)) {
+            toAppend = "'";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.STAR)) {
+            toAppend = "*";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SLASH)) {
+            toAppend = "/";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.EQUALS)) {
+            toAppend = "=";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.PLUS)) {
+            toAppend = "+";
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS)) {
+            toAppend = "-";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             toAppend = " ";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
@@ -284,7 +302,7 @@ public class EditText extends Widget {
         return "";
     }
 
-    public boolean isFocus() {
+    public boolean hasFocus() {
         return focus;
     }
 

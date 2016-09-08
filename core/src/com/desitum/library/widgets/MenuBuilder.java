@@ -87,7 +87,7 @@ public class MenuBuilder {
         return returnWidget;
     }
 
-    private static Widget getWidget(JSONObject jsonObject, Widget parent, OrthographicCamera cam) {
+    private static Widget getWidget(JSONObject jsonObject, Layout parent, OrthographicCamera cam) {
         Widget returnWidget = null;
 
         //todo clean up this method. Maybe branch it out. I don't like how messy it has gotten. Do on a day I'm not wired in.
@@ -155,7 +155,7 @@ public class MenuBuilder {
             JSONArray children = (JSONArray) jsonObject.get(CHILDREN);
             if (children != null) {
                 for (int i = 0; i < children.size(); i++) {
-                    getWidget((JSONObject) children.get(i), returnWidget, cam);
+                    getWidget((JSONObject) children.get(i), (Layout) returnWidget, cam);
                 }
             }
         }
@@ -164,9 +164,9 @@ public class MenuBuilder {
         //region Button
         else if (widgetType.equals(Widget.BUTTON) || widgetType.equals(Widget.FLOATING_BUTTON)) {
             if (widgetType.equals(Widget.BUTTON))
-                returnWidget = new Button(backgroundTexture, name, width, height, x, y);
+                returnWidget = new Button(backgroundTexture, name, width, height, x, y, parent);
             else returnWidget = new FloatingButton(backgroundTexture, shadowTexture, name,
-                    width, height, x, y, z);
+                    width, height, x, y, z, parent);
             if (jsonObject.get(HOVER_TEXTURE) != null) {
                 ((Button) returnWidget).setHoverTexture(new Texture((String) jsonObject.get(HOVER_TEXTURE)));
             }
@@ -185,7 +185,7 @@ public class MenuBuilder {
                 String fontBasic = (String) jsonObject.get(FONT);
                 bitmapFont = new BitmapFont(Gdx.files.internal(fontBasic + ".fnt"), new TextureRegion(new Texture(fontBasic + ".png")));
             }
-            returnWidget = new EditText(backgroundTexture, name, width, height, x, y, bitmapFont);
+            returnWidget = new EditText(backgroundTexture, name, width, height, x, y, parent, bitmapFont);
 
             if (jsonObject.get(FOCUS) != null) {
                 ((EditText) returnWidget).setFocus(Boolean.parseBoolean((String) jsonObject.get(FOCUS)));
@@ -219,7 +219,7 @@ public class MenuBuilder {
 
         //region Slider
         else if (widgetType.equals(Widget.SLIDER)) {
-            returnWidget = new Slider(backgroundTexture, name, width, height, x, y);
+            returnWidget = new Slider(backgroundTexture, name, width, height, x, y, parent);
 
             if (jsonObject.get(VALUE) != null)
                 ((Slider) returnWidget).setValue(Float.parseFloat((String) jsonObject.get(VALUE)));

@@ -21,8 +21,8 @@ public abstract class Layout extends Widget {
 
     private float paddingLeft, paddingRight, paddingBottom, paddingTop, padding;
 
-    public Layout(Texture text, String name, float width, float height, float X, float Y, Widget parent) {
-        super(text, name, width, height, X, Y);
+    public Layout(Texture text, String name, float width, float height, float x, float y, Layout parent) {
+        super(text, name, width, height, x, y, parent);
 
         widgets = new ArrayList<Widget>();
     }
@@ -120,7 +120,7 @@ public abstract class Layout extends Widget {
 
             for (int i = widgets.size() - 1; i >= 0; i--) {
                 widgets.get(i).updateTouchInput(mousePos, clickDown);
-                if (widgets.get(i).pointInWidget(mousePos)) {
+                if (widgets.get(i).isPointInWidget(mousePos)) {
                     break;
                 }
             }

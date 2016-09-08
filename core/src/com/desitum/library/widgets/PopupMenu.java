@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
  */
 public class PopupMenu extends Layout {
 
-    public PopupMenu(Texture text, String name, float width, float height, float X, float Y, Widget parent, Camera cam) {
+    public PopupMenu(Texture text, String name, float width, float height, float X, float Y, Layout parent) {
         super(text, name, width, height, X, Y, parent);
     }
 

@@ -21,15 +21,15 @@ public class LinearLayout extends Layout {
     private int alignment;
     private boolean reverseFill;
 
-    public LinearLayout(Texture text, String name, float width, float height, float X, float Y, Widget parent) {
-        super(text, name, width, height, X, Y, parent);
+    public LinearLayout(Texture text, String name, float width, float height, float x, float y, Layout parent) {
+        super(text, name, width, height, x, y, parent);
         orientation = HORIZONTAL_ORIENTATION;
         this.spacing = 0;
         reverseFill = false;
     }
 
-    public LinearLayout(Texture text, String name, float width, float height, float X, float Y, Widget parent, int orientation) {
-        super(text, name, width, height, X, Y, parent);
+    public LinearLayout(Texture text, String name, float width, float height, float x, float y, Layout parent, int orientation) {
+        super(text, name, width, height, x, y, parent);
         this.orientation = orientation;
         this.spacing = 0;
         reverseFill = false;
@@ -103,8 +103,8 @@ public class LinearLayout extends Layout {
                 posX = this.getWidth() - widget.getWidth();
             }
         }
-        widget.setMyX(posX);
-        widget.setMyY(posY);
+        widget.setMx(posX);
+        widget.setMy(posY);
         super.addWidget(widget);
     }
 }

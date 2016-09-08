@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class FloatingButton extends Button {
 
-    public FloatingButton(Texture text, Texture shadow, String name, float width, float height, float X, float Y, float z) {
-        super(text, name, width, height, X, Y);
+    public FloatingButton(Texture text, Texture shadow, String name, float width, float height, float x, float y, float z, Layout parent) {
+        super(text, name, width, height, x, y, parent);
 
         setShadow(shadow);
         setZ(z);

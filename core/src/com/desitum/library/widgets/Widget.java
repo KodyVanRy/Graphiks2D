@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.desitum.library.animation.Animator;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.animation.ScaleAnimator;
@@ -29,24 +28,25 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public static final int INVISIBLE = 1;
     public static final int GONE = 2;
 
-    private String name;
-    private int visibility;
-    private float myScaleX;
-    private float myScaleY;
-    private float myX;
-    private float myY;
-    private float z;
-    private Texture shadow;
-    private Layout parent;
-    private boolean enabled;
+    private ArrayList<Animator> animators;
 
+    private Layout parent;
+
+    private Texture shadow;
+
+    private String name;
+
+    private int visibility;
+
+    private float mScaleX;
+    private float mScaleY;
+    private float mx;
+    private float my;
+    private float z;
+
+    private boolean enabled;
     private boolean clickIsDown;
 
-    private ArrayList<Animator> incomingAnimators;
-
-    private ArrayList<Animator> animators; /* Should be used as little as possible */
-
-    private ArrayList<Animator> outgoingAnimators;
 
     /**
      * Create a new {@link Widget}
@@ -54,27 +54,24 @@ public class Widget extends Sprite implements Comparable<Widget> {
      * @param name String used to identify {@link Widget}
      * @param width Width of widget
      * @param height height of widget
-     * @param X x position of widget
-     * @param Y y position of widget
+     * @param x x position of widget
+     * @param y y position of widget
      */
-    public Widget(Texture text, String name, float width, float height, float X, float Y) {
+    public Widget(Texture text, String name, float width, float height, float x, float y, Layout parent) {
         super(text, text.getWidth(), text.getHeight());
         setSize(width, height);
         this.name = name;
-        this.myScaleX = 1.0f;
-        this.myScaleY = 1.0f;
-        this.myX = X;
-        this.myY = Y;
+        this.mScaleX = 1.0f;
+        this.mScaleY = 1.0f;
+        this.mx = x;
+        this.my = y;
         this.visibility = VISIBLE;
-
         enabled = true;
         clickIsDown = false;
 
         this.setOriginCenter();
 
-        this.incomingAnimators = new ArrayList<Animator>();
         this.animators = new ArrayList<Animator>();
-        this.outgoingAnimators = new ArrayList<Animator>();
     }
 
     /**
@@ -82,31 +79,9 @@ public class Widget extends Sprite implements Comparable<Widget> {
      * @param delta time since last update
      */
     public void update(float delta) {
-        for (Animator anim : incomingAnimators) {
-            anim.update(delta);
-            updateAnim(anim);
-        }
         for (Animator anim : animators) {
             anim.update(delta);
             updateAnim(anim);
-        }
-        for (Animator anim : outgoingAnimators) {
-            anim.update(delta);
-            updateAnim(anim);
-        }
-
-        // Adjust the position (x, y); the scale of width and height to fit parent
-        if (parent != null) {
-            setX(getMyX() + parent.getBaseX());
-            setY(getMyY() + parent.getBaseY());
-            setScale(
-                    getMyScaleX() * parent.getScaleX(),
-                    getMyScaleY() * parent.getScaleY()
-            );
-        } else {
-            setX(getMyX());
-            setY(getMyY());
-            setScale(getMyScaleX(), getMyScaleY());
         }
     }
 
@@ -117,22 +92,57 @@ public class Widget extends Sprite implements Comparable<Widget> {
     private void updateAnim(Animator anim) {
         if (anim.isRunning()) {
             if (anim instanceof MovementAnimator && ((MovementAnimator) anim).isControllingX()) {
-                setMyX(((MovementAnimator) anim).getCurrentPos());
+                setMx(((MovementAnimator) anim).getCurrentPos());
             } else if (anim instanceof MovementAnimator && ((MovementAnimator) anim).isControllingY()) {
-                setMyY(((MovementAnimator) anim).getCurrentPos());
+                setMy(((MovementAnimator) anim).getCurrentPos());
             } else if (anim instanceof ScaleAnimator && ((ScaleAnimator) anim).isControllingX()) {
-                setMyScaleX(((ScaleAnimator) anim).getScaleSize());
+                setScale(((ScaleAnimator) anim).getScaleSize(), getScaleY());
             } else if (anim instanceof ScaleAnimator && ((ScaleAnimator) anim).isControllingY()) {
-                setMyScaleY(((ScaleAnimator) anim).getScaleSize());
+                setScale(getScaleX(), ((ScaleAnimator) anim).getScaleSize());
             }
             //TODO need to add in Rotate Animation! Should be fun with Labels and Edit Text :/
         }
     }
 
+    /**
+     * Useful when scaling a parent view
+     * @param originX originX to scale to
+     * @param originY originY to scale to
+     * @param scaleX amount to scale x by
+     * @param scaleY amount to scale y by
+     */
+    private void scaleToOrigin(float originX, float originY, float scaleX, float scaleY) {
+        setOrigin(originX, originY);
+        setScale(scaleX, scaleY);
+        setOriginCenter();
+    }
+
+    /**
+     * Useful when rotating a parent view
+     * @param originX x point to rotate around
+     * @param originY y point to rotate around
+     * @param rotation how much to rotate by
+     */
+    private void rotateAroundOrigin(float originX, float originY, float rotation) {
+        setOrigin(originX, originY);
+        setRotation(rotation);
+        setOriginCenter();
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        throw new DrawingException();
+    }
+
+    /**
+     * Use instead of draw. Allows for use of {@link com.badlogic.gdx.scenes.scene2d.utils.ScissorStack}
+     * @param batch {@link Batch} to draw to
+     * @param camera {@link Camera} to use when calculating the scissor
+     */
     public void draw(Batch batch, Camera camera) {
         if (visibility == VISIBLE) {
             if (getParent() == null) drawShadow(batch);
-            draw(batch);
+            super.draw(batch);
         }
     }
 
@@ -156,50 +166,28 @@ public class Widget extends Sprite implements Comparable<Widget> {
     }
 
     //region Getters and Setters
-    public boolean getClickIsDown() {
+    public boolean isClickDown() {
         return clickIsDown;
     }
 
-    public void setOriginToParent() {
-        if (parent != null) {
-            this.setOrigin(parent.getOriginX(), parent.getOriginY());
-        }
-    }
-
-    public boolean pointInWidget(Vector3 point) {
+    public boolean isPointInWidget(Vector3 point) {
         return getBoundingRectangle().contains(point.x, point.y);
     }
 
-    public float getMyScaleX() {
-        return myScaleX;
+    public float getMx() {
+        return mx;
     }
 
-    public void setMyScaleX(float myScaleX) {
-        this.myScaleX = myScaleX;
+    public void setMx(float x) {
+        mx = x;
     }
 
-    public float getMyScaleY() {
-        return myScaleY;
+    public float getMy() {
+        return my;
     }
 
-    public void setMyScaleY(float myScaleY) {
-        this.myScaleY = myScaleY;
-    }
-
-    public float getMyX() {
-        return myX;
-    }
-
-    public void setMyX(float x) {
-        myX = x;
-    }
-
-    public float getMyY() {
-        return myY;
-    }
-
-    public void setMyY(float y) {
-        myY = y;
+    public void setMy(float y) {
+        my = y;
     }
 
     public String getName() {
@@ -210,20 +198,12 @@ public class Widget extends Sprite implements Comparable<Widget> {
         this.name = name;
     }
 
-    public Widget getParent() {
+    public Layout getParent() {
         return parent;
     }
 
     public void setParent(Layout parent) {
         this.parent = parent;
-    }
-
-    public ArrayList<Animator> getIncomingAnimators() {
-        return incomingAnimators;
-    }
-
-    public void setIncomingAnimators(ArrayList<Animator> incomingAnimators) {
-        this.incomingAnimators = incomingAnimators;
     }
 
     public ArrayList<Animator> getAnimators() {
@@ -232,14 +212,6 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     public void setAnimators(ArrayList<Animator> animators) {
         this.animators = animators;
-    }
-
-    public ArrayList<Animator> getOutgoingAnimators() {
-        return outgoingAnimators;
-    }
-
-    public void setOutgoingAnimators(ArrayList<Animator> outgoingAnimators) {
-        this.outgoingAnimators = outgoingAnimators;
     }
 
     public boolean isEnabled() {
@@ -269,27 +241,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
         this.shadow = shadow;
     }
 
-    public void addIncomingAnimator(Animator animator) {
-        incomingAnimators.add(animator);
-    }
-
-    public void startIncomingAnimators() {
-        for (Animator anim : incomingAnimators) {
-            anim.start(false);
-        }
-    }
-
-    public void addOutgoingAnimator(Animator animator) {
-        outgoingAnimators.add(animator);
-    }
-
-    public void startOutgoingAnimators() {
-        for (Animator anim : outgoingAnimators) {
-            anim.start(false);
-        }
-    }
-
-    public void addAndStartAnimator(Animator animator) {
+    public void startAnimator(Animator animator) {
         animator.setSprite(this);
         animator.start(true);
         animators.add(animator);

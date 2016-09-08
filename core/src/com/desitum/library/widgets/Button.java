@@ -10,27 +10,36 @@ import com.desitum.library.listener.OnClickListener;
  */
 public class Button extends Widget {
 
+    /* TODO If possible add back in material buttons (Not sure if this will be possible.
+    I can easily do the material click, but keeping it within the exact bounds of the view will be
+    the difficult part. Square is easy, rounded corners and such... not so much. Especially considering
+    drawing a circle on the view using the Drawing class is both expensive to use and doesn't look the prettiest
+    Should material buttons even be a thing? These are for games after all. Maybe the best option is adding an
+    animation on Click? Then again if you override the OnClickListener can't each game handle
+    that individually? Interesting. I'll bring it up with the Amigo!
+     */
+
     private OnClickListener onClickListener;
 
     private Texture restTexture;
     private Texture hoverTexture;
     private Texture clickTexture;
 
-    public Button(Texture text, String name, float width, float height, float X, float Y) {
-        super(text, name, width, height, X, Y);
+    public Button(Texture text, String name, float width, float height, float x, float y, Layout parent) {
+        super(text, name, width, height, x, y, parent);
         restTexture = text;
     }
 
     @Override
     public void updateTouchInput(Vector3 mousePos, boolean touchDown) {
         if (isVisible()) {
-            if (pointInWidget(mousePos) && isEnabled() && getClickIsDown() && !touchDown) {
+            if (isPointInWidget(mousePos) && isEnabled() && isClickDown() && !touchDown) {
                 if (onClickListener != null) onClickListener.onClick(this);
-            } else if (pointInWidget(mousePos) && touchDown && !getClickIsDown()) {
+            } else if (isPointInWidget(mousePos) && touchDown && !isClickDown()) {
                 if (onClickListener != null) onClickListener.onClickDown(this);
             }
 
-            if (pointInWidget(mousePos)) {
+            if (isPointInWidget(mousePos)) {
                 if (touchDown && getClickTexture() != null) {
                     setTexture(getClickTexture());
                 } else if (getHoverTexture() != null) {

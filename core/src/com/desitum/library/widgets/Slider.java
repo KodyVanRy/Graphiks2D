@@ -18,8 +18,8 @@ public class Slider extends Widget {
     private Texture sliderImage, barImage;
     private OnValueChangeListener onValueChangeListener;
 
-    public Slider(Texture text, String name, float width, float height, float X, float Y) {
-        super(text, name, width, height, X, Y);
+    public Slider(Texture text, String name, float width, float height, float x, float y, Layout parent) {
+        super(text, name, width, height, x, y, parent);
 
         sliderImage = Drawing.getDiamondFilled(50, 50, Color.WHITE);
         sliderWidth = height / 2;
@@ -29,8 +29,8 @@ public class Slider extends Widget {
         barImageHeight = height / 10;
     }
 
-    public Slider(Texture text, Texture sliderText, Texture barText, String name, float width, float height, float X, float Y) {
-        super(text, name, width, height, X, Y);
+    public Slider(Texture text, Texture sliderText, Texture barText, String name, float width, float height, float x, float y, Layout parent) {
+        super(text, name, width, height, x, y, parent);
 
         this.sliderImage = sliderText;
         sliderWidth = height / 2;
@@ -43,10 +43,10 @@ public class Slider extends Widget {
     @Override
     public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
         if (isVisible()) {
-            if (pointInWidget(mousePos)) {
+            if (isPointInWidget(mousePos)) {
                 if (clickDown) {
                     value = (mousePos.x - getX()) / getWidth();
-                } else if (getClickIsDown()) {
+                } else if (isClickDown()) {
                     if (onValueChangeListener != null) onValueChangeListener.onChange(this, value);
                 }
             }
