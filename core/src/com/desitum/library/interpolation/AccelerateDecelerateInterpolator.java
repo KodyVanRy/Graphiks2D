@@ -43,10 +43,10 @@ public class AccelerateDecelerateInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link com.desitum.shveetlife.libraries.interpolation.AccelerateDecelerateInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link com.desitum.library.interpolation.AccelerateDecelerateInterpolator} from a maintained pool of {@link Interpolator}s.
      *
      * @param factor the factor controlling the rate of speed change
-     * @return the obtained {@link com.desitum.shveetlife.libraries.interpolation.AccelerateDecelerateInterpolator}
+     * @return the obtained {@link com.desitum.library.interpolation.AccelerateDecelerateInterpolator}
      */
     public static AccelerateDecelerateInterpolator $(float factor) {
         AccelerateDecelerateInterpolator inter = pool.obtain();
@@ -56,11 +56,11 @@ public class AccelerateDecelerateInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link com.desitum.shveetlife.libraries.interpolation.AccelerateDecelerateInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link com.desitum.library.interpolation.AccelerateDecelerateInterpolator} from a maintained pool of {@link Interpolator}s.
      * <p/>
-     * The initial factor is set to <code>{@value com.desitum.shveetlife.libraries.interpolation.AccelerateDecelerateInterpolator#DEFAULT_FACTOR}</code>.
+     * The initial factor is set to <code>{@value com.desitum.library.interpolation.AccelerateDecelerateInterpolator#DEFAULT_FACTOR}</code>.
      *
-     * @return the obtained {@link com.desitum.shveetlife.libraries.interpolation.AccelerateDecelerateInterpolator}
+     * @return the obtained {@link com.desitum.library.interpolation.AccelerateDecelerateInterpolator}
      */
     public static AccelerateDecelerateInterpolator $() {
         return $(DEFAULT_FACTOR);

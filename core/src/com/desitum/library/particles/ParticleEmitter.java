@@ -41,6 +41,8 @@ public class ParticleEmitter {
 
     public ParticleEmitter() {
         this.particles = new ArrayList<Particle>();
+        this.particlesToRemove = new ArrayList<Particle>();
+        this.deadParticles = new ArrayList<Particle>();
         this.particleSettingsArrayList = new ArrayList<ParticleSettings>();
         this.randomSettingsChooser = new Random();
 

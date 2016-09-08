@@ -16,8 +16,8 @@
             "max_gravity_y" : "0",
             "min_velocity_x" : "-2",
             "max_velocity_x" : "0",
-            "min_velocity_y" : "2",
-            "max_velocity_y" : "4",
+            "min_velocity_y" : "4",
+            "max_velocity_y" : "8",
             "min_rotation" : "100",
             "max_rotation" : "600",
             "lifespan" : "0.7"

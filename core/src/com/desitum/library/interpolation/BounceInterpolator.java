@@ -48,10 +48,10 @@ public class BounceInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link com.desitum.shveetlife.libraries.interpolation.BounceInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link com.desitum.library.interpolation.BounceInterpolator} from a maintained pool of {@link Interpolator}s.
      *
      * @param factor the factor controlling the rate of overshoot energy change
-     * @return the obtained {@link com.desitum.shveetlife.libraries.interpolation.BounceInterpolator}
+     * @return the obtained {@link com.desitum.library.interpolation.BounceInterpolator}
      */
     public static BounceInterpolator $(float factor) {
         BounceInterpolator inter = pool.obtain();
@@ -61,11 +61,11 @@ public class BounceInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link com.desitum.shveetlife.libraries.interpolation.BounceInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link com.desitum.library.interpolation.BounceInterpolator} from a maintained pool of {@link Interpolator}s.
      * <p/>
-     * The initial factor is set to <code>{@value com.desitum.shveetlife.libraries.interpolation.BounceInterpolator#DEFAULT_FACTOR}</code>.
+     * The initial factor is set to <code>{@value com.desitum.library.interpolation.BounceInterpolator#DEFAULT_FACTOR}</code>.
      *
-     * @return the obtained {@link com.desitum.shveetlife.libraries.interpolation.BounceInterpolator}
+     * @return the obtained {@link com.desitum.library.interpolation.BounceInterpolator}
      */
     public static BounceInterpolator $() {
         return $(DEFAULT_FACTOR);

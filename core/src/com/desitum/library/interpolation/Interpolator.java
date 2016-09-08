@@ -29,13 +29,13 @@ public interface Interpolator {
      *
      * @param input A value between 0 and 1.0 indicating our current point in the com.desitum.library.animation where 0 represents the start and 1.0
      *              represents the end
-     * @return The com.desitum.library.interpolation value. This value can be more than 1.0 for {@link com.desitum.shveetlife.libraries.interpolation.Interpolator}s which overshoot their targets, or
-     * less than 0 for {@link com.desitum.shveetlife.libraries.interpolation.Interpolator}s that undershoot their targets.
+     * @return The com.desitum.library.interpolation value. This value can be more than 1.0 for {@link com.desitum.library.interpolation.Interpolator}s which overshoot their targets, or
+     * less than 0 for {@link com.desitum.library.interpolation.Interpolator}s that undershoot their targets.
      */
     float getInterpolation(float input);
 
     /**
-     * Called when the com.desitum.library.animation has finished and the {@link com.desitum.shveetlife.libraries.interpolation.Interpolator} is no longer needed.
+     * Called when the com.desitum.library.animation has finished and the {@link com.desitum.library.interpolation.Interpolator} is no longer needed.
      */
     void finished();
 

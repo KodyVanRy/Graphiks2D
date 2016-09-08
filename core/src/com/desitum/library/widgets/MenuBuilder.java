@@ -259,7 +259,7 @@ public class MenuBuilder {
         } else if (visibility.equals("gone")) {
             return Widget.GONE;
         }
-        // TODO throw exception
+        // TODO throw exception... Why...?
         return Widget.VISIBLE;
     }
 

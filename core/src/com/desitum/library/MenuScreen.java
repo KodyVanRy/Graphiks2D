@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.widgets.Widget;
@@ -63,21 +65,11 @@ public class MenuScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
         spriteBatch.begin();
-        //TODO need MenuRenderer
         for (Widget widget : kodyWorld.getWidgets()) {
             widget.draw(spriteBatch);
         }
         kodyWorld.getParticles().draw(spriteBatch);
         spriteBatch.end();
-//        shapeRenderer.setAutoShapeType(true);
-//        shapeRenderer.setColor(Color.WHITE);
-//        shapeRenderer.setProjectionMatrix(cam.combined);
-//        shapeRenderer.begin();
-//        for (Particle particle: kodyWorld.getParticles().getParticles()) {
-//            System.out.println(particle.getX() + ", " + particle.getY());
-//            shapeRenderer.circle(particle.getX(), particle.getY(), 5);
-//        }
-//        shapeRenderer.end();
     }
 
     @Override

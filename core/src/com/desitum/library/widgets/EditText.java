@@ -3,6 +3,7 @@ package com.desitum.library.widgets;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -131,8 +132,8 @@ public class EditText extends Widget {
     }
 
     @Override
-    public void draw(Batch batch) {
-        super.draw(batch);
+    public void draw(Batch batch, Camera camera) {
+        super.draw(batch, camera);
         if (underline != null) batch.draw(underline, getX(), getY(), getWidth(), underlineHeight);
         font.setColor(textColor);
         if (alignment == LinearLayout.ALIGNMENT_LEFT)

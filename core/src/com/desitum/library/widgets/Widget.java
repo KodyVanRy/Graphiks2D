@@ -1,9 +1,11 @@
 package com.desitum.library.widgets;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.desitum.library.animation.Animator;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.animation.ScaleAnimator;
@@ -127,8 +129,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
         }
     }
 
-    @Override
-    public void draw(Batch batch) {
+    public void draw(Batch batch, Camera camera) {
         if (visibility == VISIBLE) {
             if (getParent() == null) drawShadow(batch);
             super.draw(batch);

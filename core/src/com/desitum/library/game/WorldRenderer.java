@@ -5,6 +5,8 @@ import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.widgets.Widget;
 
+import sun.rmi.runtime.Log;
+
 /**
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]
@@ -29,7 +31,8 @@ public class WorldRenderer {
             particleEmitter.draw(batch);
         }
         for (Widget widget : world.getWidgets()) {
-            widget.draw(batch);
+            System.out.println("WorldRenderer: " + widget.getName());
+            widget.draw(batch, world.getCamera());
         }
     }
 }

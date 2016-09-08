@@ -4,10 +4,9 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.1.2'
     }
 }
-
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
@@ -28,7 +27,6 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
-
 project(":desktop") {
     apply plugin: "java"
 
@@ -42,7 +40,6 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
     }
 }
-
 project(":android") {
     apply plugin: "android"
 
@@ -69,7 +66,6 @@ project(":android") {
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
     }
 }
-
 project(":core") {
     apply plugin: "java"
 
@@ -80,10 +76,11 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        compile files('/home/kody/Coding/json-simple.jar')
+        compile files('C://Users/Dakota Van Ry/Android Studio/libGDXLibrary/android/libs/json-simple-1.1.1.jar')
     }
 }
-
 tasks.eclipse.doLast {
     delete ".project"
+}
+dependencies {
 }

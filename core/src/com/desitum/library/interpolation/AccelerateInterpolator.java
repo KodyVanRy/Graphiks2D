@@ -49,7 +49,7 @@ public class AccelerateInterpolator implements Interpolator {
      * Gets a new {@link com.desitum.library.interpolation.AccelerateInterpolator} from a maintained pool of {@link Interpolator}s.
      *
      * @param factor the factor controlling the rate of change
-     * @return the obtained {@link com.desitum.shveetlife.libraries.interpolation.AccelerateInterpolator}
+     * @return the obtained {@link com.desitum.library.interpolation.AccelerateInterpolator}
      */
     public static AccelerateInterpolator $(float factor) {
         AccelerateInterpolator inter = pool.obtain();
@@ -59,9 +59,9 @@ public class AccelerateInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link com.desitum.shveetlife.libraries.interpolation.AccelerateInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link com.desitum.library.interpolation.AccelerateInterpolator} from a maintained pool of {@link Interpolator}s.
      * <p/>
-     * The initial factor is set to <code>{@value com.desitum.shveetlife.libraries.interpolation.AccelerateInterpolator#DEFAULT_FACTOR}</code>.
+     * The initial factor is set to <code>{@value com.desitum.library.interpolation.AccelerateInterpolator#DEFAULT_FACTOR}</code>.
      *
      * @return the obtained {@link com.desitum.library.interpolation.AccelerateInterpolator}
      */

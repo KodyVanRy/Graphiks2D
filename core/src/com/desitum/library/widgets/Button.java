@@ -49,6 +49,9 @@ public class Button extends Widget {
         return restTexture;
     }
 
+    /**
+     * @param restTexture texture when button is neither being hovered or clicked
+     */
     public void setRestTexture(Texture restTexture) {
         this.restTexture = restTexture;
     }

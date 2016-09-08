@@ -48,10 +48,10 @@ public class OvershootInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link BounceInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link OvershootInterpolator} from a maintained pool of {@link Interpolator}s.
      *
      * @param factor the factor controlling the rate of overshoot energy change
-     * @return the obtained {@link BounceInterpolator}
+     * @return the obtained {@link OvershootInterpolator}
      */
     public static OvershootInterpolator $(float factor) {
         OvershootInterpolator inter = pool.obtain();
@@ -61,11 +61,11 @@ public class OvershootInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link BounceInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link OvershootInterpolator} from a maintained pool of {@link Interpolator}s.
      * <p/>
-     * The initial factor is set to <code>{@value BounceInterpolator#DEFAULT_FACTOR}</code>.
+     * The initial factor is set to <code>{@value OvershootInterpolator#DEFAULT_FACTOR}</code>.
      *
-     * @return the obtained {@link BounceInterpolator}
+     * @return the obtained {@link OvershootInterpolator}
      */
     public static OvershootInterpolator $() {
         return $(DEFAULT_FACTOR);

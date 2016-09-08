@@ -1,7 +1,7 @@
 package com.desitum.library.interpolation;
 
 /**
- * Created by dvan6234 on 2/24/2015.
+ * Created by kody on 2/24/2015
  */
 public class Interpolation {
     public static final int OVERSHOOT_INTERPOLATOR = 0;

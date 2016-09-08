@@ -1,5 +1,6 @@
 package com.desitum.library.widgets;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -54,8 +55,8 @@ public class Slider extends Widget {
     }
 
     @Override
-    public void draw(Batch batch) {
-        super.draw(batch);
+    public void draw(Batch batch, Camera camera) {
+        super.draw(batch, camera);
 
         batch.draw(barImage, getX() + padding, getY() + getHeight() / 2 - barImageHeight / 2, getWidth() - padding * 2, barImageHeight);
         batch.draw(sliderImage, getX() + padding + value * (getWidth() - padding * 2) - sliderWidth / 2, getY() + getHeight() / 2 - sliderHeight / 2, sliderWidth, sliderHeight);

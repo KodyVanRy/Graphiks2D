@@ -44,7 +44,7 @@ public class AnticipateInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link com.desitum.shveetlife.libraries.interpolation.AnticipateInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link com.desitum.library.interpolation.AnticipateInterpolator} from a maintained pool of {@link Interpolator}s.
      *
      * @param tension the tension controlling the rate spring effect of the com.desitum.library.animation
      * @return the obtained {@link AccelerateInterpolator}
@@ -56,11 +56,11 @@ public class AnticipateInterpolator implements Interpolator {
     }
 
     /**
-     * Gets a new {@link com.desitum.shveetlife.libraries.interpolation.AnticipateInterpolator} from a maintained pool of {@link Interpolator}s.
+     * Gets a new {@link com.desitum.library.interpolation.AnticipateInterpolator} from a maintained pool of {@link Interpolator}s.
      * <p/>
-     * The initial tension is set to <code>{@value com.desitum.shveetlife.libraries.interpolation.AnticipateInterpolator#DEFAULT_TENSION}</code>.
+     * The initial tension is set to <code>{@value com.desitum.library.interpolation.AnticipateInterpolator#DEFAULT_TENSION}</code>.
      *
-     * @return the obtained {@link com.desitum.shveetlife.libraries.interpolation.AnticipateInterpolator}
+     * @return the obtained {@link com.desitum.library.interpolation.AnticipateInterpolator}
      */
     public static AnticipateInterpolator $() {
         return $(DEFAULT_TENSION);
