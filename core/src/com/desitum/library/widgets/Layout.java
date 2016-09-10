@@ -44,13 +44,9 @@ public abstract class Layout extends Widget {
                 // TODO add more for each widget that is floating draw a shadow
             }
             for (Widget widget : widgets) {
-                if (widget instanceof EditText) {
-                    System.out.println(((EditText) widget).getText());
-                }
                 widget.draw(batch, camera);
             }
         }
-
         ScissorStack.popScissors();
     }
 

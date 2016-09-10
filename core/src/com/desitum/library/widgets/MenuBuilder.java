@@ -203,7 +203,7 @@ public class MenuBuilder {
                 ((EditText) returnWidget).setBlinkOnTime(Float.parseFloat((String) jsonObject.get(BLINK_ON)));
             }
             if (jsonObject.get(BLINK_OFF) != null) {
-                ((EditText) returnWidget).setBlinkOnTime(Float.parseFloat((String) jsonObject.get(BLINK_OFF)));
+                ((EditText) returnWidget).setBlinkOffTime(Float.parseFloat((String) jsonObject.get(BLINK_OFF)));
             }
             if (jsonObject.get(TEXT_COLOR) != null) {
                 ((EditText) returnWidget).setTextColor(Color.valueOf((String) jsonObject.get(TEXT_COLOR)));

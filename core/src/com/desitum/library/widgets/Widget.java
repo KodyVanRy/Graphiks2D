@@ -83,6 +83,15 @@ public class Widget extends Sprite implements Comparable<Widget> {
             anim.update(delta);
             updateAnim(anim);
         }
+
+        // Adjust the position (x, y); the scale of width and height to fit parent
+        if (parent != null) {
+            setX(getMx() + parent.getBaseX());
+            setY(getMy() + parent.getBaseY());
+        } else {
+            setX(getMx());
+            setY(getMy());
+        }
     }
 
     /**

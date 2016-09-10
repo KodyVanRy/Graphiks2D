@@ -62,12 +62,15 @@ public class MenuScreen implements Screen {
         cam.update();
         spriteBatch.setProjectionMatrix(cam.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 1, 1);
 
         spriteBatch.begin();
         for (Widget widget : kodyWorld.getWidgets()) {
-            widget.draw(spriteBatch, cam);
+            widget.draw(spriteBatch, viewport.getCamera());
         }
+        // TODO need to figure out how I can achieve the ScissorStack still working when resizing
+        // TODO I believe I could do that by swapping out widget.draw(..., Camera) for widget.draw(..., Viewport)
+        // TODO Viewport can actually calculate Scissors itself :P
         kodyWorld.getParticles().draw(spriteBatch);
         spriteBatch.end();
     }
