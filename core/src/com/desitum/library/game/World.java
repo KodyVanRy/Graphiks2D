@@ -2,6 +2,7 @@ package com.desitum.library.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.widgets.Layout;
@@ -25,13 +26,15 @@ public class World {
     private List<GameObject> gameObjects;
     private List<ParticleEmitter> particleEmitters;
     private OrthographicCamera camera;
+    private Viewport viewport;
 
     /**
      * Create new {@link World}
      * @param camera camera from {@link GameScreen}
      */
-    public World(OrthographicCamera camera) {
+    public World(OrthographicCamera camera, Viewport viewport) {
         this.camera = camera;
+        this.viewport = viewport;
         this.widgets = new ArrayList<Widget>();
         this.gameObjects = new ArrayList<GameObject>();
         this.particleEmitters = new ArrayList<ParticleEmitter>();
@@ -146,6 +149,14 @@ public class World {
 
     public void setCamera(OrthographicCamera camera) {
         this.camera = camera;
+    }
+
+    public Viewport getViewport() {
+        return viewport;
+    }
+
+    public void setViewport(Viewport viewport) {
+        this.viewport = viewport;
     }
 
     public void dispose() {

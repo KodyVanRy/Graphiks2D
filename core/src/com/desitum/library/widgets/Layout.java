@@ -1,12 +1,12 @@
 package com.desitum.library.widgets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,9 +27,9 @@ public abstract class Layout extends Widget {
         widgets = new ArrayList<Widget>();
     }
 
-    public void draw(Batch batch, Camera camera) {
+    public void draw(Batch batch, Viewport camera) {
         Rectangle scissor = new Rectangle();
-        ScissorStack.calculateScissors(camera, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), batch.getTransformMatrix(), getBoundingRectangle(), scissor);
+        camera.calculateScissors(batch.getTransformMatrix(), getBoundingRectangle(), scissor);
         ScissorStack.pushScissors(scissor);
 
         super.draw(batch, camera);

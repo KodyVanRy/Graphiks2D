@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
         touchPos = new Vector3(0, 0, 0);
 
         world.setCamera(cam);
+        world.setViewport(viewport);
         worldRenderer.setWorld(world);
         clearColor = new Color(0, 0, 0, 1);
     }
@@ -62,6 +63,7 @@ public class GameScreen implements Screen {
         touchPos = new Vector3(0, 0, 0);
 
         world.setCamera(cam);
+        world.setViewport(viewport);
         worldRenderer = new WorldRenderer(world);
         clearColor = new Color(0, 0, 0, 1);
     }
@@ -79,7 +81,7 @@ public class GameScreen implements Screen {
 
         touchPos = new Vector3(0, 0, 0);
 
-        world = new World(cam);
+        world = new World(cam, viewport);
         worldRenderer = new WorldRenderer(world);
         clearColor = new Color(0, 0, 0, 1);
     }

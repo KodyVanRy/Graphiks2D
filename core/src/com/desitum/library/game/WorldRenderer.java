@@ -31,8 +31,7 @@ public class WorldRenderer {
             particleEmitter.draw(batch);
         }
         for (Widget widget : world.getWidgets()) {
-            System.out.println("WorldRenderer: " + widget.getName());
-            widget.draw(batch, world.getCamera());
+            widget.draw(batch, world.getViewport());
         }
     }
 }

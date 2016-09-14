@@ -5,10 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.widgets.Widget;
@@ -25,7 +22,6 @@ public class MenuScreen implements Screen {
     LibraryTest library;
     Vector3 mousePos;
     KodyWorld kodyWorld;
-    ShapeRenderer shapeRenderer = new ShapeRenderer();
     private OrthographicCamera cam;
     private Viewport viewport;
     private SpriteBatch spriteBatch;
@@ -66,11 +62,8 @@ public class MenuScreen implements Screen {
 
         spriteBatch.begin();
         for (Widget widget : kodyWorld.getWidgets()) {
-            widget.draw(spriteBatch, viewport.getCamera());
+            widget.draw(spriteBatch, viewport);
         }
-        // TODO need to figure out how I can achieve the ScissorStack still working when resizing
-        // TODO I believe I could do that by swapping out widget.draw(..., Camera) for widget.draw(..., Viewport)
-        // TODO Viewport can actually calculate Scissors itself :P
         kodyWorld.getParticles().draw(spriteBatch);
         spriteBatch.end();
     }

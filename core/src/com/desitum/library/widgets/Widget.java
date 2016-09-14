@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.animation.Animator;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.animation.ScaleAnimator;
@@ -148,7 +149,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
      * @param batch {@link Batch} to draw to
      * @param camera {@link Camera} to use when calculating the scissor
      */
-    public void draw(Batch batch, Camera camera) {
+    public void draw(Batch batch, Viewport camera) {
         if (visibility == VISIBLE) {
             if (getParent() == null) drawShadow(batch);
             super.draw(batch);

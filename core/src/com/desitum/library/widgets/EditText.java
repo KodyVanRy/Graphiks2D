@@ -3,15 +3,13 @@ package com.desitum.library.widgets;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.math.CollisionDetection;
 
@@ -134,7 +132,7 @@ public class EditText extends Widget {
     }
 
     @Override
-    public void draw(Batch batch, Camera camera) {
+    public void draw(Batch batch, Viewport camera) {
         super.draw(batch, camera);
         if (underline != null) batch.draw(underline, getX(), getY(), getWidth(), underlineHeight);
         font.setColor(textColor);

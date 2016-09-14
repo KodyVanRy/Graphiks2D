@@ -1,11 +1,10 @@
 package com.desitum.library.widgets;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by kody on 12/11/15.
@@ -18,10 +17,10 @@ public class PopupMenu extends Layout {
     }
 
     @Override
-    public void draw(Batch batch, Camera camera) {
+    public void draw(Batch batch, Viewport camera) {
         Rectangle scissor = new Rectangle();
         Rectangle clipBounds = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        ScissorStack.calculateScissors(camera, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), batch.getTransformMatrix(), clipBounds, scissor);
+        camera.calculateScissors(batch.getTransformMatrix(), clipBounds, scissor);
         ScissorStack.pushScissors(scissor);
 
         super.draw(batch, camera);
