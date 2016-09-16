@@ -1,7 +1,9 @@
 package com.desitum.library.math;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.desitum.library.game_objects.GameObject;
 
 /**
  * Created by Zmyth97 on 2/9/2015.
@@ -27,5 +29,11 @@ public class CollisionDetection {
             return false;
     }
 
+    public static boolean spritesTouching(Sprite s1, Sprite s2) {
+        return overlapRectangles(s1.getBoundingRectangle(), s2.getBoundingRectangle());
+    }
 
+    public static boolean gameObjectsTouching(GameObject object1, GameObject object2) {
+        return overlapRectangles(object1.getBoundingRectangle(), object2.getBoundingRectangle());
+    }
 }
