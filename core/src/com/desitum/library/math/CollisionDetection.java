@@ -7,7 +7,7 @@ import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.widgets.Widget;
 
 /**
- * Created by Zmyth97 on 2/9/2015.
+ * Created by Zmyth97 on 2/9/2015
  */
 public class CollisionDetection {
 

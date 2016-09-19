@@ -58,7 +58,7 @@ public class MenuScreen implements Screen {
         cam.update();
         spriteBatch.setProjectionMatrix(cam.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
 
         spriteBatch.begin();
         for (Widget widget : kodyWorld.getWidgets()) {

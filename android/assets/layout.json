@@ -5,7 +5,7 @@
     "height" : "100.0",
     "x" : "30",
     "y" : "0",
-    "background" : "#ffffff",
+    "background" : "#000000",
     "orientation" : "vertical",
     "spacing" : "5",
     "children" : [
@@ -27,7 +27,8 @@
             "x" : "0",
             "y" : "0",
             "background" : "button_rest.png",
-            "texture_hover" : "button_hover.png"
+            "texture_hover" : "button_hover.png",
+            "texture_click" : "button_down.png"
         },
         {
             "widget" : "edit text",
