@@ -1,9 +1,9 @@
 {
     "particles_per_second" : "40",
-    "x" : "0",
-    "y" : "0",
+    "x" : "10",
+    "y" : "10",
     "width" : "80",
-    "height" : "1",
+    "height" : "20",
     "particle_texture" : "particle.png",
     "particle_settings" : [
         {
@@ -20,7 +20,8 @@
             "max_velocity_y" : "8",
             "min_rotation" : "100",
             "max_rotation" : "600",
-            "lifespan" : "0.7"
+            "lifespan" : "2"
+            "fade_out" : "true"
         },
         {
             "min_width" : "2",
@@ -36,7 +37,7 @@
             "max_velocity_y" : "4",
             "min_rotation" : "100",
             "max_rotation" : "600",
-            "lifespan" : "0.7",
+            "lifespan" : "3",
         },
     ]
 }

@@ -98,6 +98,22 @@ public class ColorEffects extends Animator {
         return new Color(currentRed, currentGreen, currentBlue, currentAlpha);
     }
 
+    public float getCurrentRed() {
+        return currentRed;
+    }
+
+    public float getCurrentGreen() {
+        return currentGreen;
+    }
+
+    public float getCurrentBlue() {
+        return currentBlue;
+    }
+
+    public float getCurrentAlpha() {
+        return currentAlpha;
+    }
+
     @Override
     public Animator duplicate() {
         return new ColorEffects(new Color(startRed, startGreen, startBlue, startAlpha), new Color(endRed, endGreen, endBlue, endAlpha), getDuration());

@@ -1,7 +1,9 @@
 package com.desitum.library.particles;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.desitum.library.animation.ColorEffects;
 
 /**
  * Created by kody on 12/26/15.
@@ -27,6 +29,7 @@ public class Particle extends Sprite {
 
     private float currentLife, lifespan, gravityX, gravityY, velocityX, velocityY, rotationAmount, opacity;
     private boolean fadeOut, remove;
+    private ColorEffects colorEffects;
 
     public Particle(Texture texture, float width, float height, float lifespan) {
         super(texture);
@@ -56,13 +59,20 @@ public class Particle extends Sprite {
         this.setX(getX() + velocityX * delta);
         this.setY(getY() + velocityY * delta);
         this.setRotation(rotationAmount * currentLife / lifespan);
-        if (fadeOut) this.setColor(1, 1, 1, opacity - opacity * (lifespan - currentLife) / 1);
+        if (fadeOut && colorEffects != null) {
+            colorEffects.update(delta);
+            this.setColor(
+                    colorEffects.getCurrentRed(),
+                    colorEffects.getCurrentGreen(),
+                    colorEffects.getCurrentBlue(),
+                    colorEffects.getCurrentAlpha());
+        }
     }
 
-    private void setup(float lifespan, float gravityX, float gravityY, float velocityX,
+    public void setup(float lifespan, float gravityX, float gravityY, float velocityX,
                        float velocityY, float rotationAmount, float opacity, boolean fadeOut) {
 
-        remove = false;
+        this.remove = false;
         this.currentLife = 0;
         this.lifespan = lifespan;
         this.gravityX = gravityX;
@@ -72,6 +82,10 @@ public class Particle extends Sprite {
         this.rotationAmount = rotationAmount;
         this.opacity = opacity;
         this.fadeOut = fadeOut;
+        if (fadeOut) {
+            colorEffects = new ColorEffects(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0.0f), lifespan);
+            colorEffects.start(false);
+        }
 
         setOrigin(getWidth() / 2, getHeight() / 2);
     }

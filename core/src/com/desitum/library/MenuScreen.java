@@ -2,12 +2,22 @@ package com.desitum.library;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.desitum.library.animation.MovementAnimator;
+import com.desitum.library.drawing.Drawing;
+import com.desitum.library.game.GameScreen;
+import com.desitum.library.interpolation.Interpolation;
+import com.desitum.library.particles.ParticleBuilder;
+import com.desitum.library.widgets.LinearLayout;
+import com.desitum.library.widgets.MenuBuilder;
+import com.desitum.library.widgets.Slider;
 import com.desitum.library.widgets.Widget;
 import com.desitum.library.world.KodyWorld;
 
@@ -15,28 +25,31 @@ import com.desitum.library.world.KodyWorld;
  * Created by kody on 12/12/15.
  * can be used by kody and people in [kody}]
  */
-public class MenuScreen implements Screen {
+public class MenuScreen extends GameScreen {
 
     public static final float SCREEN_WIDTH = 150.0f;
     public static final float SCREEN_HEIGHT = 100.0f;
-    LibraryTest library;
-    Vector3 mousePos;
-    KodyWorld kodyWorld;
-    private OrthographicCamera cam;
-    private Viewport viewport;
-    private SpriteBatch spriteBatch;
 
-    public MenuScreen(LibraryTest libraryTest) {
-        this.library = libraryTest;
+    public MenuScreen() {
+        super(SCREEN_WIDTH, SCREEN_HEIGHT);
+        setupWorld();
+        setClearColor(new Color(1, 0, 0, 1));
+    }
 
-        spriteBatch = new SpriteBatch();
-        cam = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
-        cam.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
-        viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, cam);
+    private void setupWorld() {
+        Widget widget = MenuBuilder.build(Gdx.files.internal("layout.json"), getCam());
+        LinearLayout ll = (LinearLayout) widget.findByName("myLayout");
 
-        mousePos = new Vector3(0, 0, 0);
+        MovementAnimator animator = new MovementAnimator(-100, 90, 0.9f, Interpolation.DECELERATE_INTERPOLATOR);
+        animator.setControllingY(true);
 
-        kodyWorld = new KodyWorld(cam);
+        Slider mSlider = new Slider(Drawing.getFilledRectangle(1, 1, new Color(0, 0, 0, 0)), new Texture(Gdx.files.internal("slider.png")), Drawing.getHollowRectangle(100, 3, 3, Color.WHITE), "", 100, 10, 0, 0, null);
+        ll.addWidget(mSlider);
+
+        getWorld().addWidget(ll);
+
+        getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
+        getWorld().getParticleEmitters().get(0).turnOn();
     }
 
     @Override
@@ -44,29 +57,6 @@ public class MenuScreen implements Screen {
 
     }
 
-    private void update(float delta) {
-        mousePos = viewport.unproject(mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        kodyWorld.updateTouchInput(mousePos, Gdx.input.isTouched());
-
-        kodyWorld.update(delta);
-    }
-
-    @Override
-    public void render(float delta) {
-        update(delta);
-
-        cam.update();
-        spriteBatch.setProjectionMatrix(cam.combined);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0, 0, 1, 1);
-
-        spriteBatch.begin();
-        for (Widget widget : kodyWorld.getWidgets()) {
-            widget.draw(spriteBatch, viewport);
-        }
-        kodyWorld.getParticles().draw(spriteBatch);
-        spriteBatch.end();
-    }
 
     @Override
     public void pause() {
@@ -86,11 +76,5 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-
-    @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
     }
 }

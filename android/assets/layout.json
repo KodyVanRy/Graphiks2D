@@ -5,7 +5,7 @@
     "height" : "100.0",
     "x" : "30",
     "y" : "0",
-    "background" : "#ffffff",
+    "background" : "#00000000",
     "orientation" : "vertical",
     "spacing" : "5",
     "children" : [
@@ -27,7 +27,8 @@
             "x" : "0",
             "y" : "0",
             "background" : "button_rest.png",
-            "texture_hover" : "button_hover.png"
+            "texture_hover" : "button_hover.png",
+            "texture_click" : "button_down.png"
         },
         {
             "widget" : "edit text",
@@ -41,9 +42,9 @@
             "request focus": "true",
             "text": "JSON is cool",
             "hint": "JSON tes2t",
-            "blink_on": "0.1",
+            "blink_on": "0.5",
             "alignment": "center",
-            "blink_off": "0.05"
+            "blink_off": "0.5"
         }
     ]
 }

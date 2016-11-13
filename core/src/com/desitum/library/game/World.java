@@ -1,9 +1,11 @@
 package com.desitum.library.game;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.game_objects.GameObject;
+import com.desitum.library.game_objects.GameObjectUtils;
 import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.widgets.Layout;
 import com.desitum.library.widgets.Widget;
@@ -16,7 +18,7 @@ import java.util.List;
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]
  */
-public class World {
+public class World implements InputProcessor{
 
     public boolean layerWidgets = true;
     public boolean layerGameObjects = true;
@@ -24,6 +26,7 @@ public class World {
 
     private List<Widget> widgets;
     private List<GameObject> gameObjects;
+    private List<GameObject> shatterPieces;
     private List<ParticleEmitter> particleEmitters;
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -50,6 +53,9 @@ public class World {
         }
         for (GameObject gameObject : gameObjects) {
             gameObject.update(delta);
+        }
+        for (ParticleEmitter particleEmitter : particleEmitters) {
+            particleEmitter.update(delta);
         }
     }
 
@@ -97,6 +103,14 @@ public class World {
         if (layerGameObjects) {
             Collections.sort(gameObjects);
         }
+    }
+
+    /**
+     * Add a {@link ParticleEmitter} to be handled by {@link World}
+     * @param particleEmitter {@link ParticleEmitter} to be handled
+     */
+    public void addParticleEmitter(ParticleEmitter particleEmitter) {
+        this.particleEmitters.add(particleEmitter);
     }
 
     /**
@@ -171,7 +185,59 @@ public class World {
         }
     }
 
+    public void shatterGameObject(GameObject gameObject, float intensity, int pieces, Vector3 pointInGameObject) {
+        int index = -1;
+        for (int i = 0; i < gameObjects.size(); i++) {
+            if (gameObject == gameObjects.get(i)) {
+                index = i;
+                GameObjectUtils.getPiecesFromGameObject(gameObject, intensity, pieces, pointInGameObject);
+            }
+        }
+        if (index > -1)
+            gameObjects.remove(index);
+    }
+
     public List<ParticleEmitter> getParticleEmitters() {
         return particleEmitters;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

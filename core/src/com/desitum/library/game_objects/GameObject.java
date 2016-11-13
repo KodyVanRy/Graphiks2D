@@ -1,6 +1,8 @@
 package com.desitum.library.game_objects;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.animation.Animator;
 import com.desitum.library.animation.MovementAnimator;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]
  */
+@SuppressWarnings("unused")
 public class GameObject extends Sprite implements Comparable<GameObject> {
 
     public static final int DEFAULT_Z = 0;
@@ -22,16 +25,57 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     private float speed, speedX, speedY, gravityX, gravityY, rotationSpeed, rotationResistance;
     private float[] moveTo;
 
-    @SuppressWarnings("unused")
-    public GameObject() {
+    public GameObject(TextureRegion textureRegion) {
+        super(textureRegion);
         animators = new ArrayList<Animator>();
         animatorsToRemove = new ArrayList<Animator>();
         z = DEFAULT_Z;
     }
 
-    @SuppressWarnings("unused")
-    public GameObject(int z) {
+    public GameObject(Texture texture) {
+        super(texture);
         animators = new ArrayList<Animator>();
+        animatorsToRemove = new ArrayList<Animator>();
+        z = DEFAULT_Z;
+    }
+
+    public GameObject(TextureRegion textureRegion, float width, float height) {
+        super(textureRegion);
+        setSize(width, height);
+        animators = new ArrayList<Animator>();
+        animatorsToRemove = new ArrayList<Animator>();
+        z = DEFAULT_Z;
+    }
+
+    public GameObject(Texture texture, float width, float height) {
+        super(texture);
+        setSize(width, height);
+        animators = new ArrayList<Animator>();
+        animatorsToRemove = new ArrayList<Animator>();
+        z = DEFAULT_Z;
+    }
+
+    public GameObject(TextureRegion textureRegion, float width, float height, float x, float y) {
+        super(textureRegion);
+        setSize(width, height);
+        animators = new ArrayList<Animator>();
+        animatorsToRemove = new ArrayList<Animator>();
+        z = DEFAULT_Z;
+    }
+
+    public GameObject(Texture texture, float width, float height, float x, float y) {
+        super(texture);
+        setSize(width, height);
+        animators = new ArrayList<Animator>();
+        animatorsToRemove = new ArrayList<Animator>();
+        z = DEFAULT_Z;
+    }
+
+    public GameObject(Texture texture, float width, float height, float x, float y, int z) {
+        super(texture);
+        setSize(width, height);
+        animators = new ArrayList<Animator>();
+        animatorsToRemove = new ArrayList<Animator>();
         this.z = z;
     }
 

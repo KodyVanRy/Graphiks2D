@@ -103,4 +103,39 @@ public class LinearLine {
 
         return (float) Math.sqrt((Math.pow(Math.abs(x2 - x1), 2) + Math.pow(Math.abs(y2 - y1), 2)));
     }
+
+    /**
+     * Used to get distance between two points on a plane
+     * Pythagorean theorem
+     * @param slope slope of the line
+     * @param x x value
+     * @param y y value
+     * @return distance between two points
+     */
+    public static float getYIntercept(float slope, float x, float y) {
+        // solve for b
+        // y = mx + b
+        // (y) = (m*x) +
+        // (y) - (m*x) = b
+
+        // 2 = 4 * 1 + b
+        // y = 4x - 3
+        return y - (slope * x);
+    }
+
+    /**
+     * Used to get distance between two points on a plane
+     * Pythagorean theorem
+     * @param slope slope of the line
+     * @param yIntercept b value
+     * @return distance between two points
+     */
+    public static float getXIntercept(float slope, float yIntercept, int y) {
+        // solve for y
+        // 0 = mx + b
+        // -b = (m*x)
+        // -b - x
+        // -b/m = x
+        return -yIntercept / slope;
+    }
 }

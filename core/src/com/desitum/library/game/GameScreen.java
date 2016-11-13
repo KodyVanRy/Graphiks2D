@@ -183,6 +183,9 @@ public class GameScreen implements Screen {
 
     public void setWorld(World world) {
         this.world = world;
+        world.setCamera(cam);
+        world.setViewport(viewport);
+        worldRenderer.setWorld(world);
         this.worldRenderer = new WorldRenderer(world);
     }
 

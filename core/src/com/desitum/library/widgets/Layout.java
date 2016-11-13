@@ -47,6 +47,7 @@ public abstract class Layout extends Widget {
                 widget.draw(batch, camera);
             }
         }
+        batch.flush();
         ScissorStack.popScissors();
     }
 

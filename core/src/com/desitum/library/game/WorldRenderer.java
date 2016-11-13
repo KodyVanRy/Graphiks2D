@@ -24,14 +24,18 @@ public class WorldRenderer {
     }
 
     public void draw(Batch batch) {
+        batch.flush();
         for (GameObject gameObject : world.getGameObjects()) {
             gameObject.draw(batch);
         }
+        batch.flush();
         for (ParticleEmitter particleEmitter: world.getParticleEmitters()) {
             particleEmitter.draw(batch);
         }
+        batch.flush();
         for (Widget widget : world.getWidgets()) {
             widget.draw(batch, world.getViewport());
         }
+        batch.flush();
     }
 }

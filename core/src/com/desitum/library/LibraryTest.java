@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 public class LibraryTest extends Game {
     @Override
     public void create() {
-        Screen testMenuScreen = new MenuScreen(this);
+        Screen testMenuScreen = new MenuScreen();
         this.setScreen(testMenuScreen);
     }
 
@@ -18,8 +18,6 @@ public class LibraryTest extends Game {
     @Override
     public void dispose() {
         super.dispose();
-
-        // TODO com.desitum.castleWars.data.Assets.dispose();
 
         getScreen().dispose();
     }

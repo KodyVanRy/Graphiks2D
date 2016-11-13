@@ -54,6 +54,7 @@ public class ParticleEmitter {
     }
 
     public void update(float delta) {
+        System.out.println("particle count : " + particles.size());
         updateParticles(delta);
         updateEmitter(delta);
     }
@@ -69,6 +70,7 @@ public class ParticleEmitter {
             deadParticles.add(particle);
             particles.remove(particle);
         }
+        particlesToRemove.clear();
     }
 
     private void updateEmitter(float delta) {
@@ -92,11 +94,17 @@ public class ParticleEmitter {
         if (deadParticles.size() > 0) {
             returnParticle = deadParticles.get(0);
             deadParticles.remove(0);
-            returnParticle.setCurrentLife(particleSettings.getLifespan());
-            returnParticle.setRotationAmount(particleSettings.getRotationAmount());
-            returnParticle.setOpacity(particleSettings.getOpacity());
-            returnParticle.setVelocityX(particleSettings.getVelocityX());
-            returnParticle.setVelocityY(particleSettings.getVelocityY());
+            returnParticle.setup(particleSettings.getLifespan(),
+                    particleSettings.getGravityX(),
+                    particleSettings.getGravityY(),
+                    particleSettings.getVelocityX(),
+                    particleSettings.getVelocityY(),
+                    particleSettings.getRotationAmount(),
+                    particleSettings.getOpacity(),
+                    particleSettings.isFadeOut());
+            System.out.println("recycling ; " + particleSettings.getLifespan() + " / " + returnParticle.getCurrentLife());
+            System.out.println("recycling ; " + particleSettings.getLifespan() + " / " + returnParticle.needToRemove());
+            returnParticle.setPosition(getRandomParticleX(), getRandomParticleY());
         }
         if (returnParticle == null) {
             returnParticle = new Particle(particleTexture, getRandomParticleX(), getRandomParticleY(),
@@ -106,6 +114,8 @@ public class ParticleEmitter {
                     particleSettings.getRotationAmount(), particleSettings.getOpacity(),
                     particleSettings.isFadeOut());
         }
+
+        //TODO figure out why particles aren't recycling properly.
         return returnParticle;
     }
 

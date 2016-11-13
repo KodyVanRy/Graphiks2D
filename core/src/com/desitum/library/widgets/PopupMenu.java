@@ -24,6 +24,7 @@ public class PopupMenu extends Layout {
         ScissorStack.pushScissors(scissor);
 
         super.draw(batch, camera);
+        batch.flush();
 
         ScissorStack.popScissors();
     }
