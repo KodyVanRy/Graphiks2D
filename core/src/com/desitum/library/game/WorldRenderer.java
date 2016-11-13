@@ -24,7 +24,6 @@ public class WorldRenderer {
     }
 
     public void draw(Batch batch) {
-        batch.flush();
         for (GameObject gameObject : world.getGameObjects()) {
             gameObject.draw(batch);
         }

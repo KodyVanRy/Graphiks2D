@@ -54,7 +54,6 @@ public class ParticleEmitter {
     }
 
     public void update(float delta) {
-        System.out.println("particle count : " + particles.size());
         updateParticles(delta);
         updateEmitter(delta);
     }
@@ -102,8 +101,6 @@ public class ParticleEmitter {
                     particleSettings.getRotationAmount(),
                     particleSettings.getOpacity(),
                     particleSettings.isFadeOut());
-            System.out.println("recycling ; " + particleSettings.getLifespan() + " / " + returnParticle.getCurrentLife());
-            System.out.println("recycling ; " + particleSettings.getLifespan() + " / " + returnParticle.needToRemove());
             returnParticle.setPosition(getRandomParticleX(), getRandomParticleY());
         }
         if (returnParticle == null) {
@@ -115,7 +112,6 @@ public class ParticleEmitter {
                     particleSettings.isFadeOut());
         }
 
-        //TODO figure out why particles aren't recycling properly.
         return returnParticle;
     }
 
