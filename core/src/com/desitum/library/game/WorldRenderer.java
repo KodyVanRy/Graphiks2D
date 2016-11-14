@@ -28,6 +28,10 @@ public class WorldRenderer {
             gameObject.draw(batch);
         }
         batch.flush();
+        for (GameObject gameObject : world.getShatterPieces()) {
+            gameObject.draw(batch);
+        }
+        batch.flush();
         for (ParticleEmitter particleEmitter: world.getParticleEmitters()) {
             particleEmitter.draw(batch);
         }

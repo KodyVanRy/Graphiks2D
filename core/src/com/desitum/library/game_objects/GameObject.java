@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.animation.Animator;
 import com.desitum.library.animation.MovementAnimator;
+import com.desitum.library.listener.OnClickListener;
+import com.desitum.library.math.CollisionDetection;
 
 import java.util.ArrayList;
 
@@ -20,13 +22,16 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     private ArrayList<Animator> animators;
     private ArrayList<Animator> animatorsToRemove;
     private OnFinishedMovingListener onFinishedMovingListener;
+    private OnClickListener onClickListener;
     private int z;
 
     private float speed, speedX, speedY, gravityX, gravityY, rotationSpeed, rotationResistance;
     private float[] moveTo;
+    private boolean justTouched, touchedLast;
 
     public GameObject(TextureRegion textureRegion) {
         super(textureRegion);
+        setOriginCenter();
         animators = new ArrayList<Animator>();
         animatorsToRemove = new ArrayList<Animator>();
         z = DEFAULT_Z;
@@ -34,6 +39,7 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
 
     public GameObject(Texture texture) {
         super(texture);
+        setOriginCenter();
         animators = new ArrayList<Animator>();
         animatorsToRemove = new ArrayList<Animator>();
         z = DEFAULT_Z;
@@ -42,6 +48,7 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     public GameObject(TextureRegion textureRegion, float width, float height) {
         super(textureRegion);
         setSize(width, height);
+        setOriginCenter();
         animators = new ArrayList<Animator>();
         animatorsToRemove = new ArrayList<Animator>();
         z = DEFAULT_Z;
@@ -50,6 +57,7 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     public GameObject(Texture texture, float width, float height) {
         super(texture);
         setSize(width, height);
+        setOriginCenter();
         animators = new ArrayList<Animator>();
         animatorsToRemove = new ArrayList<Animator>();
         z = DEFAULT_Z;
@@ -58,6 +66,8 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     public GameObject(TextureRegion textureRegion, float width, float height, float x, float y) {
         super(textureRegion);
         setSize(width, height);
+        setPosition(x, y);
+        setOriginCenter();
         animators = new ArrayList<Animator>();
         animatorsToRemove = new ArrayList<Animator>();
         z = DEFAULT_Z;
@@ -66,6 +76,8 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     public GameObject(Texture texture, float width, float height, float x, float y) {
         super(texture);
         setSize(width, height);
+        setPosition(x, y);
+        setOriginCenter();
         animators = new ArrayList<Animator>();
         animatorsToRemove = new ArrayList<Animator>();
         z = DEFAULT_Z;
@@ -74,6 +86,8 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
     public GameObject(Texture texture, float width, float height, float x, float y, int z) {
         super(texture);
         setSize(width, height);
+        setPosition(x, y);
+        setOriginCenter();
         animators = new ArrayList<Animator>();
         animatorsToRemove = new ArrayList<Animator>();
         this.z = z;
@@ -108,6 +122,8 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
             }
             animatorsToRemove.clear();
         }
+        setRotationSpeed(rotationSpeed * rotationResistance);
+        setRotation(rotationSpeed + getRotation());
     }
 
     private void updateMovement() {
@@ -159,7 +175,16 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
      */
     @SuppressWarnings("unused")
     public void updateTouchInput(Vector3 touchPos, boolean touchDown) {
-
+        if (CollisionDetection.pointInGameObject(this, touchPos)) {
+            if (touchDown && !touchedLast)
+                justTouched = true;
+            else
+                justTouched = false;
+            if (onClickListener != null && justTouched) {
+                onClickListener.onClick(this, touchPos);
+            }
+            touchedLast = touchDown;
+        }
     }
 
     @SuppressWarnings("unused")
@@ -273,6 +298,10 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         this.onFinishedMovingListener = onFinishedMovingListener;
     }
 
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
     @SuppressWarnings("unused")
     public OnFinishedMovingListener getOnFinishedMovingListener() {
         return onFinishedMovingListener;
@@ -284,5 +313,9 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         } catch (Exception e) {
             // Texture has been disposed of elsewhere
         }
+    }
+
+    public interface OnClickListener {
+        void onClick(GameObject gameObject, Vector3 touchPos);
     }
 }

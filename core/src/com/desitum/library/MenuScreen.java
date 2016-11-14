@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.GameScreen;
+import com.desitum.library.game_objects.GameObject;
+import com.desitum.library.game_objects.GameObjectUtils;
 import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.widgets.LinearLayout;
@@ -25,7 +27,7 @@ import com.desitum.library.world.KodyWorld;
  * Created by kody on 12/12/15.
  * can be used by kody and people in [kody}]
  */
-public class MenuScreen extends GameScreen {
+public class MenuScreen extends GameScreen implements GameObject.OnClickListener {
 
     public static final float SCREEN_WIDTH = 150.0f;
     public static final float SCREEN_HEIGHT = 100.0f;
@@ -50,6 +52,13 @@ public class MenuScreen extends GameScreen {
 
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
+
+        GameObject shatterObject = new GameObject(
+                new Texture("badlogic.jpg"),
+                10, 10, 0, 0
+        );
+        shatterObject.setOnClickListener(this);
+        getWorld().addGameObject(shatterObject);
     }
 
     @Override
@@ -76,5 +85,10 @@ public class MenuScreen extends GameScreen {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public void onClick(GameObject gameObject, Vector3 touchPoint) {
+        getWorld().shatterGameObject(gameObject, 0.1f, 7, GameObjectUtils.convertPointToLocal(gameObject, touchPoint));
     }
 }

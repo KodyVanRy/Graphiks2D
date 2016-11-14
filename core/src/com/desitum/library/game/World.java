@@ -40,6 +40,7 @@ public class World implements InputProcessor{
         this.viewport = viewport;
         this.widgets = new ArrayList<Widget>();
         this.gameObjects = new ArrayList<GameObject>();
+        this.shatterPieces = new ArrayList<GameObject>();
         this.particleEmitters = new ArrayList<ParticleEmitter>();
     }
 
@@ -52,6 +53,9 @@ public class World implements InputProcessor{
             widget.update(delta);
         }
         for (GameObject gameObject : gameObjects) {
+            gameObject.update(delta);
+        }
+        for (GameObject gameObject : shatterPieces) {
             gameObject.update(delta);
         }
         for (ParticleEmitter particleEmitter : particleEmitters) {
@@ -138,6 +142,14 @@ public class World implements InputProcessor{
     }
 
     /**
+     * Get a {@link List} of {@link GameObject}
+     * @return {@link List} of {@link GameObject}
+     */
+    public List<GameObject> getShatterPieces() {
+        return shatterPieces;
+    }
+
+    /**
      * Get a {@link List} of {@link Widget}
      * @return {@link List} of {@link Widget}
      */
@@ -190,11 +202,11 @@ public class World implements InputProcessor{
         for (int i = 0; i < gameObjects.size(); i++) {
             if (gameObject == gameObjects.get(i)) {
                 index = i;
-                GameObjectUtils.getPiecesFromGameObject(gameObject, intensity, pieces, pointInGameObject);
+                shatterPieces.addAll(GameObjectUtils.getPiecesFromGameObject(gameObject, intensity, pieces, pointInGameObject));
             }
         }
         if (index > -1)
-            gameObjects.remove(index);
+            gameObjects.get(index).setPosition(50, 50);
     }
 
     public List<ParticleEmitter> getParticleEmitters() {

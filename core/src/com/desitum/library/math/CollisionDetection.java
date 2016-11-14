@@ -15,6 +15,10 @@ public class CollisionDetection {
         return pointInRectangle(widget.getBoundingRectangle(), point);
     }
 
+    public static boolean pointInGameObject(GameObject gameObject, Vector3 point) {
+        return pointInRectangle(gameObject.getBoundingRectangle(), point);
+    }
+
     public static boolean pointInRectangle(Rectangle rect, Vector3 point) {
         float rw, rh, rx, ry, px, py;
         rw = rect.getWidth();
