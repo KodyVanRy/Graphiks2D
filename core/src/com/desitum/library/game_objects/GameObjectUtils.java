@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class GameObjectUtils {
 
-    public static List<GameObject> getPiecesFromGameObject(GameObject gameObject, float intensity, int pieces, Vector3 centerOfShatter) {
+    public static List<PolygonGameObject> getPiecesFromGameObject(GameObject gameObject, float intensity, int pieces, Vector3 centerOfShatter) {
         int rows = 1;
         if (intensity > 0.3 && intensity < 0.5) {
             rows = 2;
@@ -31,7 +31,7 @@ public class GameObjectUtils {
         if (pieces < 6)
             pieces = 6;
 
-        ArrayList<GameObject> _shatteredPieces = new ArrayList<GameObject>();
+        ArrayList<PolygonGameObject> _shatteredPieces = new ArrayList<PolygonGameObject>();
 
         float[][] edgePoints = getShatterEdgePoints(new Rectangle(0, 0, gameObject.getTexture().getWidth(), gameObject.getTexture().getHeight()), pieces);
         float scaleX = gameObject.getTexture().getWidth() / gameObject.getWidth();
@@ -43,8 +43,8 @@ public class GameObjectUtils {
                     firstPoint[0], firstPoint[1],
                     secondPoint[0], secondPoint[1],
                     centerOfShatter.x * scaleX, centerOfShatter.y * scaleY};
-            PolygonRegion region = new PolygonRegion(new TextureRegion(gameObject.getTexture()), vertices, null);
-            GameObject g = new GameObject(region.getRegion(), getWidth(region, gameObject), getHeight(region, gameObject), getX(vertices, gameObject), getY(vertices, gameObject));
+            PolygonRegion region = new PolygonRegion(new TextureRegion(gameObject.getTexture()), vertices, new short[]{0, 1, 2});
+            PolygonGameObject g = new PolygonGameObject(region, getWidth(region, gameObject), getHeight(region, gameObject), getX(vertices, gameObject), getY(vertices, gameObject));
             g.setRotationSpeed((float) Math.random() * 2);
             g.setRotationResistance(1);
             _shatteredPieces.add(g);

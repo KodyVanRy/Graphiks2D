@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.game_objects.GameObjectUtils;
+import com.desitum.library.game_objects.PolygonGameObject;
 import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.widgets.Layout;
 import com.desitum.library.widgets.Widget;
@@ -26,7 +27,7 @@ public class World implements InputProcessor{
 
     private List<Widget> widgets;
     private List<GameObject> gameObjects;
-    private List<GameObject> shatterPieces;
+    private List<PolygonGameObject> shatterPieces;
     private List<ParticleEmitter> particleEmitters;
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -40,7 +41,7 @@ public class World implements InputProcessor{
         this.viewport = viewport;
         this.widgets = new ArrayList<Widget>();
         this.gameObjects = new ArrayList<GameObject>();
-        this.shatterPieces = new ArrayList<GameObject>();
+        this.shatterPieces = new ArrayList<PolygonGameObject>();
         this.particleEmitters = new ArrayList<ParticleEmitter>();
     }
 
@@ -55,7 +56,7 @@ public class World implements InputProcessor{
         for (GameObject gameObject : gameObjects) {
             gameObject.update(delta);
         }
-        for (GameObject gameObject : shatterPieces) {
+        for (PolygonGameObject gameObject : shatterPieces) {
             gameObject.update(delta);
         }
         for (ParticleEmitter particleEmitter : particleEmitters) {
@@ -145,7 +146,7 @@ public class World implements InputProcessor{
      * Get a {@link List} of {@link GameObject}
      * @return {@link List} of {@link GameObject}
      */
-    public List<GameObject> getShatterPieces() {
+    public List<PolygonGameObject> getShatterPieces() {
         return shatterPieces;
     }
 

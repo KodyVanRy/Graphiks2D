@@ -1,5 +1,6 @@
 package com.desitum.library.animation;
 
+import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.desitum.library.interpolation.AccelerateDecelerateInterpolator;
 import com.desitum.library.interpolation.AccelerateInterpolator;
@@ -77,6 +78,23 @@ public class ScaleAnimator extends Animator {
         setupInterpolator(interpolator);
     }
 
+    public ScaleAnimator(PolygonSprite sprite, float duration, float delay, float startScale, float endScale, int interpolator, boolean controlWidth, boolean controlHeight) {
+        super(sprite, duration, delay);
+        this.startScale = startScale;
+        this.endScale = endScale;
+
+        this.controllingX = controlWidth;
+        this.controllingY = controlHeight;
+
+        if (startScale > endScale) {
+            growing = false;
+        } else {
+            growing = true;
+        }
+
+        setupInterpolator(interpolator);
+    }
+
     protected void updateAnimation() {
         if (growing) {
             scaleSize = startScale + (endScale - startScale) * interpolator.getInterpolation(getTimeInAnimation());
@@ -90,6 +108,13 @@ public class ScaleAnimator extends Animator {
             }
             if (controllingX) {
                 this.sprite.setScale(this.getScaleSize(), this.sprite.getScaleY());
+            }
+        } else if (pSprite != null) {
+            if (controllingY) {
+                this.pSprite.setScale(this.pSprite.getScaleX(), this.getScaleSize());
+            }
+            if (controllingX) {
+                this.pSprite.setScale(this.getScaleSize(), this.pSprite.getScaleY());
             }
         }
     }

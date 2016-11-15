@@ -1,5 +1,7 @@
 package com.desitum.library.animation;
 
+import com.badlogic.gdx.graphics.g2d.PolygonRegion;
+import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public abstract class Animator {
 
     protected Sprite sprite;
+    protected PolygonSprite pSprite;
     private float duration;
     private float timeInAnimation;
     private float delay;
@@ -27,8 +30,20 @@ public abstract class Animator {
         this.onAnimationFinishedListener = null;
     }
 
+    public Animator(PolygonSprite sprite, float duration, float delay) {
+        this.pSprite = sprite;
+        this.duration = duration;
+        this.delay = delay;
+        this.timeInAnimation = 0;
+        this.currentDelay = 0;
+        this.running = false;
+        this.ran = false;
+        this.onAnimationFinishedListener = null;
+    }
+
     public Animator(float duration, float delay) {
         this.sprite = null;
+        this.pSprite = null;
         this.duration = duration;
         this.delay = delay;
         this.timeInAnimation = 0;
@@ -100,6 +115,14 @@ public abstract class Animator {
 
     public void setSprite(Sprite control) {
         this.sprite = control;
+    }
+
+    public PolygonSprite getpSprite() {
+        return pSprite;
+    }
+
+    public void setpSprite(PolygonSprite pSprite) {
+        this.pSprite = pSprite;
     }
 
     public float getTimeInAnimation() {

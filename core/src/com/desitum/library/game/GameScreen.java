@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -22,6 +23,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera cam;
     private Viewport viewport;
     private SpriteBatch spriteBatch;
+    private PolygonSpriteBatch polygonSpriteBatch;
     private World world;
     private WorldRenderer worldRenderer;
 
@@ -100,6 +102,15 @@ public class GameScreen implements Screen {
         touchPos = viewport.unproject(touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         world.updateTouchInput(touchPos, Gdx.input.isTouched());
         world.update(delta);
+        System.out.println("polygonSpriteBatch1 = " + polygonSpriteBatch);
+        System.out.println("getShatterPieces = " + world.getShatterPieces());
+        System.out.println("getShatterPieces() = " + world.getShatterPieces() != null);
+        if (world.getShatterPieces() != null && polygonSpriteBatch == null) {
+            polygonSpriteBatch = new PolygonSpriteBatch();
+            System.out.println("polygonSpriteBatch2 = " + polygonSpriteBatch);
+        }
+        System.out.println("polygonSpriteBatch3 = " + polygonSpriteBatch);
+        System.out.println("getShatterPieces = " + world.getShatterPieces());
     }
 
     /**
@@ -108,14 +119,20 @@ public class GameScreen implements Screen {
     public void draw() {
         cam.update();
         spriteBatch.setProjectionMatrix(cam.combined);
+        if (polygonSpriteBatch != null)
+            polygonSpriteBatch.setProjectionMatrix(cam.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 
         spriteBatch.begin();
 
-        worldRenderer.draw(spriteBatch);
-
+        worldRenderer.draw(spriteBatch, polygonSpriteBatch);
         spriteBatch.end();
+        if (polygonSpriteBatch != null) {
+            polygonSpriteBatch.begin();
+            worldRenderer.draw(polygonSpriteBatch);
+            polygonSpriteBatch.end();
+        }
     }
 
     @Override

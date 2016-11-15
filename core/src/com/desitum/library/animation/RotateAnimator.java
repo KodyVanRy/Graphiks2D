@@ -1,5 +1,6 @@
 package com.desitum.library.animation;
 
+import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.desitum.library.interpolation.AccelerateDecelerateInterpolator;
 import com.desitum.library.interpolation.AccelerateInterpolator;
@@ -40,6 +41,14 @@ public class RotateAnimator extends Animator {
         setupInterpolator(interpolator);
     }
 
+    public RotateAnimator(PolygonSprite sprite, float duration, float delay, float startRotation, float endRotation, int interpolator) {
+        super(sprite, duration, delay);
+        this.startRotation = startRotation;
+        this.endRotation = endRotation;
+        this.amountToRotate = endRotation - startRotation;
+        setupInterpolator(interpolator);
+    }
+
     @Override
     public float getCurrentAmount() {
         return 0;
@@ -51,6 +60,8 @@ public class RotateAnimator extends Animator {
 
         if (sprite != null) {
             sprite.setRotation(currentRotation);
+        } else if (pSprite != null) {
+            pSprite.setRotation(currentRotation);
         }
     }
 

@@ -142,7 +142,6 @@ public class Widget extends Sprite implements Comparable<Widget> {
     @Override
     public void draw(Batch batch) {
         throw new DrawingException();
-        batch.dr
     }
 
     /**

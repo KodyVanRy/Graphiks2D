@@ -1,5 +1,6 @@
 package com.desitum.library.animation;
 
+import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.desitum.library.interpolation.AccelerateDecelerateInterpolator;
 import com.desitum.library.interpolation.AccelerateInterpolator;
@@ -49,8 +50,28 @@ public class MovementAnimator extends Animator {
         setupInterpolator(interpolator);
     }
 
+    public MovementAnimator(PolygonSprite sprite, float startPos, float endPos, float duration, float delay, int interpolator, boolean controlX, boolean controlY) {
+        super(sprite, duration, delay);
+        this.startPos = startPos;
+        this.endPos = endPos;
+        this.travelDistance = endPos - startPos;
+        this.currentPosition = startPos;
+
+        this.controllingX = controlX;
+        this.controllingY = controlY;
+
+        setupInterpolator(interpolator);
+    }
+
     public void setSprite(Sprite control, boolean controlX, boolean controlY) {
         this.sprite = control;
+
+        this.controllingX = controlX;
+        this.controllingY = controlY;
+    }
+
+    public void setpSprite(PolygonSprite control, boolean controlX, boolean controlY) {
+        this.pSprite = control;
 
         this.controllingX = controlX;
         this.controllingY = controlY;
@@ -99,6 +120,13 @@ public class MovementAnimator extends Animator {
             }
             if (this.controllingY) {
                 this.sprite.setY(getCurrentPos());
+            }
+        } else if (pSprite != null) {
+            if (this.controllingX) {
+                this.pSprite.setX(getCurrentPos());
+            }
+            if (this.controllingY) {
+                this.pSprite.setY(getCurrentPos());
             }
         }
     }
