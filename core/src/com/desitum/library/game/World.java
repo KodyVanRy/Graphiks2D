@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.game_objects.GameObject;
-import com.desitum.library.game_objects.GameObjectUtils;
 import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.widgets.Layout;
 import com.desitum.library.widgets.Widget;
@@ -183,18 +182,6 @@ public class World implements InputProcessor{
         for (GameObject gameObject: gameObjects) {
             gameObject.dispose();
         }
-    }
-
-    public void shatterGameObject(GameObject gameObject, float intensity, int pieces, Vector3 pointInGameObject) {
-        int index = -1;
-        for (int i = 0; i < gameObjects.size(); i++) {
-            if (gameObject == gameObjects.get(i)) {
-                index = i;
-                GameObjectUtils.getPiecesFromGameObject(gameObject, intensity, pieces, pointInGameObject);
-            }
-        }
-        if (index > -1)
-            gameObjects.remove(index);
     }
 
     public List<ParticleEmitter> getParticleEmitters() {
