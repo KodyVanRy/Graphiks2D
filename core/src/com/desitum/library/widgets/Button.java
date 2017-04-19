@@ -30,28 +30,52 @@ public class Button extends Widget {
         restTexture = text;
     }
 
-    @Override
-    public void updateTouchInput(Vector3 mousePos, boolean touchDown) {
-        if (isVisible()) {
-            if (isPointInWidget(mousePos) && isEnabled() && isClickDown() && !touchDown) {
-                if (onClickListener != null) onClickListener.onClick(this);
-            } else if (isPointInWidget(mousePos) && touchDown && !isClickDown()) {
-                if (onClickListener != null) onClickListener.onClickDown(this);
-            }
+//    @Override
+//    public void updateTouchInput(Vector3 mousePos, boolean touchDown) {
+//        if (isVisible()) {
+//            if (isPointInWidget(mousePos) && isEnabled() && isClickDown() && !touchDown) {
+//                if (onClickListener != null) onClickListener.onClick(this);
+//            } else if (isPointInWidget(mousePos) && touchDown && !isClickDown()) {
+//                if (onClickListener != null) onClickListener.onClickDown(this);
+//            }
+//
+//            if (isPointInWidget(mousePos)) {
+//                if (touchDown && getClickTexture() != null) {
+//                    setTexture(getClickTexture());
+//                } else if (getHoverTexture() != null) {
+//                    setTexture(getHoverTexture());
+//                } else {
+//                    setTexture(getRestTexture());
+//                }
+//            } else {
+//                setTexture(getRestTexture());
+//            }
+//        }
+//        super.updateTouchInput(mousePos, touchDown);
+//    }
 
-            if (isPointInWidget(mousePos)) {
-                if (touchDown && getClickTexture() != null) {
-                    setTexture(getClickTexture());
-                } else if (getHoverTexture() != null) {
-                    setTexture(getHoverTexture());
-                } else {
-                    setTexture(getRestTexture());
-                }
-            } else {
-                setTexture(getRestTexture());
+    @Override
+    public void onTouchEvent(TouchEvent touchEvent) {
+        super.onTouchEvent(touchEvent);
+        if (isVisible()) {
+            switch (touchEvent.getAction()) {
+                case DOWN:
+                    if (clickTexture != null)
+                        setTexture(clickTexture);
+                    break;
+                case MOVE:
+                    if (isPointInWidget(touchEvent.getX(), touchEvent.getY()) && clickTexture != null)
+                        setTexture(clickTexture);
+                    else
+                        setTexture(restTexture);
+                    break;
+                case UP:
+                    if (onClickListener != null)
+                        onClickListener.onClick(this);
+                    setTexture(restTexture);
+                    break;
             }
         }
-        super.updateTouchInput(mousePos, touchDown);
     }
 
     public Texture getRestTexture() {

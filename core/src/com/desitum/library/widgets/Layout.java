@@ -1,11 +1,8 @@
 package com.desitum.library.widgets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
@@ -28,10 +25,6 @@ public abstract class Layout extends Widget {
     }
 
     public void draw(Batch batch, Viewport camera) {
-        Rectangle scissor = new Rectangle();
-        camera.calculateScissors(batch.getTransformMatrix(), getBoundingRectangle(), scissor);
-        ScissorStack.pushScissors(scissor);
-
         super.draw(batch, camera);
         if (isVisible()) {
             for (Widget widget : widgets) {
@@ -48,7 +41,6 @@ public abstract class Layout extends Widget {
             }
         }
         batch.flush();
-        ScissorStack.popScissors();
     }
 
     public float getBaseX() {
@@ -110,18 +102,34 @@ public abstract class Layout extends Widget {
         }
     }
 
-    @Override
-    public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
-        super.updateTouchInput(mousePos, clickDown);
-        if (isVisible()) {
+//    @Override
+//    public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
+//        super.updateTouchInput(mousePos, clickDown);
+//        if (isVisible()) {
+//
+//            for (int i = widgets.size() - 1; i >= 0; i--) {
+//                widgets.get(i).updateTouchInput(mousePos, clickDown);
+//                if (widgets.get(i).isPointInWidget(mousePos)) {
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
-            for (int i = widgets.size() - 1; i >= 0; i--) {
-                widgets.get(i).updateTouchInput(mousePos, clickDown);
-                if (widgets.get(i).isPointInWidget(mousePos)) {
-                    break;
-                }
+
+    @Override
+    public void onTouchEvent(TouchEvent touchEvent) {
+        super.onTouchEvent(touchEvent);
+    }
+
+    @Override
+    public Widget getWidget(Vector3 touchPoint) {
+        for (Widget widget : widgets) {
+            if (widget.isPointInWidget(touchPoint)) {
+                return widget.getWidget(touchPoint);
             }
         }
+        return this;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class MenuScreen extends GameScreen {
     public MenuScreen() {
         super(SCREEN_WIDTH, SCREEN_HEIGHT);
         setupWorld();
-        setClearColor(new Color(1, 0, 0, 1));
+        setClearColor(new Color(0.5f, 0, 0.5f, 1));
     }
 
     private void setupWorld() {

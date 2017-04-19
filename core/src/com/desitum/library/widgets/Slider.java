@@ -40,18 +40,25 @@ public class Slider extends Widget {
         barImageHeight = height / 10;
     }
 
+//    @Override
+//    public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
+//        if (isVisible()) {
+//            if (isPointInWidget(mousePos)) {
+//                if (clickDown) {
+//                    value = (mousePos.x - getX()) / getWidth();
+//                } else if (isClickDown()) {
+//                    if (onValueChangeListener != null) onValueChangeListener.onChange(this, value);
+//                }
+//            }
+//            super.updateTouchInput(mousePos, clickDown);
+//        }
+//    }
+
     @Override
-    public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
-        if (isVisible()) {
-            if (isPointInWidget(mousePos)) {
-                if (clickDown) {
-                    value = (mousePos.x - getX()) / getWidth();
-                } else if (isClickDown()) {
-                    if (onValueChangeListener != null) onValueChangeListener.onChange(this, value);
-                }
-            }
-            super.updateTouchInput(mousePos, clickDown);
-        }
+    public void onTouchEvent(TouchEvent touchEvent) {
+        super.onTouchEvent(touchEvent);
+        value = (touchEvent.getX() - getX()) / getWidth();
+
     }
 
     @Override

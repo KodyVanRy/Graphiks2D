@@ -1,12 +1,15 @@
 package com.desitum.library.game;
 
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.widgets.Layout;
+import com.desitum.library.widgets.TouchEvent;
 import com.desitum.library.widgets.Widget;
 
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ public class World implements InputProcessor{
     private List<ParticleEmitter> particleEmitters;
     private OrthographicCamera camera;
     private Viewport viewport;
+    private Widget widgetFocus;
+    private TouchEvent touchEvent;
 
     /**
      * Create new {@link World}
@@ -40,6 +45,7 @@ public class World implements InputProcessor{
         this.widgets = new ArrayList<Widget>();
         this.gameObjects = new ArrayList<GameObject>();
         this.particleEmitters = new ArrayList<ParticleEmitter>();
+        this.touchEvent = new TouchEvent();
     }
 
     /**
@@ -65,18 +71,19 @@ public class World implements InputProcessor{
      * @param touchDown is clicking or if currently touching screen
      */
     public void updateTouchInput(Vector3 touchPos, boolean touchDown) {
+        touchEvent.setX(touchPos.x);
+        touchEvent.setY(touchPos.y);
         if (touchDown && !clickDown) {
-            onClickDown(touchPos);
+            onTouchDown(touchPos);
         } else if (!touchDown && clickDown) {
-            onClickUp(touchPos);
-        }
-        clickDown = touchDown;
-        for (Widget widget : widgets) {
-            widget.updateTouchInput(touchPos, touchDown);
+            onTouchUp(touchPos);
+        } else if (touchDown && clickDown) {
+            onTouchMoved(touchPos);
         }
         for (GameObject gameObject2D : gameObjects) {
             gameObject2D.updateTouchInput(touchPos, touchDown);
         }
+        clickDown = touchDown;
     }
 
     /**
@@ -152,12 +159,31 @@ public class World implements InputProcessor{
         return camera;
     }
 
-    public void onClickDown(Vector3 clickPos) {
-
+    public void onTouchDown(Vector3 clickPos) {
+        touchEvent.setAction(TouchEvent.Action.DOWN);
+        for (Widget widget : widgets) {
+            if (widget.isPointInWidget(clickPos)) {
+                System.out.println("Touch Event");
+                widget.onTouchEvent(touchEvent);
+                widgetFocus = widget.getWidget(clickPos);
+                break;
+            }
+        }
     }
 
-    public void onClickUp(Vector3 clickPos) {
+    public void onTouchUp(Vector3 clickPos) {
+        touchEvent.setAction(TouchEvent.Action.UP);
+        if (widgetFocus != null) {
+            widgetFocus.onTouchEvent(touchEvent);
+        }
+        widgetFocus = null;
+    }
 
+    private void onTouchMoved(Vector3 touchPos) {
+        touchEvent.setAction(TouchEvent.Action.MOVE);
+        if (widgetFocus != null) {
+            widgetFocus.onTouchEvent(touchEvent);
+        }
     }
 
     public void setCamera(OrthographicCamera camera) {

@@ -73,39 +73,39 @@ public class EditText extends Widget {
         }
     }
 
-    @Override
-    public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
-        // Android has to come before super.updateTouchInput due to complications with 4 popups.
-        if (isVisible()) {
-            if (Gdx.app.getType() == Application.ApplicationType.Android) {
-                if (isClickDown() && !clickDown && isPointInWidget(mousePos)) {
-                    Input.TextInputListener inputListener = new Input.TextInputListener() {
-                        @Override
-                        public void input(String input) {
-                            text = input;
-                        }
-
-                        @Override
-                        public void canceled() {
-
-                        }
-                    };
-                    Gdx.input.getTextInput(inputListener, hint, text, "");
-                }
-            }
-
-            super.updateTouchInput(mousePos, clickDown);
-
-            if (clickDown) {
-                focus = false;
-                if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
-                    if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
-                        focus = true;
-                    }
-                }
-            }
-        }
-    }
+//    @Override
+//    public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
+//        // Android has to come before super.updateTouchInput due to complications with 4 popups.
+//        if (isVisible()) {
+//            if (Gdx.app.getType() == Application.ApplicationType.Android) {
+//                if (isClickDown() && !clickDown && isPointInWidget(mousePos)) {
+//                    Input.TextInputListener inputListener = new Input.TextInputListener() {
+//                        @Override
+//                        public void input(String input) {
+//                            text = input;
+//                        }
+//
+//                        @Override
+//                        public void canceled() {
+//
+//                        }
+//                    };
+//                    Gdx.input.getTextInput(inputListener, hint, text, "");
+//                }
+//            }
+//
+////            super.updateTouchInput(mousePos, clickDown);
+//
+//            if (clickDown) {
+//                focus = false;
+//                if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
+//                    if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+//                        focus = true;
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private void setupFontSize() {
         float x = 0;

@@ -171,8 +171,12 @@ public class Widget extends Sprite implements Comparable<Widget> {
                 shadow.getWidth(), shadow.getHeight(), false, false);
     }
 
-    public void updateTouchInput(Vector3 mousePos, boolean touchDown) {
-        clickIsDown = touchDown;
+    public void onTouchEvent(TouchEvent touchEvent) {
+
+    }
+
+    public Widget getWidget(Vector3 touchPoint) {
+        return this;
     }
 
     //region Getters and Setters
@@ -182,6 +186,10 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     public boolean isPointInWidget(Vector3 point) {
         return getBoundingRectangle().contains(point.x, point.y);
+    }
+
+    public boolean isPointInWidget(float x, float y) {
+        return getBoundingRectangle().contains(x, y);
     }
 
     public float getMx() {
