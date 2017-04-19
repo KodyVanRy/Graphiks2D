@@ -57,8 +57,7 @@ public class Slider extends Widget {
     @Override
     public void onTouchEvent(TouchEvent touchEvent) {
         super.onTouchEvent(touchEvent);
-        value = (touchEvent.getX() - getX()) / getWidth();
-
+        value = Math.max(Math.min((touchEvent.getX() - getX()) / getWidth(), 1), 0);
     }
 
     @Override
