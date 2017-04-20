@@ -1,15 +1,8 @@
 package com.desitum.library;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.GameScreen;
@@ -19,7 +12,6 @@ import com.desitum.library.widgets.LinearLayout;
 import com.desitum.library.widgets.MenuBuilder;
 import com.desitum.library.widgets.Slider;
 import com.desitum.library.widgets.Widget;
-import com.desitum.library.world.KodyWorld;
 
 /**
  * Created by kody on 12/12/15.
@@ -47,6 +39,7 @@ public class MenuScreen extends GameScreen {
         ll.addWidget(mSlider);
 
         getWorld().addWidget(ll);
+//        getCam().position.set(0, 0, 0);
 
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();

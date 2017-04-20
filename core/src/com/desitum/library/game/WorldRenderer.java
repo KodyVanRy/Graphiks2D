@@ -35,4 +35,11 @@ public class WorldRenderer {
         }
         batch.flush();
     }
+
+    public void drawForeground(Batch batch) {
+        for (Widget widget : world.getForegroundWidgets()) {
+            widget.draw(batch, world.getViewport());
+        }
+        batch.flush();
+    }
 }
