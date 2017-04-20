@@ -47,6 +47,11 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     private boolean enabled;
     private boolean clickIsDown;
+    private boolean focus;
+
+    private int widgetFlags = 0;
+
+    private int FOCUSABLE = 1;
 
 
     /**
@@ -171,11 +176,11 @@ public class Widget extends Sprite implements Comparable<Widget> {
                 shadow.getWidth(), shadow.getHeight(), false, false);
     }
 
-    public void onTouchEvent(TouchEvent touchEvent) {
-
+    public boolean onTouchEvent(TouchEvent touchEvent) {
+        return isPointInWidget(touchEvent.getX(), touchEvent.getY());
     }
 
-    public Widget getWidget(Vector3 touchPoint) {
+    public Widget requestFocus(Vector3 touchPoint) {
         return this;
     }
 
@@ -306,5 +311,9 @@ public class Widget extends Sprite implements Comparable<Widget> {
         } catch (Exception e) {
             // Texture or shadow have been disposed elsewhere
         }
+    }
+
+    public boolean isFocus() {
+        return focus;
     }
 }

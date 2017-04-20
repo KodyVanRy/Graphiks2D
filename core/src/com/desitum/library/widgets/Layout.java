@@ -118,15 +118,24 @@ public abstract class Layout extends Widget {
 
 
     @Override
-    public void onTouchEvent(TouchEvent touchEvent) {
-        super.onTouchEvent(touchEvent);
+    public boolean onTouchEvent(TouchEvent touchEvent) {
+        if (isVisible()) {
+            for (Widget widget : widgets) {
+                if (widget.isPointInWidget(touchEvent.getX(), touchEvent.getY())) {
+                    if (widget.onTouchEvent(touchEvent)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return super.onTouchEvent(touchEvent);
     }
 
     @Override
-    public Widget getWidget(Vector3 touchPoint) {
+    public Widget requestFocus(Vector3 touchPoint) {
         for (Widget widget : widgets) {
             if (widget.isPointInWidget(touchPoint)) {
-                return widget.getWidget(touchPoint);
+                return widget.requestFocus(touchPoint);
             }
         }
         return this;

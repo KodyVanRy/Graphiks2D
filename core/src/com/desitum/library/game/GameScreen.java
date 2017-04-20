@@ -10,62 +10,77 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]
  */
 public class GameScreen implements Screen {
 
-    private OrthographicCamera cam;
-    private Viewport viewport;
-    private SpriteBatch spriteBatch;
-    private World world;
-    private WorldRenderer worldRenderer;
+    private float mViewportWidth;
+    private float mViewportHeight;
+    
+    private OrthographicCamera mCam;
+    private OrthographicCamera mForegroundCam;
+    private Viewport mViewport;
+    private Viewport mForegroundViewport;
+    private SpriteBatch mSpriteBatch;
+    private World mWorld;
+    private WorldRenderer mWorldRenderer;
 
-    private Vector3 touchPos;
-    private Color clearColor;
+    private Vector3 mTouchPos;
+    private Vector3 mForegroundTouchPos;
+    private Color mClearColor;
 
     /**
      * Create a new {@link GameScreen} object
      * @param viewportWidth Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
-     * @param world world class controller
+     * @param world mWorld class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer) {
-        spriteBatch = new SpriteBatch();
-        cam = new OrthographicCamera(viewportWidth, viewportHeight);
-        cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        viewport = new FitViewport(viewportWidth, viewportHeight, cam);
+        mSpriteBatch = new SpriteBatch();
+        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
+        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
+        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
+        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
+        mViewportWidth = viewportWidth;
+        mViewportHeight = viewportHeight;
 
-        touchPos = new Vector3(0, 0, 0);
+        mTouchPos = new Vector3(0, 0, 0);
+        mForegroundTouchPos = new Vector3(0, 0, 0);
 
-        world.setCamera(cam);
-        world.setViewport(viewport);
+        world.setCamera(mCam);
+        world.setViewport(mViewport);
         worldRenderer.setWorld(world);
-        clearColor = new Color(0, 0, 0, 1);
+        mClearColor = new Color(0, 0, 0, 1);
     }
 
     /**
      * Create a new {@link GameScreen} object
      * @param viewportWidth Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
-     * @param world world class controller
+     * @param world mWorld class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, World world) {
-        spriteBatch = new SpriteBatch();
-        cam = new OrthographicCamera(viewportWidth, viewportHeight);
-        cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        viewport = new FitViewport(viewportWidth, viewportHeight, cam);
+        mSpriteBatch = new SpriteBatch();
+        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
+        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
+        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
+        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
+        mViewportWidth = viewportWidth;
+        mViewportHeight = viewportHeight;
 
-        touchPos = new Vector3(0, 0, 0);
+        mTouchPos = new Vector3(0, 0, 0);
+        mForegroundTouchPos = new Vector3(0, 0, 0);
 
-        world.setCamera(cam);
-        world.setViewport(viewport);
-        worldRenderer = new WorldRenderer(world);
-        clearColor = new Color(0, 0, 0, 1);
+        world.setCamera(mCam);
+        world.setViewport(mViewport);
+        mWorldRenderer = new WorldRenderer(world);
+        mClearColor = new Color(0, 0, 0, 1);
     }
 
     /**
@@ -74,16 +89,22 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
-        spriteBatch = new SpriteBatch();
-        cam = new OrthographicCamera(viewportWidth, viewportHeight);
-        cam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        viewport = new FitViewport(viewportWidth, viewportHeight, cam);
+        mSpriteBatch = new SpriteBatch();
+        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
+        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
+        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
+        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
+        mViewportWidth = viewportWidth;
+        mViewportHeight = viewportHeight;
 
-        touchPos = new Vector3(0, 0, 0);
+        mTouchPos = new Vector3(0, 0, 0);
+        mForegroundTouchPos = new Vector3(0, 0, 0);
 
-        world = new World(cam, viewport);
-        worldRenderer = new WorldRenderer(world);
-        clearColor = new Color(0, 0, 0, 1);
+        mWorld = new World(mCam, mViewport);
+        mWorldRenderer = new WorldRenderer(mWorld);
+        mClearColor = new Color(0, 0, 0, 1);
     }
 
     @Override
@@ -97,30 +118,42 @@ public class GameScreen implements Screen {
      * @param delta time since last frame
      */
     public void update(float delta) {
-        touchPos = viewport.unproject(touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        world.updateTouchInput(touchPos, Gdx.input.isTouched());
-        world.update(delta);
+        mForegroundTouchPos = mForegroundViewport.unproject(mTouchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+        if (!mWorld.updateForegroundTouchInput(mTouchPos, Gdx.input.isTouched())) {
+            mTouchPos = mViewport.unproject(mTouchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            mWorld.updateTouchInput(mTouchPos, Gdx.input.isTouched());
+        }
+        mWorld.update(delta);
     }
 
     /**
-     * Draw the world to the screen
+     * Draw the mWorld to the screen
      */
     public void draw() {
-        cam.update();
-        spriteBatch.setProjectionMatrix(cam.combined);
+        mCam.update();
+        mForegroundCam.update();
+        mSpriteBatch.setProjectionMatrix(mCam.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+        Gdx.gl.glClearColor(mClearColor.r, mClearColor.g, mClearColor.b, mClearColor.a);
 
-        spriteBatch.begin();
+        mSpriteBatch.begin();
 
-        worldRenderer.draw(spriteBatch);
+        mWorldRenderer.draw(mSpriteBatch);
 
-        spriteBatch.end();
+        mSpriteBatch.end();
+
+        mSpriteBatch.setProjectionMatrix(mForegroundCam.combined);
+
+        mSpriteBatch.begin();
+
+        mWorldRenderer.drawForeground(mSpriteBatch);
+
+        mSpriteBatch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        mViewport.update(width, height);
     }
 
     @Override
@@ -146,66 +179,66 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         try {
-            spriteBatch.dispose();
-            world.dispose();
+            mSpriteBatch.dispose();
+            mWorld.dispose();
         } catch (IllegalArgumentException e) {
             // Never got initialized
         }
     }
 
     public OrthographicCamera getCam() {
-        return cam;
+        return mCam;
     }
 
-    public void setCam(OrthographicCamera cam) {
-        this.cam = cam;
+    public void setCam(OrthographicCamera mCam) {
+        this.mCam = mCam;
     }
 
     public Viewport getViewport() {
-        return viewport;
+        return mViewport;
     }
 
     public void setViewport(Viewport viewport) {
-        this.viewport = viewport;
+        this.mViewport = viewport;
     }
 
     public SpriteBatch getSpriteBatch() {
-        return spriteBatch;
+        return mSpriteBatch;
     }
 
     public void setSpriteBatch(SpriteBatch spriteBatch) {
-        this.spriteBatch = spriteBatch;
+        this.mSpriteBatch = spriteBatch;
     }
 
     public World getWorld() {
-        return world;
+        return mWorld;
     }
 
     public void setWorld(World world) {
-        this.world = world;
-        world.setCamera(cam);
-        world.setViewport(viewport);
-        worldRenderer.setWorld(world);
-        this.worldRenderer = new WorldRenderer(world);
+        this.mWorld = world;
+        world.setCamera(mCam);
+        world.setViewport(mViewport);
+        mWorldRenderer.setWorld(world);
+        this.mWorldRenderer = new WorldRenderer(world);
     }
 
     public WorldRenderer getWorldRenderer() {
-        return worldRenderer;
+        return mWorldRenderer;
     }
 
     public void setWorldRenderer(WorldRenderer worldRenderer) {
-        this.worldRenderer = worldRenderer;
+        this.mWorldRenderer = worldRenderer;
     }
 
     public Vector3 getTouchPos() {
-        return touchPos;
+        return mTouchPos;
     }
 
     public void setTouchPos(Vector3 touchPos) {
-        this.touchPos = touchPos;
+        this.mTouchPos = touchPos;
     }
 
     public void setClearColor(Color clearColor) {
-        this.clearColor = clearColor;
+        this.mClearColor = clearColor;
     }
 }

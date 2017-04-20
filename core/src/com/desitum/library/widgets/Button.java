@@ -55,27 +55,28 @@ public class Button extends Widget {
 //    }
 
     @Override
-    public void onTouchEvent(TouchEvent touchEvent) {
+    public boolean onTouchEvent(TouchEvent touchEvent) {
         super.onTouchEvent(touchEvent);
         if (isVisible()) {
             switch (touchEvent.getAction()) {
                 case DOWN:
                     if (clickTexture != null)
                         setTexture(clickTexture);
-                    break;
+                    return true;
                 case MOVE:
                     if (isPointInWidget(touchEvent.getX(), touchEvent.getY()) && clickTexture != null)
                         setTexture(clickTexture);
                     else
                         setTexture(restTexture);
-                    break;
+                    return true;
                 case UP:
                     if (onClickListener != null)
                         onClickListener.onClick(this);
                     setTexture(restTexture);
-                    break;
+                    return true;
             }
         }
+        return super.onTouchEvent(touchEvent);
     }
 
     public Texture getRestTexture() {
