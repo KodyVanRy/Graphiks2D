@@ -1,4 +1,7 @@
-apply plugin: "java"
+plugins {
+    id "java"
+    id "com.jfrog.bintray" version "1.7.3"
+}
 
 sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -8,6 +11,24 @@ sourceSets.main.java.srcDirs = ["src/"]
 
 eclipse.project {
     name = appName + "-core"
+}
+
+bintray {
+    user = System.getProperty("bintray_user")
+    key = System.getProperty("bintray_pass")
+    pkg {
+        version {
+            name = '1.0-Final'
+            desc = 'Gradle Bintray Plugin 1.0 final'
+            released  = new Date()
+            vcsTag = '0.1.0'
+        }
+        repo = 'generic'
+        name = 'gradle-project'
+        userOrg = 'duhvanry'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/KodyVanRy/Graphiks2D.git'
+    }
 }
 
 dependencies {
