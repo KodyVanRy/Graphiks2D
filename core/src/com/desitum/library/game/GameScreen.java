@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.desitum.library.logging.Log;
 
 /**
  * Created by kody on 12/27/15.
@@ -30,6 +32,11 @@ public class GameScreen implements Screen {
     private Vector3 mTouchPos;
     private Vector3 mForegroundTouchPos;
     private Color mClearColor;
+
+    private ShapeRenderer debugShapeRenderer;
+
+    public static final int ASPECT_FILL = 1;
+    public static final int ASPECT_FIT = 1 << 1;
 
     /**
      * Create a new {@link GameScreen} object
@@ -55,6 +62,9 @@ public class GameScreen implements Screen {
         world.setViewport(mViewport);
         worldRenderer.setWorld(world);
         mClearColor = new Color(0, 0, 0, 1);
+
+
+        debugShapeRenderer = new ShapeRenderer();
     }
 
     /**
@@ -81,6 +91,9 @@ public class GameScreen implements Screen {
         world.setViewport(mViewport);
         mWorldRenderer = new WorldRenderer(world);
         mClearColor = new Color(0, 0, 0, 1);
+
+
+        debugShapeRenderer = new ShapeRenderer();
     }
 
     /**
@@ -105,6 +118,9 @@ public class GameScreen implements Screen {
         mWorld = new World(mCam, mViewport);
         mWorldRenderer = new WorldRenderer(mWorld);
         mClearColor = new Color(0, 0, 0, 1);
+
+
+        debugShapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -133,8 +149,14 @@ public class GameScreen implements Screen {
         mCam.update();
         mForegroundCam.update();
         mSpriteBatch.setProjectionMatrix(mCam.combined);
+        debugShapeRenderer.setProjectionMatrix(mCam.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(mClearColor.r, mClearColor.g, mClearColor.b, mClearColor.a);
+
+        debugShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        debugShapeRenderer.setColor(0.2f, 0f, 0.2f, 1f);
+        debugShapeRenderer.rect(0, 0, mViewportWidth, mViewportHeight);
+        debugShapeRenderer.end();
 
         mSpriteBatch.begin();
 
@@ -240,5 +262,48 @@ public class GameScreen implements Screen {
 
     public void setClearColor(Color clearColor) {
         this.mClearColor = clearColor;
+    }
+
+
+    protected static float getScreenWidth(float desiredWidth, float desiredHeight,
+                                          int aspectFlags) {
+
+        if ((aspectFlags & ASPECT_FIT) != 0) {
+            return desiredWidth;
+        } else if ((aspectFlags & ASPECT_FILL) != 0) {
+            float viewAspect = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
+
+            if (desiredWidth > (desiredHeight * viewAspect)) {
+                // limited by narrow width; restrict height
+                Log.d(GameScreen.class, "actualWidth1 = " + desiredWidth);
+                return desiredWidth;
+            } else {
+                // limited by short height; restrict width
+                Log.d(GameScreen.class, "actualWidth2 = " + (desiredHeight * viewAspect));
+                return (desiredHeight * viewAspect);
+            }
+        }
+        return desiredWidth;
+    }
+
+
+    protected static float getScreenHeight(float desiredWidth, float desiredHeight,
+                                           int aspectFlags) {
+        if ((aspectFlags & ASPECT_FIT) != 0) {
+            return desiredHeight;
+        } else if ((aspectFlags & ASPECT_FILL) != 0) {
+            float viewAspect = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
+
+            if (desiredWidth > (desiredHeight * viewAspect)) {
+                // limited by narrow width; restrict height
+                Log.d(GameScreen.class, "actualHeight1 = " + (desiredHeight * viewAspect));
+                return (desiredWidth / viewAspect);
+            } else {
+                // limited by short height; restrict width
+                Log.d(GameScreen.class, "actualHeight2 = " + desiredHeight);
+                return desiredHeight;
+            }
+        }
+        return desiredHeight;
     }
 }
