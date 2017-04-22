@@ -7,6 +7,7 @@ import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.GameScreen;
 import com.desitum.library.interpolation.Interpolation;
+import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.widgets.LinearLayout;
 import com.desitum.library.widgets.MenuBuilder;
@@ -26,6 +27,9 @@ public class MenuScreen extends GameScreen {
         super(SCREEN_WIDTH, SCREEN_HEIGHT);
         setupWorld();
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
+        Log.d(this, "Hello world");
+        Log.d(this.getClass(), "Hello world");
+        Log.d("Hello I am a muffin", "Hello world");
     }
 
     private void setupWorld() {

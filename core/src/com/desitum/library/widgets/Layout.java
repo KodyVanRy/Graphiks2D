@@ -121,10 +121,14 @@ public abstract class Layout extends Widget {
     public boolean onTouchEvent(TouchEvent touchEvent) {
         if (isVisible()) {
             for (Widget widget : widgets) {
-                if (widget.isPointInWidget(touchEvent.getX(), touchEvent.getY())) {
-                    if (widget.onTouchEvent(touchEvent)) {
-                        return true;
-                    }
+                switch (touchEvent.getAction()) {
+                    case DOWN:
+                        if (widget.isPointInWidget(touchEvent.getX(), touchEvent.getY())) {
+                            if (widget.onTouchEvent(touchEvent)) {
+                                return true;
+                            }
+                        }
+                        break;
                 }
             }
         }
