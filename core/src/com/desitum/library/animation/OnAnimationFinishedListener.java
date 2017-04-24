@@ -6,5 +6,5 @@ package com.desitum.library.animation;
  */
 public interface OnAnimationFinishedListener {
 
-    public void onAnimationFinished(Animator anim);
+    void onAnimationFinished(Animator anim);
 }

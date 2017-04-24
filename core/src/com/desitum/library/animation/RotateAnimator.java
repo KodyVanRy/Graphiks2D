@@ -17,26 +17,26 @@ import com.desitum.library.interpolation.OvershootInterpolator;
  */
 public class RotateAnimator extends Animator {
 
-    private float amountToRotate;
-    private float startRotation;
-    private float endRotation;
-    private float currentRotation;
+    private float mAmountToRotate;
+    private float mStartRotation;
+    private float mEndRotation;
+    private float mCurrentRotation;
 
-    private Interpolator interpolator;
+    private Interpolator mInterpolator;
 
     public RotateAnimator(float duration, float delay, float amountToRotate, int interpolator) {
         super(duration, delay);
-        this.amountToRotate = amountToRotate;
-        this.startRotation = 0;
-        this.endRotation = amountToRotate;
+        this.mAmountToRotate = amountToRotate;
+        this.mStartRotation = 0;
+        this.mEndRotation = amountToRotate;
         setupInterpolator(interpolator);
     }
 
     public RotateAnimator(Sprite sprite, float duration, float delay, float startRotation, float endRotation, int interpolator) {
         super(sprite, duration, delay);
-        this.startRotation = startRotation;
-        this.endRotation = endRotation;
-        this.amountToRotate = endRotation - startRotation;
+        this.mStartRotation = startRotation;
+        this.mEndRotation = endRotation;
+        this.mAmountToRotate = endRotation - startRotation;
         setupInterpolator(interpolator);
     }
 
@@ -47,33 +47,33 @@ public class RotateAnimator extends Animator {
 
     @Override
     protected void updateAnimation() {
-        currentRotation = startRotation + amountToRotate * interpolator.getInterpolation(getTimeInAnimation());
+        mCurrentRotation = mStartRotation + mAmountToRotate * mInterpolator.getInterpolation(getTimeInAnimation());
 
-        if (sprite != null) {
-            sprite.setRotation(currentRotation);
+        if (mSprite != null) {
+            mSprite.setRotation(mCurrentRotation);
         }
     }
 
     @Override
     public Animator duplicate() {
-        return new RotateAnimator(sprite, getDuration(), getDelay(), startRotation, endRotation, Interpolation.getInterpolatorNum(interpolator));
+        return new RotateAnimator(mSprite, getDuration(), getDelay(), mStartRotation, mEndRotation, Interpolation.getInterpolatorNum(mInterpolator));
     }
 
     private void setupInterpolator(int interpolator) {
         if (interpolator == Interpolation.ACCELERATE_INTERPOLATOR) {
-            this.interpolator = AccelerateInterpolator.$();
+            this.mInterpolator = AccelerateInterpolator.$();
         } else if (interpolator == Interpolation.DECELERATE_INTERPOLATOR) {
-            this.interpolator = DecelerateInterpolator.$();
+            this.mInterpolator = DecelerateInterpolator.$();
         } else if (interpolator == Interpolation.ANTICIPATE_INTERPOLATOR) {
-            this.interpolator = AnticipateInterpolator.$();
+            this.mInterpolator = AnticipateInterpolator.$();
         } else if (interpolator == Interpolation.OVERSHOOT_INTERPOLATOR) {
-            this.interpolator = OvershootInterpolator.$();
+            this.mInterpolator = OvershootInterpolator.$();
         } else if (interpolator == Interpolation.ACCELERATE_DECELERATE_INTERPOLATOR) {
-            this.interpolator = AccelerateDecelerateInterpolator.$();
+            this.mInterpolator = AccelerateDecelerateInterpolator.$();
         } else if (interpolator == Interpolation.BOUNCE_INTERPOLATOR) {
-            this.interpolator = BounceInterpolator.$();
+            this.mInterpolator = BounceInterpolator.$();
         } else if (interpolator == Interpolation.LINEAR_INTERPOLATOR) {
-            this.interpolator = LinearInterpolator.$();
+            this.mInterpolator = LinearInterpolator.$();
         }
     }
 }

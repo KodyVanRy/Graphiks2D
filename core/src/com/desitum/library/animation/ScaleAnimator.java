@@ -16,31 +16,29 @@ import com.desitum.library.interpolation.OvershootInterpolator;
  */
 public class ScaleAnimator extends Animator {
 
-    private float startScale;
-    private float endScale;
+    private float mStartScale;
+    private float mEndScale;
 
-    private float scaleSize;
+    private float mScaleSize;
 
-    private boolean growing;
+    private boolean mGrowing;
 
-    private Interpolator interpolator;
+    private Interpolator mInterpolator;
 
-    private boolean controllingX;
-    private boolean controllingY;
-
-    private OnAnimationFinishedListener finishedListener;
+    private boolean mControllingX;
+    private boolean mControllingY;
 
     public ScaleAnimator(float duration, float startScale, float endScale, int interpolator) {
         super(duration, 0);
-        this.startScale = startScale;
-        this.endScale = endScale;
+        this.mStartScale = startScale;
+        this.mEndScale = endScale;
 
-        scaleSize = startScale;
+        mScaleSize = startScale;
 
         if (startScale > endScale) {
-            growing = false;
+            mGrowing = false;
         } else {
-            growing = true;
+            mGrowing = true;
         }
 
         setupInterpolator(interpolator);
@@ -48,13 +46,13 @@ public class ScaleAnimator extends Animator {
 
     public ScaleAnimator(float duration, float delay, float startScale, float endScale, int interpolator) {
         super(duration, delay);
-        this.startScale = startScale;
-        this.endScale = endScale;
+        this.mStartScale = startScale;
+        this.mEndScale = endScale;
 
         if (startScale > endScale) {
-            growing = false;
+            mGrowing = false;
         } else {
-            growing = true;
+            mGrowing = true;
         }
 
         setupInterpolator(interpolator);
@@ -62,34 +60,34 @@ public class ScaleAnimator extends Animator {
 
     public ScaleAnimator(Sprite sprite, float duration, float delay, float startScale, float endScale, int interpolator, boolean controlWidth, boolean controlHeight) {
         super(sprite, duration, delay);
-        this.startScale = startScale;
-        this.endScale = endScale;
+        this.mStartScale = startScale;
+        this.mEndScale = endScale;
 
-        this.controllingX = controlWidth;
-        this.controllingY = controlHeight;
+        this.mControllingX = controlWidth;
+        this.mControllingY = controlHeight;
 
         if (startScale > endScale) {
-            growing = false;
+            mGrowing = false;
         } else {
-            growing = true;
+            mGrowing = true;
         }
 
         setupInterpolator(interpolator);
     }
 
     protected void updateAnimation() {
-        if (growing) {
-            scaleSize = startScale + (endScale - startScale) * interpolator.getInterpolation(getTimeInAnimation());
+        if (mGrowing) {
+            mScaleSize = mStartScale + (mEndScale - mStartScale) * mInterpolator.getInterpolation(getTimeInAnimation());
         } else {
-            scaleSize = startScale - (startScale - endScale) * interpolator.getInterpolation(getTimeInAnimation());
+            mScaleSize = mStartScale - (mStartScale - mEndScale) * mInterpolator.getInterpolation(getTimeInAnimation());
         }
 
-        if (sprite != null) {
-            if (controllingY) {
-                this.sprite.setScale(this.sprite.getScaleX(), this.getScaleSize());
+        if (mSprite != null) {
+            if (mControllingY) {
+                this.mSprite.setScale(this.mSprite.getScaleX(), this.getmScaleSize());
             }
-            if (controllingX) {
-                this.sprite.setScale(this.getScaleSize(), this.sprite.getScaleY());
+            if (mControllingX) {
+                this.mSprite.setScale(this.getmScaleSize(), this.mSprite.getScaleY());
             }
         }
     }
@@ -97,60 +95,55 @@ public class ScaleAnimator extends Animator {
     public void setSprite(Sprite control, boolean controlX, boolean controlY) {
         super.setSprite(control);
 
-        this.controllingX = controlX;
-        this.controllingY = controlY;
+        this.mControllingX = controlX;
+        this.mControllingY = controlY;
     }
 
-    public boolean isControllingY() {
-        return controllingY;
+    public boolean ismControllingY() {
+        return mControllingY;
     }
 
     public boolean isControllingX() {
-        return controllingX;
+        return mControllingX;
     }
 
     public boolean setControlX(boolean control) {
-        return controllingX = control;
+        return mControllingX = control;
     }
 
     public boolean setControlY(boolean control) {
-        return controllingY = control;
+        return mControllingY = control;
     }
 
     @Override
     public float getCurrentAmount() {
-        return getScaleSize();
+        return getmScaleSize();
     }
 
-    public float getScaleSize() {
-        return scaleSize;
-    }
-
-    @Override
-    public void setOnFinishedListener(OnAnimationFinishedListener listener) {
-        this.finishedListener = listener;
+    public float getmScaleSize() {
+        return mScaleSize;
     }
 
     private void setupInterpolator(int interpolator) {
         if (interpolator == Interpolation.ACCELERATE_INTERPOLATOR) {
-            this.interpolator = AccelerateInterpolator.$();
+            this.mInterpolator = AccelerateInterpolator.$();
         } else if (interpolator == Interpolation.DECELERATE_INTERPOLATOR) {
-            this.interpolator = DecelerateInterpolator.$();
+            this.mInterpolator = DecelerateInterpolator.$();
         } else if (interpolator == Interpolation.ANTICIPATE_INTERPOLATOR) {
-            this.interpolator = AnticipateInterpolator.$();
+            this.mInterpolator = AnticipateInterpolator.$();
         } else if (interpolator == Interpolation.OVERSHOOT_INTERPOLATOR) {
-            this.interpolator = OvershootInterpolator.$();
+            this.mInterpolator = OvershootInterpolator.$();
         } else if (interpolator == Interpolation.ACCELERATE_DECELERATE_INTERPOLATOR) {
-            this.interpolator = AccelerateDecelerateInterpolator.$();
+            this.mInterpolator = AccelerateDecelerateInterpolator.$();
         } else if (interpolator == Interpolation.BOUNCE_INTERPOLATOR) {
-            this.interpolator = BounceInterpolator.$();
+            this.mInterpolator = BounceInterpolator.$();
         } else if (interpolator == Interpolation.LINEAR_INTERPOLATOR) {
-            this.interpolator = LinearInterpolator.$();
+            this.mInterpolator = LinearInterpolator.$();
         }
     }
 
     @Override
     public Animator duplicate() {
-        return new ScaleAnimator(sprite, getDuration(), getDelay(), startScale, endScale, Interpolation.getInterpolatorNum(interpolator), controllingX, controllingY);
+        return new ScaleAnimator(mSprite, getDuration(), getDelay(), mStartScale, mEndScale, Interpolation.getInterpolatorNum(mInterpolator), mControllingX, mControllingY);
     }
 }
