@@ -64,7 +64,7 @@ public class Particle extends Sprite {
             this.setColor(
                     colorEffects.getCurrentRed(),
                     colorEffects.getCurrentGreen(),
-                    colorEffects.getmCurrentBlue(),
+                    colorEffects.getCurrentBlue(),
                     colorEffects.getCurrentAlpha());
         }
     }

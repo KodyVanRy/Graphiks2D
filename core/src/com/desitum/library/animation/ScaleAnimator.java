@@ -84,10 +84,10 @@ public class ScaleAnimator extends Animator {
 
         if (mSprite != null) {
             if (mControllingY) {
-                this.mSprite.setScale(this.mSprite.getScaleX(), this.getmScaleSize());
+                this.mSprite.setScale(this.mSprite.getScaleX(), this.getScaleSize());
             }
             if (mControllingX) {
-                this.mSprite.setScale(this.getmScaleSize(), this.mSprite.getScaleY());
+                this.mSprite.setScale(this.getScaleSize(), this.mSprite.getScaleY());
             }
         }
     }
@@ -99,7 +99,7 @@ public class ScaleAnimator extends Animator {
         this.mControllingY = controlY;
     }
 
-    public boolean ismControllingY() {
+    public boolean isControllingY() {
         return mControllingY;
     }
 
@@ -117,10 +117,10 @@ public class ScaleAnimator extends Animator {
 
     @Override
     public float getCurrentAmount() {
-        return getmScaleSize();
+        return getScaleSize();
     }
 
-    public float getmScaleSize() {
+    public float getScaleSize() {
         return mScaleSize;
     }
 

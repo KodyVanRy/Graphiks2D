@@ -111,9 +111,9 @@ public class Widget extends Sprite implements Comparable<Widget> {
             } else if (anim instanceof MovementAnimator && ((MovementAnimator) anim).isControllingY()) {
                 setMy(((MovementAnimator) anim).getCurrentPos());
             } else if (anim instanceof ScaleAnimator && ((ScaleAnimator) anim).isControllingX()) {
-                setScale(((ScaleAnimator) anim).getmScaleSize(), getScaleY());
-            } else if (anim instanceof ScaleAnimator && ((ScaleAnimator) anim).ismControllingY()) {
-                setScale(getScaleX(), ((ScaleAnimator) anim).getmScaleSize());
+                setScale(((ScaleAnimator) anim).getScaleSize(), getScaleY());
+            } else if (anim instanceof ScaleAnimator && ((ScaleAnimator) anim).isControllingY()) {
+                setScale(getScaleX(), ((ScaleAnimator) anim).getScaleSize());
             }
             //TODO need to add in Rotate Animation! Should be fun with Labels and Edit Text :/
         }

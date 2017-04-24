@@ -103,7 +103,7 @@ public class ColorEffects extends Animator {
         return mCurrentGreen;
     }
 
-    public float getmCurrentBlue() {
+    public float getCurrentBlue() {
         return mCurrentBlue;
     }
 
