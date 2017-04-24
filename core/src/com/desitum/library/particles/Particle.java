@@ -12,13 +12,13 @@ import com.desitum.library.animation.ColorEffects;
 public class Particle extends Sprite {
     /*
 
-    - lifespan
-    - gravityX
+    - mLifespan
+    - mGravityX
     - gravityY
-    - velocityX
-    - velocityY
-    - rotationAmount
-    - opacity
+    - mVelocityX
+    - mVelocityY
+    - mRotationAmount
+    - mOpacity
     - boundaryRectangle
 
     By just giving the Particle these values you end up dealing with more primitives and less objects.
@@ -27,9 +27,9 @@ public class Particle extends Sprite {
     used everywhere.
      */
 
-    private float currentLife, lifespan, gravityX, gravityY, velocityX, velocityY, rotationAmount, opacity;
-    private boolean fadeOut, remove;
-    private ColorEffects colorEffects;
+    private float mCurrentLife, mLifespan, mGravityX, mGravityY, mVelocityX, mVelocityY, mRotationAmount, mOpacity;
+    private boolean mFadeOut, mRemove;
+    private ColorEffects mColorEffects;
 
     public Particle(Texture texture, float width, float height, float lifespan) {
         super(texture);
@@ -49,120 +49,120 @@ public class Particle extends Sprite {
     }
 
     public void update(float delta) {
-        currentLife += delta;
-        if (currentLife >= lifespan) {
-            currentLife = lifespan;
-            remove = true;
+        mCurrentLife += delta;
+        if (mCurrentLife >= mLifespan) {
+            mCurrentLife = mLifespan;
+            mRemove = true;
         }
-        velocityX += gravityX * delta;
-        velocityY += gravityY * delta;
-        this.setX(getX() + velocityX * delta);
-        this.setY(getY() + velocityY * delta);
-        this.setRotation(rotationAmount * currentLife / lifespan);
-        if (fadeOut && colorEffects != null) {
-            colorEffects.update(delta);
+        mVelocityX += mGravityX * delta;
+        mVelocityY += mGravityY * delta;
+        this.setX(getX() + mVelocityX * delta);
+        this.setY(getY() + mVelocityY * delta);
+        this.setRotation(mRotationAmount * mCurrentLife / mLifespan);
+        if (mFadeOut && mColorEffects != null) {
+            mColorEffects.update(delta);
             this.setColor(
-                    colorEffects.getCurrentRed(),
-                    colorEffects.getCurrentGreen(),
-                    colorEffects.getCurrentBlue(),
-                    colorEffects.getCurrentAlpha());
+                    mColorEffects.getCurrentRed(),
+                    mColorEffects.getCurrentGreen(),
+                    mColorEffects.getCurrentBlue(),
+                    mColorEffects.getCurrentAlpha());
         }
     }
 
     public void setup(float lifespan, float gravityX, float gravityY, float velocityX,
                        float velocityY, float rotationAmount, float opacity, boolean fadeOut) {
 
-        this.remove = false;
-        this.currentLife = 0;
-        this.lifespan = lifespan;
-        this.gravityX = gravityX;
-        this.gravityY = gravityY;
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
-        this.rotationAmount = rotationAmount;
-        this.opacity = opacity;
-        this.fadeOut = fadeOut;
+        this.mRemove = false;
+        this.mCurrentLife = 0;
+        this.mLifespan = lifespan;
+        this.mGravityX = gravityX;
+        this.mGravityY = gravityY;
+        this.mVelocityX = velocityX;
+        this.mVelocityY = velocityY;
+        this.mRotationAmount = rotationAmount;
+        this.mOpacity = opacity;
+        this.mFadeOut = fadeOut;
         if (fadeOut) {
-            colorEffects = new ColorEffects(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0.0f), lifespan);
-            colorEffects.start(false);
+            mColorEffects = new ColorEffects(new Color(1, 1, 1, 1), new Color(1, 1, 1, 0.0f), lifespan);
+            mColorEffects.start(false);
         }
 
         setOrigin(getWidth() / 2, getHeight() / 2);
     }
 
     public float getCurrentLife() {
-        return currentLife;
+        return mCurrentLife;
     }
 
     public void setCurrentLife(float currentLife) {
-        this.currentLife = currentLife;
+        this.mCurrentLife = currentLife;
     }
 
     public float getLifespan() {
-        return lifespan;
+        return mLifespan;
     }
 
     public void setLifespan(float lifespan) {
-        this.lifespan = lifespan;
+        this.mLifespan = lifespan;
     }
 
     public float getGravityX() {
-        return gravityX;
+        return mGravityX;
     }
 
     public void setGravityX(float gravityX) {
-        this.gravityX = gravityX;
+        this.mGravityX = gravityX;
     }
 
     public float getGravityY() {
-        return gravityY;
+        return mGravityY;
     }
 
     public void setGravityY(float gravityY) {
-        this.gravityY = gravityY;
+        this.mGravityY = gravityY;
     }
 
     public float getVelocityX() {
-        return velocityX;
+        return mVelocityX;
     }
 
     public void setVelocityX(float velocityX) {
-        this.velocityX = velocityX;
+        this.mVelocityX = velocityX;
     }
 
     public float getVelocityY() {
-        return velocityY;
+        return mVelocityY;
     }
 
     public void setVelocityY(float velocityY) {
-        this.velocityY = velocityY;
+        this.mVelocityY = velocityY;
     }
 
     public float getRotationAmount() {
-        return rotationAmount;
+        return mRotationAmount;
     }
 
     public void setRotationAmount(float rotationAmount) {
-        this.rotationAmount = rotationAmount;
+        this.mRotationAmount = rotationAmount;
     }
 
     public float getOpacity() {
-        return opacity;
+        return mOpacity;
     }
 
     public void setOpacity(float opacity) {
-        this.opacity = opacity;
+        this.mOpacity = opacity;
     }
 
     public boolean isFadeOut() {
-        return fadeOut;
+        return mFadeOut;
     }
 
     public void setFadeOut(boolean fadeOut) {
-        this.fadeOut = fadeOut;
+        this.mFadeOut = fadeOut;
     }
 
     public boolean needToRemove() {
-        return remove;
+        return mRemove;
     }
 }
