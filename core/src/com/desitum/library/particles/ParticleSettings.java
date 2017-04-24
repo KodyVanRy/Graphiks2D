@@ -61,7 +61,8 @@ public class ParticleSettings {
     }
 
     public float getHeight() {
-        if (square) return lastWidth;
+        if (square) //noinspection SuspiciousNameCombination
+            return lastWidth;
         return ((float) Math.random() * (maxHeight - minHeight) + minHeight);
     }
 

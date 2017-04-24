@@ -1,7 +1,6 @@
 package com.desitum.library.widgets;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
 import com.desitum.library.listener.OnClickListener;
 
 /**
@@ -19,24 +18,24 @@ public class Button extends Widget {
     that individually? Interesting. I'll bring it up with the Amigo!
      */
 
-    private OnClickListener onClickListener;
+    private OnClickListener mOnClickListener;
 
-    private Texture restTexture;
-    private Texture hoverTexture;
-    private Texture clickTexture;
+    private Texture mRestTexture;
+    private Texture mHoverTexture;
+    private Texture mClickTexture;
 
     public Button(Texture text, String name, float width, float height, float x, float y, Layout parent) {
         super(text, name, width, height, x, y, parent);
-        restTexture = text;
+        mRestTexture = text;
     }
 
 //    @Override
 //    public void updateTouchInput(Vector3 mousePos, boolean touchDown) {
 //        if (isVisible()) {
 //            if (isPointInWidget(mousePos) && isEnabled() && isClickDown() && !touchDown) {
-//                if (onClickListener != null) onClickListener.onClick(this);
+//                if (mOnClickListener != null) mOnClickListener.onClick(this);
 //            } else if (isPointInWidget(mousePos) && touchDown && !isClickDown()) {
-//                if (onClickListener != null) onClickListener.onClickDown(this);
+//                if (mOnClickListener != null) mOnClickListener.onClickDown(this);
 //            }
 //
 //            if (isPointInWidget(mousePos)) {
@@ -60,19 +59,19 @@ public class Button extends Widget {
         if (isVisible()) {
             switch (touchEvent.getAction()) {
                 case DOWN:
-                    if (clickTexture != null)
-                        setTexture(clickTexture);
+                    if (mClickTexture != null)
+                        setTexture(mClickTexture);
                     return true;
                 case MOVE:
-                    if (isPointInWidget(touchEvent.getX(), touchEvent.getY()) && clickTexture != null)
-                        setTexture(clickTexture);
+                    if (isPointInWidget(touchEvent.getX(), touchEvent.getY()) && mClickTexture != null)
+                        setTexture(mClickTexture);
                     else
-                        setTexture(restTexture);
+                        setTexture(mRestTexture);
                     return true;
                 case UP:
-                    if (onClickListener != null)
-                        onClickListener.onClick(this);
-                    setTexture(restTexture);
+                    if (mOnClickListener != null)
+                        mOnClickListener.onClick(this);
+                    setTexture(mRestTexture);
                     return true;
             }
         }
@@ -80,37 +79,37 @@ public class Button extends Widget {
     }
 
     public Texture getRestTexture() {
-        return restTexture;
+        return mRestTexture;
     }
 
     /**
      * @param restTexture texture when button is neither being hovered or clicked
      */
     public void setRestTexture(Texture restTexture) {
-        this.restTexture = restTexture;
+        this.mRestTexture = restTexture;
     }
 
     public OnClickListener getOnClickListener() {
-        return onClickListener;
+        return mOnClickListener;
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+        this.mOnClickListener = onClickListener;
     }
 
     public Texture getHoverTexture() {
-        return hoverTexture;
+        return mHoverTexture;
     }
 
     public void setHoverTexture(Texture hoverTexture) {
-        this.hoverTexture = hoverTexture;
+        this.mHoverTexture = hoverTexture;
     }
 
     public Texture getClickTexture() {
-        return clickTexture;
+        return mClickTexture;
     }
 
     public void setClickTexture(Texture clickTexture) {
-        this.clickTexture = clickTexture;
+        this.mClickTexture = clickTexture;
     }
 }

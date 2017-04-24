@@ -8,49 +8,49 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by kody on 5/25/15.
+ * Created by kody mIsOn 5/25/15.
  * can be used by kody and people in [kody}]
  */
 public class ParticleEmitter {
 
-    private float x, y, width, height, particlesPerSecond, currentTime;
+    private float mX, mY, mWidth, mHeight, mParticlesPerSecond, mCurrentTime;
 
-    private ArrayList<Particle> particles;
-    private ArrayList<Particle> particlesToRemove;
-    private ArrayList<Particle> deadParticles;
-    private Texture particleTexture;
-    private ArrayList<ParticleSettings> particleSettingsArrayList;
-    private Random randomSettingsChooser;
-    private Color color;
+    private ArrayList<Particle> mParticles;
+    private ArrayList<Particle> mParticlesToRemove;
+    private ArrayList<Particle> mDeadParticles;
+    private Texture mParticleTexture;
+    private ArrayList<ParticleSettings> mParticleSettingsArrayList;
+    private Random mRandomSettingsChooser;
+    private Color mColor;
 
-    private boolean on;
+    private boolean mIsOn;
 
     public ParticleEmitter(float x, float y, float particlesPerSecond) {
-        this.particles = new ArrayList<Particle>();
-        this.particlesToRemove = new ArrayList<Particle>();
-        this.deadParticles = new ArrayList<Particle>();
-        this.particleSettingsArrayList = new ArrayList<ParticleSettings>();
-        this.randomSettingsChooser = new Random();
+        this.mParticles = new ArrayList<Particle>();
+        this.mParticlesToRemove = new ArrayList<Particle>();
+        this.mDeadParticles = new ArrayList<Particle>();
+        this.mParticleSettingsArrayList = new ArrayList<ParticleSettings>();
+        this.mRandomSettingsChooser = new Random();
 
-        this.x = x;
-        this.y = y;
+        this.mX = x;
+        this.mY = y;
 
-        this.width = 1;
-        this.height = 1;
+        this.mWidth = 1;
+        this.mHeight = 1;
     }
 
     public ParticleEmitter() {
-        this.particles = new ArrayList<Particle>();
-        this.particlesToRemove = new ArrayList<Particle>();
-        this.deadParticles = new ArrayList<Particle>();
-        this.particleSettingsArrayList = new ArrayList<ParticleSettings>();
-        this.randomSettingsChooser = new Random();
+        this.mParticles = new ArrayList<Particle>();
+        this.mParticlesToRemove = new ArrayList<Particle>();
+        this.mDeadParticles = new ArrayList<Particle>();
+        this.mParticleSettingsArrayList = new ArrayList<ParticleSettings>();
+        this.mRandomSettingsChooser = new Random();
 
-        this.x = 0;
-        this.y = 0;
-        this.width = 0;
-        this.height = 0;
-        this.color = new Color(1, 1, 1, 1);
+        this.mX = 0;
+        this.mY = 0;
+        this.mWidth = 0;
+        this.mHeight = 0;
+        this.mColor = new Color(1, 1, 1, 1);
     }
 
     public void update(float delta) {
@@ -59,40 +59,40 @@ public class ParticleEmitter {
     }
 
     private void updateParticles(float delta) {
-        for (Particle particle : particles) {
+        for (Particle particle : mParticles) {
             particle.update(delta);
             if (particle.needToRemove()) {
-                particlesToRemove.add(particle);
+                mParticlesToRemove.add(particle);
             }
         }
-        for (Particle particle : particlesToRemove) {
-            deadParticles.add(particle);
-            particles.remove(particle);
+        for (Particle particle : mParticlesToRemove) {
+            mDeadParticles.add(particle);
+            mParticles.remove(particle);
         }
-        particlesToRemove.clear();
+        mParticlesToRemove.clear();
     }
 
     private void updateEmitter(float delta) {
-        if (on) {
-            currentTime += delta;
-            while (currentTime >= 1.0f / particlesPerSecond) {
+        if (mIsOn) {
+            mCurrentTime += delta;
+            while (mCurrentTime >= 1.0f / mParticlesPerSecond) {
                 addParticle(createNewParticle());
-                currentTime -= 1.0f / particlesPerSecond;
+                mCurrentTime -= 1.0f / mParticlesPerSecond;
             }
         }
     }
 
     /**
-     * Recycles old particle or if there are no spare particles, it creates a new one
+     * Recycles old particle or if there are no spare mParticles, it creates a new one
      * @return {@link Particle}
      */
     public Particle createNewParticle() {
-        ParticleSettings particleSettings = particleSettingsArrayList.get(randomSettingsChooser.nextInt(particleSettingsArrayList.size()));
+        ParticleSettings particleSettings = mParticleSettingsArrayList.get(mRandomSettingsChooser.nextInt(mParticleSettingsArrayList.size()));
         if (particleSettings == null) return null;
         Particle returnParticle = null;
-        if (deadParticles.size() > 0) {
-            returnParticle = deadParticles.get(0);
-            deadParticles.remove(0);
+        if (mDeadParticles.size() > 0) {
+            returnParticle = mDeadParticles.get(0);
+            mDeadParticles.remove(0);
             returnParticle.setup(particleSettings.getLifespan(),
                     particleSettings.getGravityX(),
                     particleSettings.getGravityY(),
@@ -104,7 +104,7 @@ public class ParticleEmitter {
             returnParticle.setPosition(getRandomParticleX(), getRandomParticleY());
         }
         if (returnParticle == null) {
-            returnParticle = new Particle(particleTexture, getRandomParticleX(), getRandomParticleY(),
+            returnParticle = new Particle(mParticleTexture, getRandomParticleX(), getRandomParticleY(),
                     particleSettings.getWidth(), particleSettings.getHeight(), particleSettings.getLifespan(),
                     particleSettings.getGravityX(), particleSettings.getGravityY(),
                     particleSettings.getVelocityX(), particleSettings.getVelocityY(),
@@ -116,33 +116,33 @@ public class ParticleEmitter {
     }
 
     public ArrayList<Particle> getParticles() {
-        return particles;
+        return mParticles;
     }
 
     public void draw(Batch batch) {
-        for (Particle particle : particles) {
+        for (Particle particle : mParticles) {
             particle.draw(batch);
         }
     }
 
     public void turnOn() {
-        on = true;
+        mIsOn = true;
     }
 
     public void turnOff() {
-        on = false;
+        mIsOn = false;
     }
 
     public void toggleOnOff() {
-        on = !on;
+        mIsOn = !mIsOn;
     }
 
     public float getX() {
-        return x;
+        return mX;
     }
 
     public void setX(float x) {
-        this.x = x;
+        this.mX = x;
     }
 
     private float getRandomParticleX() {
@@ -150,11 +150,11 @@ public class ParticleEmitter {
     }
 
     public float getY() {
-        return y;
+        return mY;
     }
 
     public void setY(float y) {
-        this.y = y;
+        this.mY = y;
     }
 
     private float getRandomParticleY() {
@@ -162,70 +162,70 @@ public class ParticleEmitter {
     }
 
     public float getWidth() {
-        return width;
+        return mWidth;
     }
 
     public void setWidth(float width) {
-        this.width = width;
+        this.mWidth = width;
     }
 
     public float getHeight() {
-        return height;
+        return mHeight;
     }
 
     public void setHeight(float height) {
-        this.height = height;
+        this.mHeight = height;
     }
 
     public void addParticleSettings(ParticleSettings ps) {
-        particleSettingsArrayList.add(ps);
+        mParticleSettingsArrayList.add(ps);
     }
 
     public boolean isOn() {
-        return on;
+        return mIsOn;
     }
 
     public void addParticle(Particle particle) {
-        particle.setColor(color);
-        particles.add(particle);
+        particle.setColor(mColor);
+        mParticles.add(particle);
     }
 
     public ArrayList<ParticleSettings> getParticleSettingsArrayList() {
-        return particleSettingsArrayList;
+        return mParticleSettingsArrayList;
     }
 
     public void setParticleSettingsArrayList(ArrayList<ParticleSettings> particleSettingsArrayList) {
-        this.particleSettingsArrayList = particleSettingsArrayList;
+        this.mParticleSettingsArrayList = particleSettingsArrayList;
     }
 
     public float getParticlesPerSecond() {
-        return particlesPerSecond;
+        return mParticlesPerSecond;
     }
 
     public void setParticlesPerSecond(float particlesPerSecond) {
-        this.particlesPerSecond = particlesPerSecond;
+        this.mParticlesPerSecond = particlesPerSecond;
     }
 
     public Texture getParticleTexture() {
-        return particleTexture;
+        return mParticleTexture;
     }
 
     public void setParticleTexture(Texture particleTexture) {
-        this.particleTexture = particleTexture;
+        this.mParticleTexture = particleTexture;
     }
 
     public void clearAndAddSettings(ParticleSettings particleSettings) {
-        this.particleSettingsArrayList.clear();
-        particleSettingsArrayList.add(particleSettings);
+        this.mParticleSettingsArrayList.clear();
+        mParticleSettingsArrayList.add(particleSettings);
     }
 
     public void setColor(Color color) {
-        this.color = color;
+        this.mColor = color;
     }
 
     public void dispose() {
         try {
-            particleTexture.dispose();
+            mParticleTexture.dispose();
         } catch (Exception n) {
             // Particle has already been disposed elsewhere
         }

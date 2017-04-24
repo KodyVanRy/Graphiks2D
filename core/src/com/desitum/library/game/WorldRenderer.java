@@ -11,34 +11,34 @@ import com.desitum.library.widgets.Widget;
  */
 public class WorldRenderer {
 
-    private World world;
+    private World mWorld;
 
     public WorldRenderer(World world) {
-        this.world = world;
+        this.mWorld = world;
     }
 
     public void setWorld(World world) {
-        this.world = world;
+        this.mWorld = world;
     }
 
     public void draw(Batch batch) {
-        for (GameObject gameObject : world.getGameObjects()) {
+        for (GameObject gameObject : mWorld.getGameObjects()) {
             gameObject.draw(batch);
         }
         batch.flush();
-        for (ParticleEmitter particleEmitter: world.getParticleEmitters()) {
+        for (ParticleEmitter particleEmitter: mWorld.getParticleEmitters()) {
             particleEmitter.draw(batch);
         }
         batch.flush();
-        for (Widget widget : world.getWidgets()) {
-            widget.draw(batch, world.getViewport());
+        for (Widget widget : mWorld.getWidgets()) {
+            widget.draw(batch, mWorld.getViewport());
         }
         batch.flush();
     }
 
     public void drawForeground(Batch batch) {
-        for (Widget widget : world.getForegroundWidgets()) {
-            widget.draw(batch, world.getViewport());
+        for (Widget widget : mWorld.getForegroundWidgets()) {
+            widget.draw(batch, mWorld.getViewport());
         }
         batch.flush();
     }

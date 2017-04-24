@@ -20,32 +20,32 @@ import java.util.List;
  */
 public class World implements InputProcessor{
 
-    public boolean layerWidgets = true;
-    public boolean layerGameObjects = true;
-    private boolean clickDown = false;
+    public boolean mLayerWidgets = true;
+    public boolean mLayerGameObjects = true;
+    private boolean mClickDown = false;
 
-    private List<Widget> widgets;
-    private List<Widget> foregroundWidgets;
-    private List<GameObject> gameObjects;
-    private List<GameObject> shatterPieces;
-    private List<ParticleEmitter> particleEmitters;
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private Widget widgetFocus;
-    private TouchEvent touchEvent;
+    private List<Widget> mWidgets;
+    private List<Widget> mForegroundWidgets;
+    private List<GameObject> mGameObjects;
+    private List<GameObject> mShatterPieces;
+    private List<ParticleEmitter> mParticleEmitters;
+    private OrthographicCamera mCamera;
+    private Viewport mViewport;
+    private Widget mWidgetFocus;
+    private TouchEvent mTouchEvent;
 
     /**
      * Create new {@link World}
      * @param camera camera from {@link GameScreen}
      */
     public World(OrthographicCamera camera, Viewport viewport) {
-        this.camera = camera;
-        this.viewport = viewport;
-        this.widgets = new ArrayList<Widget>();
-        this.foregroundWidgets = new ArrayList<Widget>();
-        this.gameObjects = new ArrayList<GameObject>();
-        this.particleEmitters = new ArrayList<ParticleEmitter>();
-        this.touchEvent = new TouchEvent();
+        this.mCamera = camera;
+        this.mViewport = viewport;
+        this.mWidgets = new ArrayList<Widget>();
+        this.mForegroundWidgets = new ArrayList<Widget>();
+        this.mGameObjects = new ArrayList<GameObject>();
+        this.mParticleEmitters = new ArrayList<ParticleEmitter>();
+        this.mTouchEvent = new TouchEvent();
     }
 
     /**
@@ -53,16 +53,16 @@ public class World implements InputProcessor{
      * @param delta time since last update
      */
     public void update(float delta) {
-        for (Widget widget : widgets) {
+        for (Widget widget : mWidgets) {
             widget.update(delta);
         }
-        for (Widget widget : foregroundWidgets) {
+        for (Widget widget : mForegroundWidgets) {
             widget.update(delta);
         }
-        for (GameObject gameObject : gameObjects) {
+        for (GameObject gameObject : mGameObjects) {
             gameObject.update(delta);
         }
-        for (ParticleEmitter particleEmitter : particleEmitters) {
+        for (ParticleEmitter particleEmitter : mParticleEmitters) {
             particleEmitter.update(delta);
         }
     }
@@ -75,19 +75,19 @@ public class World implements InputProcessor{
      */
     public boolean updateTouchInput(Vector3 touchPos, boolean touchDown) {
         boolean returnVal = false;
-        touchEvent.setX(touchPos.x);
-        touchEvent.setY(touchPos.y);
-        if (touchDown && !clickDown) {
+        mTouchEvent.setX(touchPos.x);
+        mTouchEvent.setY(touchPos.y);
+        if (touchDown && !mClickDown) {
             returnVal = onTouchDown(touchPos);
-        } else if (!touchDown && clickDown) {
+        } else if (!touchDown && mClickDown) {
             returnVal = onTouchUp(touchPos);
-        } else if (touchDown && clickDown) {
+        } else if (touchDown && mClickDown) {
             returnVal = onTouchMoved(touchPos);
         }
-        for (GameObject gameObject2D : gameObjects) {
+        for (GameObject gameObject2D : mGameObjects) {
             gameObject2D.updateTouchInput(touchPos, touchDown);
         }
-        clickDown = touchDown;
+        mClickDown = touchDown;
         return returnVal;
     }
 
@@ -98,17 +98,17 @@ public class World implements InputProcessor{
      * @param touchDown is clicking or if currently touching screen
      */
     public boolean updateForegroundTouchInput(Vector3 touchPos, boolean touchDown) {
-        if (!foregroundWidgets.isEmpty()) {
-            touchEvent.setX(touchPos.x);
-            touchEvent.setY(touchPos.y);
-            if (touchDown && !clickDown) {
+        if (!mForegroundWidgets.isEmpty()) {
+            mTouchEvent.setX(touchPos.x);
+            mTouchEvent.setY(touchPos.y);
+            if (touchDown && !mClickDown) {
                 return onTouchDownForeground(touchPos);
-            } else if (!touchDown && clickDown) {
+            } else if (!touchDown && mClickDown) {
                 return onTouchUpForeground(touchPos);
-            } else if (touchDown && clickDown) {
+            } else if (touchDown && mClickDown) {
                 return onTouchMovedForeground(touchPos);
             }
-            clickDown = touchDown;
+            mClickDown = touchDown;
         }
         return false;
     }
@@ -118,9 +118,9 @@ public class World implements InputProcessor{
      * @param widget widget to be handled
      */
     public void addWidget(Widget widget) {
-        this.widgets.add(widget);
-        if (layerWidgets) {
-            Collections.sort(widgets);
+        this.mWidgets.add(widget);
+        if (mLayerWidgets) {
+            Collections.sort(mWidgets);
             if (widget instanceof Layout) {
                 ((Layout) widget).sortWidgets();
             }
@@ -132,9 +132,9 @@ public class World implements InputProcessor{
      * @param widget widget to be handled
      */
     public void addForegroundWidget(Widget widget) {
-        this.foregroundWidgets.add(widget);
-        if (layerWidgets) {
-            Collections.sort(foregroundWidgets);
+        this.mForegroundWidgets.add(widget);
+        if (mLayerWidgets) {
+            Collections.sort(mForegroundWidgets);
             if (widget instanceof Layout) {
                 ((Layout) widget).sortWidgets();
             }
@@ -146,9 +146,9 @@ public class World implements InputProcessor{
      * @param gameObject2D {@link GameObject} to be handled
      */
     public void addGameObject(GameObject gameObject2D) {
-        this.gameObjects.add(gameObject2D);
-        if (layerGameObjects) {
-            Collections.sort(gameObjects);
+        this.mGameObjects.add(gameObject2D);
+        if (mLayerGameObjects) {
+            Collections.sort(mGameObjects);
         }
     }
 
@@ -157,7 +157,7 @@ public class World implements InputProcessor{
      * @param particleEmitter {@link ParticleEmitter} to be handled
      */
     public void addParticleEmitter(ParticleEmitter particleEmitter) {
-        this.particleEmitters.add(particleEmitter);
+        this.mParticleEmitters.add(particleEmitter);
     }
 
     /**
@@ -165,7 +165,7 @@ public class World implements InputProcessor{
      * @param gameObject {@link GameObject} to remove
      */
     public void removeGameObject(GameObject gameObject) {
-        gameObjects.remove(gameObject);
+        mGameObjects.remove(gameObject);
     }
 
     /**
@@ -173,7 +173,7 @@ public class World implements InputProcessor{
      * @param widget {@link Widget} to remove
      */
     public void removeWidget(Widget widget) {
-        widgets.remove(widget);
+        mWidgets.remove(widget);
     }
 
     /**
@@ -181,7 +181,7 @@ public class World implements InputProcessor{
      * @return {@link List} of {@link GameObject}
      */
     public List<GameObject> getGameObjects() {
-        return gameObjects;
+        return mGameObjects;
     }
 
     /**
@@ -189,7 +189,7 @@ public class World implements InputProcessor{
      * @return {@link List} of {@link Widget}
      */
     public List<Widget> getWidgets() {
-        return widgets;
+        return mWidgets;
     }
 
     /**
@@ -197,7 +197,7 @@ public class World implements InputProcessor{
      * @return {@link List} of {@link Widget}
      */
     public List<Widget> getForegroundWidgets() {
-        return foregroundWidgets;
+        return mForegroundWidgets;
     }
 
     /**
@@ -205,15 +205,15 @@ public class World implements InputProcessor{
      * @return {@link OrthographicCamera}
      */
     public OrthographicCamera getCamera() {
-        return camera;
+        return mCamera;
     }
 
     public boolean onTouchDown(Vector3 clickPos) {
-        touchEvent.setAction(TouchEvent.Action.DOWN);
-        for (Widget widget : widgets) {
+        mTouchEvent.setAction(TouchEvent.Action.DOWN);
+        for (Widget widget : mWidgets) {
             if (widget.isPointInWidget(clickPos)) {
-                if (widget.onTouchEvent(touchEvent)) {
-                    widgetFocus = widget.requestFocus(clickPos);
+                if (widget.onTouchEvent(mTouchEvent)) {
+                    mWidgetFocus = widget.requestFocus(clickPos);
                     return true;
                 }
             }
@@ -222,31 +222,31 @@ public class World implements InputProcessor{
     }
 
     public boolean onTouchUp(Vector3 clickPos) {
-        touchEvent.setAction(TouchEvent.Action.UP);
-        if (widgetFocus != null) {
-            widgetFocus.onTouchEvent(touchEvent);
-            widgetFocus = null;
+        mTouchEvent.setAction(TouchEvent.Action.UP);
+        if (mWidgetFocus != null) {
+            mWidgetFocus.onTouchEvent(mTouchEvent);
+            mWidgetFocus = null;
             return true;
         }
         return false;
     }
 
     private boolean onTouchMoved(Vector3 touchPos) {
-        touchEvent.setAction(TouchEvent.Action.MOVE);
-        if (widgetFocus != null) {
-            widgetFocus.onTouchEvent(touchEvent);
+        mTouchEvent.setAction(TouchEvent.Action.MOVE);
+        if (mWidgetFocus != null) {
+            mWidgetFocus.onTouchEvent(mTouchEvent);
             return true;
         }
         return false;
     }
 
     public boolean onTouchDownForeground(Vector3 clickPos) {
-        touchEvent.setAction(TouchEvent.Action.DOWN);
-        for (Widget widget : foregroundWidgets) {
+        mTouchEvent.setAction(TouchEvent.Action.DOWN);
+        for (Widget widget : mForegroundWidgets) {
             if (widget.isPointInWidget(clickPos)) {
                 System.out.println("Touch Event");
-                widget.onTouchEvent(touchEvent);
-                widgetFocus = widget.requestFocus(clickPos);
+                widget.onTouchEvent(mTouchEvent);
+                mWidgetFocus = widget.requestFocus(clickPos);
                 return true;
             }
         }
@@ -254,50 +254,50 @@ public class World implements InputProcessor{
     }
 
     public boolean onTouchUpForeground(Vector3 clickPos) {
-        touchEvent.setAction(TouchEvent.Action.UP);
-        if (widgetFocus != null) {
-            widgetFocus.onTouchEvent(touchEvent);
-            widgetFocus = null;
+        mTouchEvent.setAction(TouchEvent.Action.UP);
+        if (mWidgetFocus != null) {
+            mWidgetFocus.onTouchEvent(mTouchEvent);
+            mWidgetFocus = null;
             return true;
         }
         return false;
     }
 
     private boolean onTouchMovedForeground(Vector3 touchPos) {
-        touchEvent.setAction(TouchEvent.Action.MOVE);
-        if (widgetFocus != null) {
-            widgetFocus.onTouchEvent(touchEvent);
+        mTouchEvent.setAction(TouchEvent.Action.MOVE);
+        if (mWidgetFocus != null) {
+            mWidgetFocus.onTouchEvent(mTouchEvent);
             return true;
         }
         return false;
     }
 
     public void setCamera(OrthographicCamera camera) {
-        this.camera = camera;
+        this.mCamera = camera;
     }
 
     public Viewport getViewport() {
-        return viewport;
+        return mViewport;
     }
 
     public void setViewport(Viewport viewport) {
-        this.viewport = viewport;
+        this.mViewport = viewport;
     }
 
     public void dispose() {
-        for (ParticleEmitter particleEmitter: particleEmitters) {
+        for (ParticleEmitter particleEmitter: mParticleEmitters) {
             particleEmitter.dispose();
         }
-        for (Widget widget: widgets) {
+        for (Widget widget: mWidgets) {
             widget.dispose();
         }
-        for (GameObject gameObject: gameObjects) {
+        for (GameObject gameObject: mGameObjects) {
             gameObject.dispose();
         }
     }
 
     public List<ParticleEmitter> getParticleEmitters() {
-        return particleEmitters;
+        return mParticleEmitters;
     }
 
     @Override

@@ -17,66 +17,66 @@ import java.util.ArrayList;
 public class GameObject extends Sprite implements Comparable<GameObject> {
 
     public static final int DEFAULT_Z = 0;
-    private ArrayList<Animator> animators;
-    private ArrayList<Animator> animatorsToRemove;
-    private OnFinishedMovingListener onFinishedMovingListener;
-    private int z;
+    private ArrayList<Animator> mAnimators;
+    private ArrayList<Animator> mAnimatorsToRemove;
+    private OnFinishedMovingListener mOnFinishedMovingListener;
+    private int mZ;
 
-    private float speed, speedX, speedY, gravityX, gravityY, rotationSpeed, rotationResistance;
+    private float mSpeed, mSpeedX, mSpeedY, mGravityX, mGravityY, mRotationSpeed, mRotationResistance;
     private float[] moveTo;
 
     public GameObject(TextureRegion textureRegion) {
         super(textureRegion);
-        animators = new ArrayList<Animator>();
-        animatorsToRemove = new ArrayList<Animator>();
-        z = DEFAULT_Z;
+        mAnimators = new ArrayList<Animator>();
+        mAnimatorsToRemove = new ArrayList<Animator>();
+        mZ = DEFAULT_Z;
     }
 
     public GameObject(Texture texture) {
         super(texture);
-        animators = new ArrayList<Animator>();
-        animatorsToRemove = new ArrayList<Animator>();
-        z = DEFAULT_Z;
+        mAnimators = new ArrayList<Animator>();
+        mAnimatorsToRemove = new ArrayList<Animator>();
+        mZ = DEFAULT_Z;
     }
 
     public GameObject(TextureRegion textureRegion, float width, float height) {
         super(textureRegion);
         setSize(width, height);
-        animators = new ArrayList<Animator>();
-        animatorsToRemove = new ArrayList<Animator>();
-        z = DEFAULT_Z;
+        mAnimators = new ArrayList<Animator>();
+        mAnimatorsToRemove = new ArrayList<Animator>();
+        mZ = DEFAULT_Z;
     }
 
     public GameObject(Texture texture, float width, float height) {
         super(texture);
         setSize(width, height);
-        animators = new ArrayList<Animator>();
-        animatorsToRemove = new ArrayList<Animator>();
-        z = DEFAULT_Z;
+        mAnimators = new ArrayList<Animator>();
+        mAnimatorsToRemove = new ArrayList<Animator>();
+        mZ = DEFAULT_Z;
     }
 
     public GameObject(TextureRegion textureRegion, float width, float height, float x, float y) {
         super(textureRegion);
         setSize(width, height);
-        animators = new ArrayList<Animator>();
-        animatorsToRemove = new ArrayList<Animator>();
-        z = DEFAULT_Z;
+        mAnimators = new ArrayList<Animator>();
+        mAnimatorsToRemove = new ArrayList<Animator>();
+        mZ = DEFAULT_Z;
     }
 
     public GameObject(Texture texture, float width, float height, float x, float y) {
         super(texture);
         setSize(width, height);
-        animators = new ArrayList<Animator>();
-        animatorsToRemove = new ArrayList<Animator>();
-        z = DEFAULT_Z;
+        mAnimators = new ArrayList<Animator>();
+        mAnimatorsToRemove = new ArrayList<Animator>();
+        mZ = DEFAULT_Z;
     }
 
     public GameObject(Texture texture, float width, float height, float x, float y, int z) {
         super(texture);
         setSize(width, height);
-        animators = new ArrayList<Animator>();
-        animatorsToRemove = new ArrayList<Animator>();
-        this.z = z;
+        mAnimators = new ArrayList<Animator>();
+        mAnimatorsToRemove = new ArrayList<Animator>();
+        this.mZ = z;
     }
 
     public void update(float delta) {
@@ -89,42 +89,42 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         setSpeedY(getSpeedY() + getGravityY() * delta);
         setX(getX() + getSpeedX());
         setY(getY() + getSpeedY());
-        setRotationSpeed(getRotationSpeed() * rotationResistance);
+        setRotationSpeed(getRotationSpeed() * mRotationResistance);
         if (moveTo != null) {
             updateMovement();
         }
     }
 
     private void updateAnimators(float delta) {
-        if (animators.size() > 0) {
-            for (Animator animator: animators) {
+        if (!mAnimators.isEmpty()) {
+            for (Animator animator: mAnimators) {
                 animator.update(delta);
                 if (animator.didFinish()) {
-                    animatorsToRemove.add(animator);
+                    mAnimatorsToRemove.add(animator);
                 }
             }
-            for (Animator animator: animatorsToRemove) {
-                animators.remove(animator);
+            for (Animator animator: mAnimatorsToRemove) {
+                mAnimators.remove(animator);
             }
-            animatorsToRemove.clear();
+            mAnimatorsToRemove.clear();
         }
     }
 
     private void updateMovement() {
         if (moveTo != null) {
-            if (speedX < 0) {
+            if (mSpeedX < 0) {
                 if (getX() < moveTo[0]) {
                     moveFinished();
                 }
-            } else if (speedX > 0) {
+            } else if (mSpeedX > 0) {
                 if (getX() > moveTo[0]) {
                     moveFinished();
                 }
-            } if (speedY < 0) {
+            } if (mSpeedY < 0) {
                 if (getY() < moveTo[1]) {
                     moveFinished();
                 }
-            } else if (speedY > 0) {
+            } else if (mSpeedY > 0) {
                 if (getY() > moveTo[1]) {
                     moveFinished();
                 }
@@ -136,8 +136,8 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         setX(moveTo[0]);
         setY(moveTo[1]);
         moveTo = null;
-        if (onFinishedMovingListener != null) {
-            onFinishedMovingListener.onFinished(this);
+        if (mOnFinishedMovingListener != null) {
+            mOnFinishedMovingListener.onFinished(this);
         }
     }
 
@@ -148,8 +148,8 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         float deltaX = getX() - x;
         float deltaY = getY() - y;
         float angle = (float) Math.atan2(deltaY, deltaX); // in radians
-        speedX = (float) Math.cos(angle) * speed;
-        speedY = (float) Math.sin(angle) * speed;
+        mSpeedX = (float) Math.cos(angle) * mSpeed;
+        mSpeedY = (float) Math.sin(angle) * mSpeed;
     }
 
     /**
@@ -168,18 +168,18 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
         MovementAnimator yAnimator = new MovementAnimator(this, getY(), y, duration, 0, interpolation, false, true);
         xAnimator.start(true);
         yAnimator.start(true);
-        this.animators.add(xAnimator);
-        this.animators.add(yAnimator);
+        this.mAnimators.add(xAnimator);
+        this.mAnimators.add(yAnimator);
     }
 
     @SuppressWarnings("unused")
     public void addAndStartAnimator(Animator anim) {
         anim.setSprite(this);
-        animators.add(anim);
+        mAnimators.add(anim);
     }
 
     public int getZ() {
-        return z;
+        return mZ;
     }
 
     @Override
@@ -189,93 +189,93 @@ public class GameObject extends Sprite implements Comparable<GameObject> {
 
     @SuppressWarnings("unused")
     public void setZ(int z) {
-        this.z = z;
+        this.mZ = z;
     }
 
     @SuppressWarnings("unused")
     public float getSpeed() {
-        return speed;
+        return mSpeed;
     }
 
     @SuppressWarnings("unused")
     public void setSpeed(float speed) {
-        this.speed = speed;
+        this.mSpeed = speed;
     }
 
     @SuppressWarnings("unused")
     public float getSpeedX() {
-        return speedX;
+        return mSpeedX;
     }
 
     @SuppressWarnings("unused")
     public void setSpeedX(float speedX) {
-        this.speedX = speedX;
+        this.mSpeedX = speedX;
     }
 
     @SuppressWarnings("unused")
     public float getSpeedY() {
-        return speedY;
+        return mSpeedY;
     }
 
     @SuppressWarnings("unused")
     public void setSpeedY(float speedY) {
-        this.speedY = speedY;
+        this.mSpeedY = speedY;
     }
 
     @SuppressWarnings("unused")
     public float getGravityX() {
-        return gravityX;
+        return mGravityX;
     }
 
     @SuppressWarnings("unused")
     public void setGravityX(float gravityX) {
-        this.gravityX = gravityX;
+        this.mGravityX = gravityX;
     }
 
     @SuppressWarnings("unused")
     public float getGravityY() {
-        return gravityY;
+        return mGravityY;
     }
 
     @SuppressWarnings("unused")
     public void setGravityY(float gravityY) {
-        this.gravityY = gravityY;
+        this.mGravityY = gravityY;
     }
 
     @SuppressWarnings("unused")
     public float getRotationSpeed() {
-        return rotationSpeed;
+        return mRotationSpeed;
     }
 
     @SuppressWarnings("unused")
     public void setRotationSpeed(float rotationSpeed) {
-        this.rotationSpeed = rotationSpeed;
+        this.mRotationSpeed = rotationSpeed;
     }
 
     @SuppressWarnings("unused")
     public float getRotationResistance() {
-        return rotationResistance;
+        return mRotationResistance;
     }
 
     /**
      * Set rotation resistance where less than 1 slows down
-     * more than 1 speed up rotation
+     * more than 1 mSpeed up rotation
      * and where 0 stops immediately
      * @param rotationResistance rate to slow down by
      */
     @SuppressWarnings("unused")
     public void setRotationResistance(float rotationResistance) {
-        this.rotationResistance = rotationResistance;
+        this.mRotationResistance = rotationResistance;
     }
 
     @SuppressWarnings("unused")
     public void setOnFinishedMovingListener(OnFinishedMovingListener onFinishedMovingListener) {
-        this.onFinishedMovingListener = onFinishedMovingListener;
+        this.mOnFinishedMovingListener = onFinishedMovingListener;
     }
 
     @SuppressWarnings("unused")
     public OnFinishedMovingListener getOnFinishedMovingListener() {
-        return onFinishedMovingListener;
+        return mOnFinishedMovingListener;
     }
 
     public void dispose() {
