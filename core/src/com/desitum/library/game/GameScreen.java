@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -19,7 +19,7 @@ public class GameScreen implements Screen {
 
     private float mViewportWidth;
     private float mViewportHeight;
-    
+
     private OrthographicCamera mCam;
     private OrthographicCamera mForegroundCam;
     private Viewport mViewport;
@@ -32,50 +32,64 @@ public class GameScreen implements Screen {
     private Vector3 mForegroundTouchPos;
     private Color mClearColor;
 
-    private ShapeRenderer debugShapeRenderer;
-
     public static final int ASPECT_FILL = 1;
     public static final int ASPECT_FIT = 1 << 1;
+    public static final int ASPECT_STRETCH = 1 << 2;
 
     /**
      * Create a new {@link GameScreen} object
-     * @param viewportWidth Viewport width to fit to screen
+     *
+     * @param viewportWidth  Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
-     * @param world mWorld class controller
+     * @param world          mWorld class controller
      */
-    public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer) {
-        init(viewportWidth, viewportHeight, world, worldRenderer);
+    public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
+        init(viewportWidth, viewportHeight, world, worldRenderer, flags);
     }
 
     /**
      * Create a new {@link GameScreen} object
-     * @param viewportWidth Viewport width to fit to screen
+     *
+     * @param viewportWidth  Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
-     * @param world mWorld class controller
+     * @param world          mWorld class controller
      */
-    public GameScreen(float viewportWidth, float viewportHeight, World world) {
-        init(viewportWidth, viewportHeight, world, null);
+    public GameScreen(float viewportWidth, float viewportHeight, World world, int flags) {
+        init(viewportWidth, viewportHeight, world, null, flags);
     }
 
     /**
      * Create a new {@link GameScreen} object
-     * @param viewportWidth Viewport width to fit to screen
+     *
+     * @param viewportWidth  Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     */
+    public GameScreen(float viewportWidth, float viewportHeight, int flags) {
+        init(viewportWidth, viewportHeight, null, null, flags);
+    }
+
+    /**
+     * Create a new {@link GameScreen} object
+     *
+     * @param viewportWidth  Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
-        init(viewportWidth, viewportHeight, null, null);
+        init(viewportWidth, viewportHeight, null, null, ASPECT_FILL);
     }
 
-    private void init(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer) {
+    private void init(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
         mSpriteBatch = new SpriteBatch();
-        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
-        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
-        mViewportWidth = viewportWidth;
-        mViewportHeight = viewportHeight;
+        mCam = new OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
+                getScreenHeight(viewportWidth, viewportHeight, flags));
+        mForegroundCam = new OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
+                getScreenHeight(viewportWidth, viewportHeight, flags));
+        mCam.position.set(mCam.viewportWidth/2, mCam.viewportHeight / 2, 0);
+        mForegroundCam.position.set(mForegroundCam.viewportWidth / 2, mForegroundCam.viewportHeight / 2, 0);
+        mViewport = getViewport(mCam, flags);
+        mForegroundViewport = getViewport(mForegroundCam, flags);
+        mViewportWidth = mCam.viewportWidth;
+        mViewportHeight = mCam.viewportHeight;
 
         mTouchPos = new Vector3(0, 0, 0);
         mForegroundTouchPos = new Vector3(0, 0, 0);
@@ -91,9 +105,15 @@ public class GameScreen implements Screen {
             mWorldRenderer = worldRenderer;
         }
         mClearColor = new Color(0, 0, 0, 1);
+    }
 
-
-        debugShapeRenderer = new ShapeRenderer();
+    private Viewport getViewport(OrthographicCamera cam, int flags) {
+        if ((flags & (ASPECT_FIT | ASPECT_FILL)) != 0) {
+            return new FitViewport(cam.viewportWidth, cam.viewportHeight, cam);
+        } else if ((flags & ASPECT_STRETCH) != 0) {
+            return new StretchViewport(cam.viewportWidth, cam.viewportHeight, cam);
+        }
+        return new FitViewport(cam.viewportWidth, cam.viewportHeight, cam);
     }
 
     @Override
@@ -104,6 +124,7 @@ public class GameScreen implements Screen {
 
     /**
      * Update based on time since last frame
+     *
      * @param delta time since last frame
      */
     public void update(float delta) {
