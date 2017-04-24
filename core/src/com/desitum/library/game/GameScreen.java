@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -18,7 +19,7 @@ public class GameScreen implements Screen {
 
     private float mViewportWidth;
     private float mViewportHeight;
-    
+
     private OrthographicCamera mCam;
     private OrthographicCamera mForegroundCam;
     private Viewport mViewport;
@@ -31,80 +32,88 @@ public class GameScreen implements Screen {
     private Vector3 mForegroundTouchPos;
     private Color mClearColor;
 
+    public static final int ASPECT_FILL = 1;
+    public static final int ASPECT_FIT = 1 << 1;
+    public static final int ASPECT_STRETCH = 1 << 2;
+
     /**
      * Create a new {@link GameScreen} object
-     * @param viewportWidth Viewport width to fit to screen
+     *
+     * @param viewportWidth  Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
-     * @param world mWorld class controller
+     * @param world          mWorld class controller
      */
-    public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer) {
-        mSpriteBatch = new SpriteBatch();
-        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
-        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
-        mViewportWidth = viewportWidth;
-        mViewportHeight = viewportHeight;
-
-        mTouchPos = new Vector3(0, 0, 0);
-        mForegroundTouchPos = new Vector3(0, 0, 0);
-
-        world.setCamera(mCam);
-        world.setViewport(mViewport);
-        worldRenderer.setWorld(world);
-        mClearColor = new Color(0, 0, 0, 1);
+    public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
+        init(viewportWidth, viewportHeight, world, worldRenderer, flags);
     }
 
     /**
      * Create a new {@link GameScreen} object
-     * @param viewportWidth Viewport width to fit to screen
+     *
+     * @param viewportWidth  Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
-     * @param world mWorld class controller
+     * @param world          mWorld class controller
      */
-    public GameScreen(float viewportWidth, float viewportHeight, World world) {
-        mSpriteBatch = new SpriteBatch();
-        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
-        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
-        mViewportWidth = viewportWidth;
-        mViewportHeight = viewportHeight;
-
-        mTouchPos = new Vector3(0, 0, 0);
-        mForegroundTouchPos = new Vector3(0, 0, 0);
-
-        world.setCamera(mCam);
-        world.setViewport(mViewport);
-        mWorldRenderer = new WorldRenderer(world);
-        mClearColor = new Color(0, 0, 0, 1);
+    public GameScreen(float viewportWidth, float viewportHeight, World world, int flags) {
+        init(viewportWidth, viewportHeight, world, null, flags);
     }
 
     /**
      * Create a new {@link GameScreen} object
-     * @param viewportWidth Viewport width to fit to screen
+     *
+     * @param viewportWidth  Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     */
+    public GameScreen(float viewportWidth, float viewportHeight, int flags) {
+        init(viewportWidth, viewportHeight, null, null, flags);
+    }
+
+    /**
+     * Create a new {@link GameScreen} object
+     *
+     * @param viewportWidth  Viewport width to fit to screen
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
+        init(viewportWidth, viewportHeight, null, null, ASPECT_FILL);
+    }
+
+    private void init(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
         mSpriteBatch = new SpriteBatch();
-        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
-        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
-        mViewportWidth = viewportWidth;
-        mViewportHeight = viewportHeight;
+        mCam = new OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
+                getScreenHeight(viewportWidth, viewportHeight, flags));
+        mForegroundCam = new OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
+                getScreenHeight(viewportWidth, viewportHeight, flags));
+        mCam.position.set(mCam.viewportWidth/2, mCam.viewportHeight / 2, 0);
+        mForegroundCam.position.set(mForegroundCam.viewportWidth / 2, mForegroundCam.viewportHeight / 2, 0);
+        mViewport = getViewport(mCam, flags);
+        mForegroundViewport = getViewport(mForegroundCam, flags);
+        mViewportWidth = mCam.viewportWidth;
+        mViewportHeight = mCam.viewportHeight;
 
         mTouchPos = new Vector3(0, 0, 0);
         mForegroundTouchPos = new Vector3(0, 0, 0);
 
-        mWorld = new World(mCam, mViewport);
-        mWorldRenderer = new WorldRenderer(mWorld);
+        if (world == null) {
+            mWorld = new World(mCam, mViewport);
+        } else {
+            mWorld = world;
+        }
+        if (worldRenderer == null) {
+            mWorldRenderer = new WorldRenderer(mWorld);
+        } else {
+            mWorldRenderer = worldRenderer;
+        }
         mClearColor = new Color(0, 0, 0, 1);
+    }
+
+    private Viewport getViewport(OrthographicCamera cam, int flags) {
+        if ((flags & (ASPECT_FIT | ASPECT_FILL)) != 0) {
+            return new FitViewport(cam.viewportWidth, cam.viewportHeight, cam);
+        } else if ((flags & ASPECT_STRETCH) != 0) {
+            return new StretchViewport(cam.viewportWidth, cam.viewportHeight, cam);
+        }
+        return new FitViewport(cam.viewportWidth, cam.viewportHeight, cam);
     }
 
     @Override
@@ -115,6 +124,7 @@ public class GameScreen implements Screen {
 
     /**
      * Update based on time since last frame
+     *
      * @param delta time since last frame
      */
     public void update(float delta) {
@@ -240,5 +250,51 @@ public class GameScreen implements Screen {
 
     public void setClearColor(Color clearColor) {
         this.mClearColor = clearColor;
+    }
+
+    public float getViewportWidth() {
+        return mViewportWidth;
+    }
+
+    public float getViewportHeight() {
+        return mViewportHeight;
+    }
+
+    protected static float getScreenWidth(float desiredWidth, float desiredHeight,
+                                          int aspectFlags) {
+
+        if ((aspectFlags & ASPECT_FIT) != 0) {
+            return desiredWidth;
+        } else if ((aspectFlags & ASPECT_FILL) != 0) {
+            float viewWidth = Gdx.graphics.getWidth();
+            float viewHeight = Gdx.graphics.getHeight();
+            float viewAspect = viewWidth / viewHeight;
+
+            if (desiredWidth > (desiredHeight * viewAspect)) {
+                return desiredWidth;
+            } else {
+                return (desiredHeight * viewAspect);
+            }
+        }
+        return desiredWidth;
+    }
+
+
+    protected static float getScreenHeight(float desiredWidth, float desiredHeight,
+                                           int aspectFlags) {
+        if ((aspectFlags & ASPECT_FIT) != 0) {
+            return desiredHeight;
+        } else if ((aspectFlags & ASPECT_FILL) != 0) {
+            float viewWidth = Gdx.graphics.getWidth();
+            float viewHeight = Gdx.graphics.getHeight();
+            float viewAspect = viewWidth / viewHeight;
+
+            if (desiredWidth > (desiredHeight * viewAspect)) {
+                return (desiredWidth / viewAspect);
+            } else {
+                return desiredHeight;
+            }
+        }
+        return desiredHeight;
     }
 }

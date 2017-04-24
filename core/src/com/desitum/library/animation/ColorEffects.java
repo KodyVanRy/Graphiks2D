@@ -6,31 +6,28 @@ import com.badlogic.gdx.graphics.Color;
  * Created by dvan6234 on 2/17/2015.
  */
 public class ColorEffects extends Animator {
-    private float startRed;
-    private float startGreen;
-    private float startBlue;
-    private float startAlpha;
+    private float mStartRed;
+    private float mStartGreen;
+    private float mStartBlue;
+    private float mStartAlpha;
 
-    private float slopeRed;
-    private float slopeGreen;
-    private float slopeBlue;
-    private float slopeAlpha;
+    private float mSlopeRed;
+    private float mSlopeGreen;
+    private float mSlopeBlue;
+    private float mSlopeAlpha;
 
-    private float endRed;
-    private float endGreen;
-    private float endBlue;
-    private float endAlpha;
+    private float mEndRed;
+    private float mEndGreen;
+    private float mEndBlue;
+    private float mEndAlpha;
 
-    private float currentRed;
-    private float currentGreen;
-    private float currentBlue;
-    private float currentAlpha;
-
-    private boolean transforming;
+    private float mCurrentRed;
+    private float mCurrentGreen;
+    private float mCurrentBlue;
+    private float mCurrentAlpha;
 
     public ColorEffects(Color startColor, Color endColor, float duration) {
         super(duration, 0);
-        transforming = false;
 
         setupColors(startColor, endColor, duration);
     }
@@ -58,65 +55,65 @@ public class ColorEffects extends Animator {
 
     private void setupColors(Color startColor, Color endColor, float duration) {
         if (duration <= 0) {
-            currentRed = endColor.r;
-            endRed = (int) endColor.r;
-            slopeRed = 0;
-            currentGreen = endColor.r;
-            endGreen = (int) endColor.g;
-            slopeGreen = 0;
-            currentBlue = endColor.b;
-            endBlue = (int) endColor.b;
-            slopeBlue = 0;
-            currentAlpha = endColor.a;
-            endAlpha = (int) endColor.a;
-            slopeAlpha = 0;
+            mCurrentRed = endColor.r;
+            mEndRed = (int) endColor.r;
+            mSlopeRed = 0;
+            mCurrentGreen = endColor.r;
+            mEndGreen = (int) endColor.g;
+            mSlopeGreen = 0;
+            mCurrentBlue = endColor.b;
+            mEndBlue = (int) endColor.b;
+            mSlopeBlue = 0;
+            mCurrentAlpha = endColor.a;
+            mEndAlpha = (int) endColor.a;
+            mSlopeAlpha = 0;
             return;
         }
 
-        startRed = startColor.r;
-        startGreen = startColor.g;
-        startBlue = startColor.b;
-        startAlpha = startColor.a;
+        mStartRed = startColor.r;
+        mStartGreen = startColor.g;
+        mStartBlue = startColor.b;
+        mStartAlpha = startColor.a;
 
-        slopeRed = (endColor.r - startColor.r);
-        slopeGreen = (endColor.g - startColor.g);
-        slopeBlue = (endColor.b - startColor.b);
-        slopeAlpha = (endColor.a - startColor.a);
+        mSlopeRed = (endColor.r - startColor.r);
+        mSlopeGreen = (endColor.g - startColor.g);
+        mSlopeBlue = (endColor.b - startColor.b);
+        mSlopeAlpha = (endColor.a - startColor.a);
 
-        currentRed = startColor.r;
-        currentGreen = startColor.g;
-        currentBlue = startColor.b;
-        currentAlpha = startColor.a;
+        mCurrentRed = startColor.r;
+        mCurrentGreen = startColor.g;
+        mCurrentBlue = startColor.b;
+        mCurrentAlpha = startColor.a;
 
-        endRed = endColor.r;
-        endGreen = endColor.g;
-        endBlue = endColor.b;
-        endAlpha = endColor.a;
+        mEndRed = endColor.r;
+        mEndGreen = endColor.g;
+        mEndBlue = endColor.b;
+        mEndAlpha = endColor.a;
     }
 
     public Color getCurrentColor() {
-        return new Color(currentRed, currentGreen, currentBlue, currentAlpha);
+        return new Color(mCurrentRed, mCurrentGreen, mCurrentBlue, mCurrentAlpha);
     }
 
     public float getCurrentRed() {
-        return currentRed;
+        return mCurrentRed;
     }
 
     public float getCurrentGreen() {
-        return currentGreen;
+        return mCurrentGreen;
     }
 
-    public float getCurrentBlue() {
-        return currentBlue;
+    public float getmCurrentBlue() {
+        return mCurrentBlue;
     }
 
     public float getCurrentAlpha() {
-        return currentAlpha;
+        return mCurrentAlpha;
     }
 
     @Override
     public Animator duplicate() {
-        return new ColorEffects(new Color(startRed, startGreen, startBlue, startAlpha), new Color(endRed, endGreen, endBlue, endAlpha), getDuration());
+        return new ColorEffects(new Color(mStartRed, mStartGreen, mStartBlue, mStartAlpha), new Color(mEndRed, mEndGreen, mEndBlue, mEndAlpha), getDuration());
     }
 
     @Override
@@ -126,13 +123,13 @@ public class ColorEffects extends Animator {
 
     @Override
     protected void updateAnimation() {
-        currentRed = slopeRed * getTimeInAnimation() + startRed;
-        currentGreen = slopeGreen * getTimeInAnimation() + startGreen;
-        currentBlue = slopeBlue * getTimeInAnimation() + startBlue;
-        currentAlpha = slopeAlpha * getTimeInAnimation() + startAlpha;
+        mCurrentRed = mSlopeRed * getTimeInAnimation() + mStartRed;
+        mCurrentGreen = mSlopeGreen * getTimeInAnimation() + mStartGreen;
+        mCurrentBlue = mSlopeBlue * getTimeInAnimation() + mStartBlue;
+        mCurrentAlpha = mSlopeAlpha * getTimeInAnimation() + mStartAlpha;
 
-        if (sprite != null) {
-            sprite.setColor(getCurrentColor());
+        if (mSprite != null) {
+            mSprite.setColor(getCurrentColor());
         }
     }
 }

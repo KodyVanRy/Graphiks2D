@@ -24,9 +24,11 @@ public class MenuScreen extends GameScreen {
     public static final float SCREEN_HEIGHT = 100.0f;
 
     public MenuScreen() {
-        super(SCREEN_WIDTH, SCREEN_HEIGHT);
-        setupWorld();
+        super(getScreenWidth(), getScreenHeight());
+//        super(getScreenWidth(), getScreenHeight());
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
+
+        setupWorld();
         Log.d(this, "Hello world");
         Log.d(this.getClass(), "Hello world");
         Log.d("Hello I am a muffin", "Hello world");
@@ -73,5 +75,13 @@ public class MenuScreen extends GameScreen {
     @Override
     public void dispose() {
 
+    }
+
+    private static float getScreenWidth() {
+        return getScreenWidth(SCREEN_WIDTH, SCREEN_HEIGHT, GameScreen.ASPECT_FILL);
+    }
+
+    private static float getScreenHeight() {
+        return getScreenHeight(SCREEN_WIDTH, SCREEN_HEIGHT, GameScreen.ASPECT_FILL);
     }
 }
