@@ -29,27 +29,26 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public static final int INVISIBLE = 1;
     public static final int GONE = 2;
 
-    private ArrayList<Animator> animators;
+    private ArrayList<Animator> mAnimators;
 
-    private Layout parent;
+    private Layout mParent;
 
-    private Texture shadow;
+    private Texture mShadow;
 
-    private String name;
+    private String mName;
 
-    private int visibility;
+    private int mVisibility;
 
     private float mScaleX;
     private float mScaleY;
-    private float mx;
-    private float my;
-    private float z;
+    private float mX;
+    private float mY;
+    private float mZ;
 
-    private boolean enabled;
-    private boolean clickIsDown;
-    private boolean focus;
+    private boolean mEnabled;
+    private boolean mFocus;
 
-    private int widgetFlags = 0;
+    private int mWidgetFlags = 0;
 
     private int FOCUSABLE = 1;
 
@@ -66,18 +65,17 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public Widget(Texture text, String name, float width, float height, float x, float y, Layout parent) {
         super(text, text.getWidth(), text.getHeight());
         setSize(width, height);
-        this.name = name;
+        this.mName = name;
         this.mScaleX = 1.0f;
         this.mScaleY = 1.0f;
-        this.mx = x;
-        this.my = y;
-        this.visibility = VISIBLE;
-        enabled = true;
-        clickIsDown = false;
+        this.mX = x;
+        this.mY = y;
+        this.mVisibility = VISIBLE;
+        mEnabled = true;
 
         this.setOriginCenter();
 
-        this.animators = new ArrayList<Animator>();
+        this.mAnimators = new ArrayList<Animator>();
     }
 
     /**
@@ -85,15 +83,15 @@ public class Widget extends Sprite implements Comparable<Widget> {
      * @param delta time since last update
      */
     public void update(float delta) {
-        for (Animator anim : animators) {
+        for (Animator anim : mAnimators) {
             anim.update(delta);
             updateAnim(anim);
         }
 
-        // Adjust the position (x, y); the scale of width and height to fit parent
-        if (parent != null) {
-            setX(getMx() + parent.getBaseX());
-            setY(getMy() + parent.getBaseY());
+        // Adjust the position (x, y); the scale of width and height to fit mParent
+        if (mParent != null) {
+            setX(getMx() + mParent.getBaseX());
+            setY(getMy() + mParent.getBaseY());
         } else {
             setX(getMx());
             setY(getMy());
@@ -120,7 +118,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
     }
 
     /**
-     * Useful when scaling a parent view
+     * Useful when scaling a mParent view
      * @param originX originX to scale to
      * @param originY originY to scale to
      * @param scaleX amount to scale x by
@@ -133,7 +131,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
     }
 
     /**
-     * Useful when rotating a parent view
+     * Useful when rotating a mParent view
      * @param originX x point to rotate around
      * @param originY y point to rotate around
      * @param rotation how much to rotate by
@@ -155,25 +153,25 @@ public class Widget extends Sprite implements Comparable<Widget> {
      * @param camera {@link Camera} to use when calculating the scissor
      */
     public void draw(Batch batch, Viewport camera) {
-        if (visibility == VISIBLE) {
+        if (mVisibility == VISIBLE) {
             if (getParent() == null) drawShadow(batch);
             super.draw(batch);
         }
     }
 
     public void setVisibility(int visibility) {
-        this.visibility = visibility;
+        this.mVisibility = visibility;
     }
 
     public int getVisibility() {
-        return visibility;
+        return mVisibility;
     }
 
     public void drawShadow(Batch spriteBatch) {
-        if (shadow == null) return;
-        spriteBatch.draw(shadow, getX(), getY() - getHeight() * (z / 6.0f), getWidth() / 2, getHeight() / 2,
+        if (mShadow == null) return;
+        spriteBatch.draw(mShadow, getX(), getY() - getHeight() * (mZ / 6.0f), getWidth() / 2, getHeight() / 2,
                 getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation(), 0, 0,
-                shadow.getWidth(), shadow.getHeight(), false, false);
+                mShadow.getWidth(), mShadow.getHeight(), false, false);
     }
 
     public boolean onTouchEvent(TouchEvent touchEvent) {
@@ -182,11 +180,6 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     public Widget requestFocus(Vector3 touchPoint) {
         return this;
-    }
-
-    //region Getters and Setters
-    public boolean isClickDown() {
-        return clickIsDown;
     }
 
     public boolean isPointInWidget(Vector3 point) {
@@ -198,91 +191,91 @@ public class Widget extends Sprite implements Comparable<Widget> {
     }
 
     public float getMx() {
-        return mx;
+        return mX;
     }
 
     public void setMx(float x) {
-        mx = x;
+        mX = x;
     }
 
     public float getMy() {
-        return my;
+        return mY;
     }
 
     public void setMy(float y) {
-        my = y;
+        mY = y;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.mName = name;
     }
 
     public Layout getParent() {
-        return parent;
+        return mParent;
     }
 
     public void setParent(Layout parent) {
-        this.parent = parent;
+        this.mParent = parent;
     }
 
     public ArrayList<Animator> getAnimators() {
-        return animators;
+        return mAnimators;
     }
 
     public void setAnimators(ArrayList<Animator> animators) {
-        this.animators = animators;
+        this.mAnimators = animators;
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return mEnabled;
     }
 
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        this.mEnabled = enabled;
     }
 
     public float getZ() {
-        return z;
+        return mZ;
     }
 
     public void setZ(float z) {
-        this.z = z;
-        if (parent != null && getZ() < parent.getZ()) {
-            throw new LayeringException("Can't place widget beneath parent");
+        this.mZ = z;
+        if (mParent != null && getZ() < mParent.getZ()) {
+            throw new LayeringException("Can't place widget beneath mParent");
         }
     }
 
     public Texture getShadow() {
-        return shadow;
+        return mShadow;
     }
 
     public void setShadow(Texture shadow) {
-        this.shadow = shadow;
+        this.mShadow = shadow;
     }
 
     public void startAnimator(Animator animator) {
         animator.setSprite(this);
         animator.start(true);
-        animators.add(animator);
+        mAnimators.add(animator);
     }
 
     public void addAnimator(Animator animator) {
         animator.setSprite(this);
-        animators.add(animator);
+        mAnimators.add(animator);
     }
 
     public void startAnimators() {
-        for (Animator animator : animators) {
+        for (Animator animator : mAnimators) {
             animator.start(true);
         }
     }
 
     public Widget findByName(String name) {
-        if (this.name.equals(name)) {
+        if (this.mName.equals(name)) {
             return this;
         }
         return null;
@@ -300,20 +293,20 @@ public class Widget extends Sprite implements Comparable<Widget> {
     }
 
     public boolean isVisible() {
-        return this.visibility == VISIBLE;
+        return this.mVisibility == VISIBLE;
     }
     //endregion
 
     public void dispose() {
         try {
-            shadow.dispose();
+            mShadow.dispose();
             getTexture().dispose();
         } catch (Exception e) {
-            // Texture or shadow have been disposed elsewhere
+            // Texture or mShadow have been disposed elsewhere
         }
     }
 
     public boolean isFocus() {
-        return focus;
+        return mFocus;
     }
 }

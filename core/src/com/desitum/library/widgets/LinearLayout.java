@@ -16,55 +16,55 @@ public class LinearLayout extends Layout {
     public static final int ALIGNMENT_RIGHT = 1;
     public static final int ALIGNMENT_LEFT = 0;
 
-    private int orientation;
-    private float spacing;
-    private int alignment;
-    private boolean reverseFill;
+    private int mOrientation;
+    private float mSpacing;
+    private int mAlignment;
+    private boolean mReverseFill;
 
     public LinearLayout(Texture text, String name, float width, float height, float x, float y, Layout parent) {
         super(text, name, width, height, x, y, parent);
-        orientation = HORIZONTAL_ORIENTATION;
-        this.spacing = 0;
-        reverseFill = false;
+        mOrientation = HORIZONTAL_ORIENTATION;
+        this.mSpacing = 0;
+        mReverseFill = false;
     }
 
     public LinearLayout(Texture text, String name, float width, float height, float x, float y, Layout parent, int orientation) {
         super(text, name, width, height, x, y, parent);
-        this.orientation = orientation;
-        this.spacing = 0;
-        reverseFill = false;
+        this.mOrientation = orientation;
+        this.mSpacing = 0;
+        mReverseFill = false;
     }
 
     public int getOrientation() {
-        return orientation;
+        return mOrientation;
     }
 
     public void setOrientation(int orientation) {
-        this.orientation = orientation;
+        this.mOrientation = orientation;
     }
 
     public int getAlignment() {
-        return alignment;
+        return mAlignment;
     }
 
     public void setAlignment(int alignment) {
-        this.alignment = alignment;
+        this.mAlignment = alignment;
     }
 
     public float getSpacing() {
-        return spacing;
+        return mSpacing;
     }
 
     public void setSpacing(float spacing) {
-        this.spacing = spacing;
+        this.mSpacing = spacing;
     }
 
     public boolean isReverseFill() {
-        return reverseFill;
+        return mReverseFill;
     }
 
     public void setReverseFill(boolean reverseFill) {
-        this.reverseFill = reverseFill;
+        this.mReverseFill = reverseFill;
     }
 
     @Override
@@ -72,34 +72,34 @@ public class LinearLayout extends Layout {
         widget.setParent(this);
         float posX = 0;
         float posY = 0;
-        if (reverseFill) {
+        if (mReverseFill) {
             posX = getWidth() - (getWidgets().size() >= 1 ? getWidgets().get(0).getWidth() : widget.getWidth());
         } else {
             posY = getHeight() - (getWidgets().size() >= 1 ? getWidgets().get(0).getHeight() : widget.getHeight());
         }
         for (Widget preWidget : getWidgets()) {
-            if (reverseFill) {
-                posX -= preWidget.getWidth() + spacing;
-                posY += preWidget.getHeight() + spacing;
+            if (mReverseFill) {
+                posX -= preWidget.getWidth() + mSpacing;
+                posY += preWidget.getHeight() + mSpacing;
             } else {
-                posX += preWidget.getWidth() + spacing;
-                posY -= preWidget.getHeight() + spacing;
+                posX += preWidget.getWidth() + mSpacing;
+                posY -= preWidget.getHeight() + mSpacing;
             }
         }
-        if (orientation == HORIZONTAL_ORIENTATION) {
-            if (alignment == ALIGNMENT_TOP) {
+        if (mOrientation == HORIZONTAL_ORIENTATION) {
+            if (mAlignment == ALIGNMENT_TOP) {
                 posY = this.getHeight() - widget.getHeight();
-            } else if (alignment == ALIGNMENT_CENTER) {
+            } else if (mAlignment == ALIGNMENT_CENTER) {
                 posY = this.getHeight() / 2 - widget.getHeight() / 2;
-            } else if (alignment == ALIGNMENT_BOTTOM) {
+            } else if (mAlignment == ALIGNMENT_BOTTOM) {
                 posY = 0;
             }
-        } else if (orientation == VERTICAL_ORIENTATION) {
-            if (alignment == ALIGNMENT_LEFT) {
+        } else if (mOrientation == VERTICAL_ORIENTATION) {
+            if (mAlignment == ALIGNMENT_LEFT) {
                 posX = 0;
-            } else if (alignment == ALIGNMENT_CENTER) {
+            } else if (mAlignment == ALIGNMENT_CENTER) {
                 posX = this.getWidth() / 2 - widget.getWidth() / 2;
-            } else if (alignment == ALIGNMENT_RIGHT) {
+            } else if (mAlignment == ALIGNMENT_RIGHT) {
                 posX = this.getWidth() - widget.getWidth();
             }
         }
