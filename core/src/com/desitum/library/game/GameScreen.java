@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.desitum.library.logging.Log;
 
 /**
  * Created by kody on 12/27/15.
@@ -45,26 +44,7 @@ public class GameScreen implements Screen {
      * @param world mWorld class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer) {
-        mSpriteBatch = new SpriteBatch();
-        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
-        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
-        mViewportWidth = viewportWidth;
-        mViewportHeight = viewportHeight;
-
-        mTouchPos = new Vector3(0, 0, 0);
-        mForegroundTouchPos = new Vector3(0, 0, 0);
-
-        world.setCamera(mCam);
-        world.setViewport(mViewport);
-        worldRenderer.setWorld(world);
-        mClearColor = new Color(0, 0, 0, 1);
-
-
-        debugShapeRenderer = new ShapeRenderer();
+        init(viewportWidth, viewportHeight, world, worldRenderer);
     }
 
     /**
@@ -74,26 +54,7 @@ public class GameScreen implements Screen {
      * @param world mWorld class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, World world) {
-        mSpriteBatch = new SpriteBatch();
-        mCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
-        mForegroundCam.position.set(viewportWidth / 2, viewportHeight / 2, 0);
-        mViewport = new FitViewport(viewportWidth, viewportHeight, mCam);
-        mForegroundViewport = new FitViewport(viewportWidth, viewportHeight, mForegroundCam);
-        mViewportWidth = viewportWidth;
-        mViewportHeight = viewportHeight;
-
-        mTouchPos = new Vector3(0, 0, 0);
-        mForegroundTouchPos = new Vector3(0, 0, 0);
-
-        world.setCamera(mCam);
-        world.setViewport(mViewport);
-        mWorldRenderer = new WorldRenderer(world);
-        mClearColor = new Color(0, 0, 0, 1);
-
-
-        debugShapeRenderer = new ShapeRenderer();
+        init(viewportWidth, viewportHeight, world, null);
     }
 
     /**
@@ -102,6 +63,10 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
+        init(viewportWidth, viewportHeight, null, null);
+    }
+
+    private void init(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer) {
         mSpriteBatch = new SpriteBatch();
         mCam = new OrthographicCamera(viewportWidth, viewportHeight);
         mForegroundCam = new OrthographicCamera(viewportWidth, viewportHeight);
@@ -115,8 +80,16 @@ public class GameScreen implements Screen {
         mTouchPos = new Vector3(0, 0, 0);
         mForegroundTouchPos = new Vector3(0, 0, 0);
 
-        mWorld = new World(mCam, mViewport);
-        mWorldRenderer = new WorldRenderer(mWorld);
+        if (world == null) {
+            mWorld = new World(mCam, mViewport);
+        } else {
+            mWorld = world;
+        }
+        if (worldRenderer == null) {
+            mWorldRenderer = new WorldRenderer(mWorld);
+        } else {
+            mWorldRenderer = worldRenderer;
+        }
         mClearColor = new Color(0, 0, 0, 1);
 
 
@@ -149,14 +122,8 @@ public class GameScreen implements Screen {
         mCam.update();
         mForegroundCam.update();
         mSpriteBatch.setProjectionMatrix(mCam.combined);
-        debugShapeRenderer.setProjectionMatrix(mCam.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(mClearColor.r, mClearColor.g, mClearColor.b, mClearColor.a);
-
-        debugShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        debugShapeRenderer.setColor(0.2f, 0f, 0.2f, 1f);
-        debugShapeRenderer.rect(0, 0, mViewportWidth, mViewportHeight);
-        debugShapeRenderer.end();
 
         mSpriteBatch.begin();
 
@@ -264,6 +231,13 @@ public class GameScreen implements Screen {
         this.mClearColor = clearColor;
     }
 
+    public float getViewportWidth() {
+        return mViewportWidth;
+    }
+
+    public float getViewportHeight() {
+        return mViewportHeight;
+    }
 
     protected static float getScreenWidth(float desiredWidth, float desiredHeight,
                                           int aspectFlags) {
@@ -271,15 +245,13 @@ public class GameScreen implements Screen {
         if ((aspectFlags & ASPECT_FIT) != 0) {
             return desiredWidth;
         } else if ((aspectFlags & ASPECT_FILL) != 0) {
-            float viewAspect = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
+            float viewWidth = Gdx.graphics.getWidth();
+            float viewHeight = Gdx.graphics.getHeight();
+            float viewAspect = viewWidth / viewHeight;
 
             if (desiredWidth > (desiredHeight * viewAspect)) {
-                // limited by narrow width; restrict height
-                Log.d(GameScreen.class, "actualWidth1 = " + desiredWidth);
                 return desiredWidth;
             } else {
-                // limited by short height; restrict width
-                Log.d(GameScreen.class, "actualWidth2 = " + (desiredHeight * viewAspect));
                 return (desiredHeight * viewAspect);
             }
         }
@@ -292,15 +264,13 @@ public class GameScreen implements Screen {
         if ((aspectFlags & ASPECT_FIT) != 0) {
             return desiredHeight;
         } else if ((aspectFlags & ASPECT_FILL) != 0) {
-            float viewAspect = Gdx.graphics.getWidth() / Gdx.graphics.getHeight();
+            float viewWidth = Gdx.graphics.getWidth();
+            float viewHeight = Gdx.graphics.getHeight();
+            float viewAspect = viewWidth / viewHeight;
 
             if (desiredWidth > (desiredHeight * viewAspect)) {
-                // limited by narrow width; restrict height
-                Log.d(GameScreen.class, "actualHeight1 = " + (desiredHeight * viewAspect));
                 return (desiredWidth / viewAspect);
             } else {
-                // limited by short height; restrict width
-                Log.d(GameScreen.class, "actualHeight2 = " + desiredHeight);
                 return desiredHeight;
             }
         }
