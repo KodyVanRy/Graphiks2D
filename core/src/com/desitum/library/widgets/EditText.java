@@ -36,7 +36,7 @@ public class EditText extends Widget {
         super(background, name, width, height, x, y, parent);
         this.mText = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         this.mFont = font;
-        mGlyphLayout = new GlyphLayout(font, mText);
+        mGlyphLayout = new GlyphLayout(mFont, mText);
         setupFontSize();
         mDisplayText = "";
         mText = "";

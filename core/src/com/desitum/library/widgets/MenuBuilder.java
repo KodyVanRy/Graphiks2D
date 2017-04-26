@@ -178,7 +178,28 @@ public class MenuBuilder {
         }
         //endregion
 
-        // region EditText
+        // region Label
+        else if (widgetType.equals(Widget.LABEL)) {
+            BitmapFont bitmapFont = null;
+            if (jsonObject.get(FONT) != null) {
+                String fontBasic = (String) jsonObject.get(FONT);
+                bitmapFont = new BitmapFont(Gdx.files.internal(fontBasic + ".fnt"), new TextureRegion(new Texture(fontBasic + ".png")));
+            }
+            returnWidget = new Label(backgroundTexture, name, width, height, x, y, parent, bitmapFont);
+
+            if (jsonObject.get(TEXT) != null) {
+                ((Label) returnWidget).setText((String) jsonObject.get(TEXT));
+            }
+            if (jsonObject.get(ALIGNMENT) != null) {
+                ((Label) returnWidget).setAlignment(getAlignment((String) jsonObject.get(ALIGNMENT)));
+            }
+            if (jsonObject.get(TEXT_COLOR) != null) {
+                ((Label) returnWidget).setTextColor(Color.valueOf((String) jsonObject.get(TEXT_COLOR)));
+            }
+        }
+        //endregion
+
+        //region EditText
         else if (widgetType.equals(Widget.EDIT_TEXT)) {
             BitmapFont bitmapFont = null;
             if (jsonObject.get(FONT) != null) {
@@ -194,7 +215,7 @@ public class MenuBuilder {
                 ((EditText) returnWidget).setText((String) jsonObject.get(TEXT));
             }
             if (jsonObject.get(HINT) != null) {
-                ((EditText) returnWidget).setText((String) jsonObject.get(HINT));
+                ((EditText) returnWidget).setHint((String) jsonObject.get(HINT));
             }
             if (jsonObject.get(ALIGNMENT) != null) {
                 ((EditText) returnWidget).setAlignment(getAlignment((String) jsonObject.get(ALIGNMENT)));

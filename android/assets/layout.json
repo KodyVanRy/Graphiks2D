@@ -31,20 +31,16 @@
             "texture_click" : "button_down.png"
         },
         {
-            "widget" : "edit text",
-            "name" : "edit text",
+            "widget" : "label",
+            "name" : "label",
             "width" : "match parent",
             "height" : "10.0",
             "x" : "0",
             "y" : "0",
-            "background" : "#f00000f0",
+            "background" : "#ff00f000",
             "font": "font",
-            "request focus": "true",
-            "text": "JSON is cool",
-            "hint": "JSON tes2t",
-            "blink_on": "0.5",
-            "alignment": "center",
-            "blink_off": "0.5"
+            "text": "JSON",
+            "alignment": "left"
         }
     ]
 }

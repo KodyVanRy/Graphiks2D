@@ -22,6 +22,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public static final String BUTTON = "button";
     public static final String FLOATING_BUTTON = "floating button";
     public static final String EDIT_TEXT = "edit text";
+    public static final String LABEL = "label";
     public static final String LINEAR_LAYOUT = "linear layout";
     public static final String SLIDER = "slider";
 
