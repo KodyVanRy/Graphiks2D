@@ -34,6 +34,8 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     private Layout mParent;
 
+    private OnTouchListener mOnTouchListener;
+
     private Texture mShadow;
 
     private String mName;
@@ -176,6 +178,8 @@ public class Widget extends Sprite implements Comparable<Widget> {
     }
 
     public boolean onTouchEvent(TouchEvent touchEvent) {
+        if (mOnTouchListener != null)
+            mOnTouchListener.onTouch(this, touchEvent);
         return isPointInWidget(touchEvent.getX(), touchEvent.getY());
     }
 
@@ -309,5 +313,13 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     public boolean isFocus() {
         return mFocus;
+    }
+
+    public interface OnTouchListener {
+        void onTouch(Widget widget, TouchEvent touchEvent);
+    }
+
+    public void setOnTouchListener(OnTouchListener mOnTouchListener) {
+        this.mOnTouchListener = mOnTouchListener;
     }
 }

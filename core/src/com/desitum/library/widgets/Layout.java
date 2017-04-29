@@ -166,4 +166,8 @@ public abstract class Layout extends Widget {
     public void sortWidgets() {
         Collections.sort(widgets);
     }
+
+    public int getChildCount() {
+        return widgets.size();
+    }
 }
