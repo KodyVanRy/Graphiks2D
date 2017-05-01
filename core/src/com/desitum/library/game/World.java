@@ -22,7 +22,7 @@ public class World implements InputProcessor{
 
     public boolean mLayerWidgets = true;
     public boolean mLayerGameObjects = true;
-    private boolean mClgitickDown = false;
+    private boolean mClickDown = false;
 
     private List<Widget> mWidgets;
     private List<Widget> mForegroundWidgets;
