@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.desitum.library.logging.Log;
+import com.desitum.library.widgets.Layout;
 
 /**
  * Created by kody on 12/27/15.
@@ -75,7 +77,7 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
-        init(viewportWidth, viewportHeight, null, null, ASPECT_FILL);
+        init(viewportWidth, viewportHeight, null, null, ASPECT_FIT);
     }
 
     private void init(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
@@ -128,8 +130,8 @@ public class GameScreen implements Screen {
      * @param delta time since last frame
      */
     public void update(float delta) {
-        mForegroundTouchPos = mForegroundViewport.unproject(mTouchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        if (!mWorld.updateForegroundTouchInput(mTouchPos, Gdx.input.isTouched())) {
+        mForegroundTouchPos = mForegroundViewport.unproject(mForegroundTouchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+        if (!mWorld.updateForegroundTouchInput(mForegroundTouchPos, Gdx.input.isTouched())) {
             mTouchPos = mViewport.unproject(mTouchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             mWorld.updateTouchInput(mTouchPos, Gdx.input.isTouched());
         }
@@ -164,6 +166,7 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         mViewport.update(width, height);
+        mForegroundViewport.update(width, height);
     }
 
     @Override

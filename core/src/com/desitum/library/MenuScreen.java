@@ -3,12 +3,17 @@ package com.desitum.library;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.GameScreen;
+import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
+import com.desitum.library.view.Button;
+import com.desitum.library.view.ProgressBar;
+import com.desitum.library.view.SeekBar;
 import com.desitum.library.widgets.LinearLayout;
 import com.desitum.library.widgets.MenuBuilder;
 import com.desitum.library.widgets.Slider;
@@ -45,10 +50,29 @@ public class MenuScreen extends GameScreen {
         ll.addWidget(mSlider);
 
         getWorld().addWidget(ll);
+        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLACK), 300, 300, -50, -50));
 //        getCam().position.set(0, 0, 0);
 
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
+
+        ProgressBar progressBar = new SeekBar(getWorld());
+        progressBar.setProgress(0.5f);
+        progressBar.setProgressBackgroundTexture(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.BLUE)));
+        ((SeekBar) progressBar).setSeekerTexture(new TextureRegion(Drawing.getFilledCircle(40, Color.BLUE)));
+        progressBar.setProgressTexture(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.CORAL)));
+        getWorld().addView(progressBar);
+        progressBar.setSize(40, 10);
+        progressBar.setPosition(0, 0);
+        progressBar.startAnimator(new MovementAnimator(progressBar, -20, 20, 1, 1, Interpolation.DECELERATE_INTERPOLATOR, false, true));
+
+        Button button = new Button(getWorld());
+        button.setSize(20, 10);
+        button.setPosition(0, 0);
+        button.setRestTexture(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.BROWN)));
+        button.setHoverTexture(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.PINK)));
+        button.setOriginCenter();
+        getWorld().addView(button);
     }
 
     @Override

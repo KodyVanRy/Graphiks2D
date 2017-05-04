@@ -33,7 +33,7 @@ public class EditText extends Widget {
     private Color mHintColor;
 
     public EditText(Texture background, String name, float width, float height, float x, float y, Layout parent, BitmapFont font) {
-        super(background, name, width, height, x, y, parent);
+        super(name, width, height, x, y);
         this.mText = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         this.mFont = font;
         mGlyphLayout = new GlyphLayout(font, mText);
