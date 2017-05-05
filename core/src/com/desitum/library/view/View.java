@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.animation.Animator;
+import com.desitum.library.drawing.Drawable;
 import com.desitum.library.game.G2DSprite;
 import com.desitum.library.game.World;
 
@@ -34,7 +35,7 @@ public class View extends G2DSprite {
     private OnClickListener mOnClickListener;
 
     // DRAWING
-    private TextureRegion mBackgroundTexture;
+    private Drawable mBackgroundDrawable;
     private int mVisibility;
     private float mRotation;
 
@@ -126,8 +127,8 @@ public class View extends G2DSprite {
         4. Draw foreground
          */
         // 1. Draw background
-        if (mBackgroundTexture != null)
-            batch.draw(mBackgroundTexture.getTexture(), getVertices(), 0, VIEW_SIZE);
+        if (mBackgroundDrawable != null)
+            mBackgroundDrawable.draw(batch, getX(), getY(), getWidth(), getHeight());
 
         // 2. Draw view itself
         onDraw(batch, viewport);
@@ -225,12 +226,12 @@ public class View extends G2DSprite {
         this.mEnabled = enabled;
     }
 
-    public TextureRegion getBackgroundTexture() {
-        return mBackgroundTexture;
+    public Drawable getBackgroundDrawable() {
+        return mBackgroundDrawable;
     }
 
-    public void setBackgroundTexture(TextureRegion backgroundTexture) {
-        this.mBackgroundTexture = backgroundTexture;
+    public void setBackgroundDrawable(Drawable backgroundDrawable) {
+        this.mBackgroundDrawable = backgroundDrawable;
     }
 
     public float getRotation() {

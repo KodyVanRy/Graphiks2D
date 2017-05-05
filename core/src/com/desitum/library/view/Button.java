@@ -1,6 +1,7 @@
 package com.desitum.library.view;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.desitum.library.drawing.Drawable;
 import com.desitum.library.game.World;
 
 /**
@@ -10,8 +11,8 @@ import com.desitum.library.game.World;
 public class Button extends View {
 
     // DRAWING
-    private TextureRegion mRestTexture;
-    private TextureRegion mHoverTexture;
+    private Drawable mRestTexture;
+    private Drawable mHoverTexture;
 
     public Button(World world) {
         this(world, null);
@@ -27,30 +28,30 @@ public class Button extends View {
         switch (touchEvent.getAction()) {
             case DOWN:
                 if (mHoverTexture != null)
-                    setBackgroundTexture(mHoverTexture);
+                    setBackgroundDrawable(mHoverTexture);
                 break;
             case MOVE:
                 if (isTouching(touchEvent) && mHoverTexture != null)
-                    setBackgroundTexture(mHoverTexture);
+                    setBackgroundDrawable(mHoverTexture);
                 else if (mRestTexture != null)
-                    setBackgroundTexture(mRestTexture);
+                    setBackgroundDrawable(mRestTexture);
                 break;
             case UP:
                 if (mRestTexture != null)
-                    setBackgroundTexture(mRestTexture);
+                    setBackgroundDrawable(mRestTexture);
         }
         return super.onTouchEvent(touchEvent);
     }
 
-    public void setRestTexture(TextureRegion restTexture) {
-        this.mRestTexture = restTexture;
-        if (getBackgroundTexture() == null)
-            setBackgroundTexture(this.mRestTexture);
+    public void setRestDrawable(Drawable restDrawable) {
+        this.mRestTexture = restDrawable;
+        if (getBackgroundDrawable() == null)
+            setBackgroundDrawable(this.mRestTexture);
     }
 
-    public void setHoverTexture(TextureRegion hoverTexture) {
-        this.mHoverTexture = hoverTexture;
-        if (getBackgroundTexture() == null)
-            setBackgroundTexture(this.mHoverTexture);
+    public void setHoverDrawable(Drawable hoverDrawable) {
+        this.mHoverTexture = hoverDrawable;
+        if (getBackgroundDrawable() == null)
+            setBackgroundDrawable(this.mHoverTexture);
     }
 }

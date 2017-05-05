@@ -21,6 +21,8 @@ public class GameScreen implements Screen {
 
     private float mViewportWidth;
     private float mViewportHeight;
+    private float mForegroundViewportWidth;
+    private float mForegroundViewportHeight;
 
     private OrthographicCamera mCam;
     private OrthographicCamera mForegroundCam;
@@ -46,7 +48,7 @@ public class GameScreen implements Screen {
      * @param world          mWorld class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
-        init(viewportWidth, viewportHeight, world, worldRenderer, flags);
+        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, world, worldRenderer, flags);
     }
 
     /**
@@ -57,7 +59,7 @@ public class GameScreen implements Screen {
      * @param world          mWorld class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, World world, int flags) {
-        init(viewportWidth, viewportHeight, world, null, flags);
+        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, world, null, flags);
     }
 
     /**
@@ -67,7 +69,20 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight, int flags) {
-        init(viewportWidth, viewportHeight, null, null, flags);
+        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, null, null, flags);
+    }
+
+    /**
+     * Create a new {@link GameScreen} object
+     *
+     * @param viewportWidth  Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     */
+    public GameScreen(float viewportWidth, float viewportHeight,
+                      float foregroundViewportWidth, float foregroundViewportHeight, int flags) {
+
+        init(viewportWidth, viewportHeight, foregroundViewportWidth, foregroundViewportHeight,
+                null, null, flags);
     }
 
     /**
@@ -77,21 +92,38 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
-        init(viewportWidth, viewportHeight, null, null, ASPECT_FIT);
+        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, null, null, ASPECT_FIT);
     }
 
-    private void init(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
+    /**
+     * Create a new {@link GameScreen} object
+     *
+     * @param viewportWidth  Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     */
+    public GameScreen(float viewportWidth, float viewportHeight,
+                      float foregroundViewportWidth, float foregroundViewportHeight) {
+
+        init(viewportWidth, viewportHeight, foregroundViewportWidth, foregroundViewportHeight,
+                null, null, ASPECT_FIT);
+    }
+
+    private void init(float viewportWidth, float viewportHeight,
+                      float foregroundViewportWidth, float foregroundViewportHeight,
+                      World world, WorldRenderer worldRenderer, int flags) {
         mSpriteBatch = new SpriteBatch();
         mCam = new OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
                 getScreenHeight(viewportWidth, viewportHeight, flags));
-        mForegroundCam = new OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
-                getScreenHeight(viewportWidth, viewportHeight, flags));
-        mCam.position.set(mCam.viewportWidth/2, mCam.viewportHeight / 2, 0);
+        mForegroundCam = new OrthographicCamera(getScreenWidth(foregroundViewportWidth, foregroundViewportHeight, flags),
+                getScreenHeight(foregroundViewportWidth, foregroundViewportHeight, flags));
+        mCam.position.set(mCam.viewportWidth / 2, mCam.viewportHeight / 2, 0);
         mForegroundCam.position.set(mForegroundCam.viewportWidth / 2, mForegroundCam.viewportHeight / 2, 0);
         mViewport = getViewport(mCam, flags);
         mForegroundViewport = getViewport(mForegroundCam, flags);
         mViewportWidth = mCam.viewportWidth;
         mViewportHeight = mCam.viewportHeight;
+        mForegroundViewportWidth = mForegroundCam.viewportWidth;
+        mForegroundViewportHeight = mForegroundCam.viewportHeight;
 
         mTouchPos = new Vector3(0, 0, 0);
         mForegroundTouchPos = new Vector3(0, 0, 0);
@@ -261,6 +293,14 @@ public class GameScreen implements Screen {
 
     public float getViewportHeight() {
         return mViewportHeight;
+    }
+
+    public float getForegroundViewportWidth() {
+        return mForegroundViewportWidth;
+    }
+
+    public float getForegroundViewportHeight() {
+        return mForegroundViewportHeight;
     }
 
     protected static float getScreenWidth(float desiredWidth, float desiredHeight,

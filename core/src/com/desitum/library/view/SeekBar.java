@@ -1,8 +1,8 @@
 package com.desitum.library.view;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.desitum.library.drawing.Drawable;
 import com.desitum.library.game.World;
 
 /**
@@ -11,9 +11,9 @@ import com.desitum.library.game.World;
 
 public class SeekBar extends ProgressBar {
 
-    private static final float SEEKER_SIZE = PROGRESS_BAR_HEIGHT * 2;
+    private static final float SEEKER_SIZE = DEFAULT_PROGRESS_BAR_HEIGHT * 2;
 
-    private TextureRegion mSeekerTexture;
+    private Drawable mSeekerDrawable;
     private OnSeekBarChangeListener mOnSeekBarChangeListener;
 
     public SeekBar(World world) {
@@ -47,11 +47,11 @@ public class SeekBar extends ProgressBar {
     }
 
     @Override
-    public void onDraw(Batch spriteBatch, Viewport viewport) {
-        super.onDraw(spriteBatch, viewport);
-        if (mSeekerTexture != null)
-            spriteBatch.draw(
-                    mSeekerTexture,
+    public void onDraw(Batch batch, Viewport viewport) {
+        super.onDraw(batch, viewport);
+        if (mSeekerDrawable != null)
+            mSeekerDrawable.draw(
+                    batch,
                     getX() + getWidth() * getProgress() - SEEKER_SIZE / 2,
                     getY() + getHeight() / 2 - SEEKER_SIZE / 2,
                     SEEKER_SIZE,
@@ -59,8 +59,8 @@ public class SeekBar extends ProgressBar {
                     );
     }
 
-    public void setSeekerTexture(TextureRegion seekerTexture) {
-        this.mSeekerTexture = seekerTexture;
+    public void setSeekerDrawable(Drawable seekerDrawable) {
+        this.mSeekerDrawable = seekerDrawable;
     }
 
     public void setOnSeekBarChangeListener(OnSeekBarChangeListener onSeekBarChangeListener) {

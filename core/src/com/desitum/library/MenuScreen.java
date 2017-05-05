@@ -1,10 +1,15 @@
 package com.desitum.library;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.desitum.library.animation.Animator;
 import com.desitum.library.animation.MovementAnimator;
+import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.GameScreen;
 import com.desitum.library.game_objects.GameObject;
@@ -25,11 +30,13 @@ import com.desitum.library.widgets.Widget;
  */
 public class MenuScreen extends GameScreen {
 
-    public static final float SCREEN_WIDTH = 150.0f;
-    public static final float SCREEN_HEIGHT = 100.0f;
+    public static final float SCREEN_WIDTH = 1920.0f;
+    public static final float SCREEN_HEIGHT = 1080.0f;
+
+    private ProgressBar progressBar;
 
     public MenuScreen() {
-        super(getScreenWidth(), getScreenHeight());
+        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, ASPECT_FILL);
 //        super(getScreenWidth(), getScreenHeight());
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
 
@@ -40,39 +47,69 @@ public class MenuScreen extends GameScreen {
     }
 
     private void setupWorld() {
-        Widget widget = MenuBuilder.build(Gdx.files.internal("layout.json"), getCam());
-        LinearLayout ll = (LinearLayout) widget.findByName("myLayout");
+//        Widget widget = MenuBuilder.build(Gdx.files.internal("layout.json"), getCam());
+//        LinearLayout ll = (LinearLayout) widget.findByName("myLayout");
+//
+//        MovementAnimator animator = new MovementAnimator(-100, 90, 0.9f, Interpolation.DECELERATE_INTERPOLATOR);
+//        animator.setControllingY(true);
+//
+//        Slider mSlider = new Slider(Drawing.getFilledRectangle(1, 1, new Color(0, 0, 0, 0)), new Texture(Gdx.files.internal("slider.png")), Drawing.getHollowRectangle(100, 3, 3, Color.WHITE), "", 100, 10, 0, 0, null);
+//        ll.addWidget(mSlider);
 
-        MovementAnimator animator = new MovementAnimator(-100, 90, 0.9f, Interpolation.DECELERATE_INTERPOLATOR);
-        animator.setControllingY(true);
-
-        Slider mSlider = new Slider(Drawing.getFilledRectangle(1, 1, new Color(0, 0, 0, 0)), new Texture(Gdx.files.internal("slider.png")), Drawing.getHollowRectangle(100, 3, 3, Color.WHITE), "", 100, 10, 0, 0, null);
-        ll.addWidget(mSlider);
-
-        getWorld().addWidget(ll);
-        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLACK), 300, 300, -50, -50));
+//        getWorld().addWidget(ll);
+        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
 //        getCam().position.set(0, 0, 0);
 
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
 
-        ProgressBar progressBar = new SeekBar(getWorld());
+        ProgressBar seekBar = new SeekBar(getWorld());
+        seekBar.setProgress(0.5f);
+        seekBar.setProgressBackgroundDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.BLUE)));
+        ((SeekBar) seekBar).setSeekerDrawable(new Drawable(Drawing.getFilledCircle(40, Color.BLUE)));
+        seekBar.setProgressDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.CORAL)));
+        getWorld().addView(seekBar);
+        seekBar.setSize(40, 10);
+        seekBar.setPosition(0, 0);
+        seekBar.startAnimator(new MovementAnimator(seekBar, -20, 20, 1, 1, Interpolation.DECELERATE_INTERPOLATOR, false, true));
+
+        progressBar = new ProgressBar(getWorld());
         progressBar.setProgress(0.5f);
-        progressBar.setProgressBackgroundTexture(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.BLUE)));
-        ((SeekBar) progressBar).setSeekerTexture(new TextureRegion(Drawing.getFilledCircle(40, Color.BLUE)));
-        progressBar.setProgressTexture(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.CORAL)));
+//        progressBar.setProgressBackgroundDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.BLUE)));
+        progressBar.setProgressBackgroundDrawable(Drawable.loadDrawable("progress_bg.png", true));
+//        progressBar.getProgressBackgroundDrawable().setColor(Color.BLUE);
+//        progressBar.setProgressDrawable(Drawable.loadDrawable("progress.png", true));
+        progressBar.setProgressDrawable(new Drawable(
+                new NinePatch(new Texture("progress_bar.png"), 99, 99, 99, 99)));
+//        progressBar.setProgressDrawable(Drawable.loadDrawable(Drawing.getFilledCircle(20, Color.RED), true));
+        progressBar.setProgressBarHeight(200);
         getWorld().addView(progressBar);
-        progressBar.setSize(40, 10);
-        progressBar.setPosition(0, 0);
-        progressBar.startAnimator(new MovementAnimator(progressBar, -20, 20, 1, 1, Interpolation.DECELERATE_INTERPOLATOR, false, true));
+        progressBar.setSize(800, 200);
+        progressBar.setPosition(200, 200);
 
         Button button = new Button(getWorld());
-        button.setSize(20, 10);
-        button.setPosition(0, 0);
-        button.setRestTexture(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.BROWN)));
-        button.setHoverTexture(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.PINK)));
+        button.setSize(200, 200);
+        button.setPosition(10, 10);
+        button.setRestDrawable(Drawable.loadDrawable("particle.png", true));
+        button.setHoverDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.PINK)));
         button.setOriginCenter();
         getWorld().addView(button);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long endTime = System.currentTimeMillis() + 4000;
+                while (System.currentTimeMillis() < endTime) {
+                    progressBar.setProgress(1 - (endTime - System.currentTimeMillis()) / 4000.0f);
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                progressBar.setProgress(1);
+            }
+        }).start();
     }
 
     @Override
@@ -99,13 +136,5 @@ public class MenuScreen extends GameScreen {
     @Override
     public void dispose() {
 
-    }
-
-    private static float getScreenWidth() {
-        return getScreenWidth(SCREEN_WIDTH, SCREEN_HEIGHT, GameScreen.ASPECT_FILL);
-    }
-
-    private static float getScreenHeight() {
-        return getScreenHeight(SCREEN_WIDTH, SCREEN_HEIGHT, GameScreen.ASPECT_FILL);
     }
 }

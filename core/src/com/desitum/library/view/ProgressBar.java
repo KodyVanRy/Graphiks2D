@@ -1,11 +1,9 @@
 package com.desitum.library.view;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.desitum.library.drawing.Drawable;
 import com.desitum.library.game.World;
-import com.desitum.library.logging.Log;
 
 /**
  * Created by kodyvanry on 5/1/17.
@@ -13,39 +11,41 @@ import com.desitum.library.logging.Log;
 
 public class ProgressBar extends View {
 
-    protected static final float PROGRESS_BAR_HEIGHT = 2;
+    protected static final float DEFAULT_PROGRESS_BAR_HEIGHT = 50;
 
     private float mProgress;
-    private TextureRegion mProgressTexture;
-    private TextureRegion mProgressBackgroundTexture;
+    private float mProgressBarHeight;
+    private Drawable mProgressDrawable;
+    private Drawable mProgressBackgroundDrawable;
 
     public ProgressBar(World world) {
-        super(world);
+        this(world, null);
     }
 
     public ProgressBar(World world, LayoutConstraints layoutConstraints) {
         super(world, layoutConstraints);
+        this.mProgressBarHeight = DEFAULT_PROGRESS_BAR_HEIGHT;
     }
 
     @Override
-    public void onDraw(Batch spriteBatch, Viewport viewport) {
-        super.onDraw(spriteBatch, viewport);
-        if (mProgressBackgroundTexture != null) {
-            spriteBatch.draw(
-                    mProgressBackgroundTexture,
+    public void onDraw(Batch batch, Viewport viewport) {
+        super.onDraw(batch, viewport);
+        if (mProgressBackgroundDrawable != null) {
+            mProgressBackgroundDrawable.draw(
+                    batch,
                     getX(),
-                    getY() + getHeight() / 2 - PROGRESS_BAR_HEIGHT / 2,
+                    getY() + getHeight() / 2 - mProgressBarHeight / 2,
                     getWidth(),
-                    PROGRESS_BAR_HEIGHT
+                    mProgressBarHeight
             );
         }
-        if (mProgressTexture != null) {
-            spriteBatch.draw(
-                    mProgressTexture,
+        if (mProgressDrawable != null) {
+            mProgressDrawable.draw(
+                    batch,
                     getX(),
-                    getY() + getHeight() / 2 - PROGRESS_BAR_HEIGHT / 2,
+                    getY() + getHeight() / 2 - mProgressBarHeight / 2,
                     getWidth() * mProgress,
-                    PROGRESS_BAR_HEIGHT
+                    mProgressBarHeight
             );
         }
     }
@@ -58,11 +58,19 @@ public class ProgressBar extends View {
         return mProgress;
     }
 
-    public void setProgressBackgroundTexture(TextureRegion progressBackgroundTexture) {
-        this.mProgressBackgroundTexture = progressBackgroundTexture;
+    public void setProgressBackgroundDrawable(Drawable progressBackgroundDrawable) {
+        this.mProgressBackgroundDrawable = progressBackgroundDrawable;
     }
 
-    public void setProgressTexture(TextureRegion progressTexture) {
-        this.mProgressTexture = progressTexture;
+    public Drawable getProgressBackgroundDrawable() {
+        return this.mProgressBackgroundDrawable;
+    }
+
+    public void setProgressDrawable(Drawable progressDrawable) {
+        this.mProgressDrawable = progressDrawable;
+    }
+
+    public void setProgressBarHeight(float progressBarHeight) {
+        this.mProgressBarHeight = progressBarHeight;
     }
 }
