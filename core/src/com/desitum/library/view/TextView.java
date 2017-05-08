@@ -48,9 +48,6 @@ public class TextView extends View {
 
     @Override
     public boolean onTouchEvent(TouchEvent touchEvent) {
-        if (touchEvent.getAction() == TouchEvent.Action.DOWN) {
-            getWorld().requestFocus(this);
-        }
         return super.onTouchEvent(touchEvent);
     }
 

@@ -5,13 +5,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.game_objects.GameObject;
-import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleEmitter;
-import com.desitum.library.view.View;
-import com.desitum.library.view.ViewGroup;
-import com.desitum.library.widgets.Layout;
 import com.desitum.library.view.TouchEvent;
-import com.desitum.library.widgets.Widget;
+import com.desitum.library.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,12 +19,10 @@ import java.util.List;
  */
 public class World implements InputProcessor{
 
-    public boolean mLayerWidgets = true;
     public boolean mLayerGameObjects = true;
     private boolean mClickDown = false;
     private boolean mForegroundClickDown = false;
 
-    private List<Widget> mWidgets;
     private List<GameObject> mGameObjects;
     private List<G2DSprite> mSprites;
     private List<View> mViews;
@@ -37,7 +31,6 @@ public class World implements InputProcessor{
     private OrthographicCamera mForegroundCamera;
     private Viewport mViewport;
     private Viewport mForegroundViewport;
-    private Widget mWidgetFocus;
     private View mViewFocus;
     private TouchEvent mTouchEvent;
 
@@ -48,7 +41,6 @@ public class World implements InputProcessor{
     public World(OrthographicCamera camera, Viewport viewport) {
         this.mCamera = camera;
         this.mViewport = viewport;
-        this.mWidgets = new ArrayList<Widget>();
         this.mGameObjects = new ArrayList<GameObject>();
         this.mSprites = new ArrayList<G2DSprite>();
         this.mViews = new ArrayList<View>();
@@ -65,7 +57,6 @@ public class World implements InputProcessor{
         this.mViewport = viewport;
         this.mForegroundCamera = foregroundCamera;
         this.mForegroundViewport = foregroundViewport;
-        this.mWidgets = new ArrayList<Widget>();
         this.mGameObjects = new ArrayList<GameObject>();
         this.mSprites = new ArrayList<G2DSprite>();
         this.mViews = new ArrayList<View>();
@@ -78,9 +69,6 @@ public class World implements InputProcessor{
      * @param delta time since last update
      */
     public void update(float delta) {
-        for (Widget widget : mWidgets) {
-            widget.update(delta);
-        }
         for (GameObject gameObject : mGameObjects) {
             gameObject.update(delta);
         }
@@ -143,20 +131,6 @@ public class World implements InputProcessor{
     }
 
     /**
-     * Add a {@link Widget} to be handled by {@link World}
-     * @param widget widget to be handled
-     */
-    public void addWidget(Widget widget) {
-        this.mWidgets.add(widget);
-        if (mLayerWidgets) {
-            Collections.sort(mWidgets);
-            if (widget instanceof Layout) {
-                ((Layout) widget).sortWidgets();
-            }
-        }
-    }
-
-    /**
      * Add a {@link GameObject} to be handled by {@link World}
      * @param gameObject2D {@link GameObject} to be handled
      */
@@ -181,6 +155,7 @@ public class World implements InputProcessor{
      */
     public void addView(View view) {
         this.mViews.add(view);
+        Collections.sort(mViews);
     }
 
     /**
@@ -192,11 +167,11 @@ public class World implements InputProcessor{
     }
 
     /**
-     * Remove a widget from the screen
-     * @param widget {@link Widget} to remove
+     * Remove a view from the screen
+     * @param view {@link View} to remove
      */
-    public void removeWidget(Widget widget) {
-        mWidgets.remove(widget);
+    public void removeView(View view) {
+        mViews.remove(view);
     }
 
     /**
@@ -208,24 +183,16 @@ public class World implements InputProcessor{
     }
 
     /**
-     * Get a {@link List} of {@link Widget}
-     * @return {@link List} of {@link Widget}
-     */
-    public List<Widget> getWidgets() {
-        return mWidgets;
-    }
-
-    /**
-     * Get a {@link List} of {@link Widget}
-     * @return {@link List} of {@link Widget}
+     * Get a {@link List} of {@link View}
+     * @return {@link List} of {@link View}
      */
     public List<View> getViews() {
         return mViews;
     }
 
     /**
-     * Get a {@link List} of {@link Widget}
-     * @return {@link List} of {@link Widget}
+     * Get a {@link List} of {@link G2DSprite}
+     * @return {@link List} of {@link G2DSprite}
      */
     public List<G2DSprite> getSprites() {
         return mSprites;
@@ -239,36 +206,29 @@ public class World implements InputProcessor{
         return mCamera;
     }
 
+    /**
+     * Get {@link OrthographicCamera} used by the {@link World}
+     * @return {@link OrthographicCamera}
+     */
+    public OrthographicCamera getForegroundCamera() {
+        return mForegroundCamera;
+    }
+
     public boolean onTouchDown(Vector3 clickPos) {
-        Log.d(this, "onTouchDown()");
         mTouchEvent.setAction(TouchEvent.Action.DOWN);
-        for (Widget widget : mWidgets) {
-            if (widget.isPointInWidget(clickPos)) {
-                if (widget.onTouchEvent(mTouchEvent)) {
-                    mWidgetFocus = widget.requestFocus(clickPos);
-                    return true;
-                }
-            }
-        }
+        // TODO Game Object Touch Events
         return false;
     }
 
     public boolean onTouchUp() {
         mTouchEvent.setAction(TouchEvent.Action.UP);
-        if (mWidgetFocus != null) {
-            mWidgetFocus.onTouchEvent(mTouchEvent);
-            mWidgetFocus = null;
-            return true;
-        }
+        // TODO Game Object Touch Events
         return false;
     }
 
     private boolean onTouchMoved() {
         mTouchEvent.setAction(TouchEvent.Action.MOVE);
-        if (mWidgetFocus != null) {
-            mWidgetFocus.onTouchEvent(mTouchEvent);
-            return true;
-        }
+        // TODO Game Object Touch Events
         return false;
     }
 
@@ -295,11 +255,6 @@ public class World implements InputProcessor{
 
     private boolean onTouchMovedForeground() {
         mTouchEvent.setAction(TouchEvent.Action.MOVE);
-//        if (mWidgetFocus != null) {
-//            mWidgetFocus.onTouchEvent(mTouchEvent);
-//            return true;
-//        }
-        Log.d(this, "onTouchMovedForeground()" + mViewFocus);
         if (mViewFocus != null) {
             mViewFocus.dispatchTouchEvent(mTouchEvent);
             return true;
@@ -326,9 +281,6 @@ public class World implements InputProcessor{
     public void dispose() {
         for (ParticleEmitter particleEmitter: mParticleEmitters) {
             particleEmitter.dispose();
-        }
-        for (Widget widget: mWidgets) {
-            widget.dispose();
         }
         for (GameObject gameObject: mGameObjects) {
             gameObject.dispose();

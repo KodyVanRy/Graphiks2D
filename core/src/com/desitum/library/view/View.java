@@ -171,6 +171,9 @@ public class View extends G2DSprite {
             }
         }
         if (isEnabled()) {
+            if (touchEvent.getAction() == TouchEvent.Action.DOWN) {
+                mWorld.requestFocus(this);
+            }
             return onTouchEvent(touchEvent);
         }
         return true;

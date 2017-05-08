@@ -85,9 +85,6 @@ public class EditText extends View {
     public boolean onTouchEvent(TouchEvent touchEvent) {
         if (isEnabled()) {
             switch (touchEvent.getAction()) {
-                case DOWN:
-                    getWorld().requestFocus(this);
-                    break;
                 case UP:
                     if (Gdx.app.getType() == Application.ApplicationType.Android) {
                         Input.TextInputListener inputListener = new Input.TextInputListener() {

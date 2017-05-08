@@ -31,10 +31,6 @@ public class WorldRenderer {
             particleEmitter.draw(batch);
         }
         batch.flush();
-        for (Widget widget : mWorld.getWidgets()) {
-            widget.draw(batch, mWorld.getViewport());
-        }
-        batch.flush();
     }
 
     public void drawForeground(Batch batch) {
