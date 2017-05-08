@@ -162,10 +162,6 @@ public class View extends G2DSprite {
         if (mOnTouchListener != null) {
             mOnTouchListener.onTouchEvent(this, touchEvent);
         }
-        return onTouchEvent(touchEvent);
-    }
-
-    public boolean onTouchEvent(TouchEvent touchEvent) {
         if (hasFocus()) {
             if (mOnClickListener != null
                     && mClickable
@@ -174,6 +170,13 @@ public class View extends G2DSprite {
                 mOnClickListener.onClick(this);
             }
         }
+        if (isEnabled()) {
+            return onTouchEvent(touchEvent);
+        }
+        return true;
+    }
+
+    public boolean onTouchEvent(TouchEvent touchEvent) {
         return true;
     }
 
@@ -192,7 +195,7 @@ public class View extends G2DSprite {
     }
 
     public void setFocus(boolean focus) {
-        this.mFocus = mFocus;
+        this.mFocus = focus;
     }
 
     public View requestFocus(TouchEvent touchEvent) {
@@ -218,7 +221,7 @@ public class View extends G2DSprite {
         this.mFocusable = focusable;
     }
 
-    public boolean ismEnabled() {
+    public boolean isEnabled() {
         return mEnabled;
     }
 

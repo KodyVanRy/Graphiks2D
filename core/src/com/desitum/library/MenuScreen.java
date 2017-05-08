@@ -3,8 +3,10 @@ package com.desitum.library;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.desitum.library.animation.Animator;
@@ -17,6 +19,7 @@ import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.view.Button;
+import com.desitum.library.view.EditText;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
 import com.desitum.library.widgets.LinearLayout;
@@ -94,6 +97,15 @@ public class MenuScreen extends GameScreen {
         button.setHoverDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.PINK)));
         button.setOriginCenter();
         getWorld().addView(button);
+
+        EditText editText = new EditText(getWorld(), null,
+                new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
+        editText.setSize(400, 100);
+        editText.setPosition(400, 400);
+        editText.setBackgroundDrawable(Drawable.loadDrawable("particle.png", true));
+        editText.setHint("Hello");
+        editText.setOriginCenter();
+        getWorld().addView(editText);
 
         new Thread(new Runnable() {
             @Override

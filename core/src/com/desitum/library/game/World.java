@@ -8,6 +8,7 @@ import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.view.View;
+import com.desitum.library.view.ViewGroup;
 import com.desitum.library.widgets.Layout;
 import com.desitum.library.view.TouchEvent;
 import com.desitum.library.widgets.Widget;
@@ -33,7 +34,9 @@ public class World implements InputProcessor{
     private List<View> mViews;
     private List<ParticleEmitter> mParticleEmitters;
     private OrthographicCamera mCamera;
+    private OrthographicCamera mForegroundCamera;
     private Viewport mViewport;
+    private Viewport mForegroundViewport;
     private Widget mWidgetFocus;
     private View mViewFocus;
     private TouchEvent mTouchEvent;
@@ -45,6 +48,23 @@ public class World implements InputProcessor{
     public World(OrthographicCamera camera, Viewport viewport) {
         this.mCamera = camera;
         this.mViewport = viewport;
+        this.mWidgets = new ArrayList<Widget>();
+        this.mGameObjects = new ArrayList<GameObject>();
+        this.mSprites = new ArrayList<G2DSprite>();
+        this.mViews = new ArrayList<View>();
+        this.mParticleEmitters = new ArrayList<ParticleEmitter>();
+        this.mTouchEvent = new TouchEvent();
+    }
+
+    /**
+     * Create new {@link World}
+     * @param camera camera from {@link GameScreen}
+     */
+    public World(OrthographicCamera camera, Viewport viewport, OrthographicCamera foregroundCamera, Viewport foregroundViewport) {
+        this.mCamera = camera;
+        this.mViewport = viewport;
+        this.mForegroundCamera = foregroundCamera;
+        this.mForegroundViewport = foregroundViewport;
         this.mWidgets = new ArrayList<Widget>();
         this.mGameObjects = new ArrayList<GameObject>();
         this.mSprites = new ArrayList<G2DSprite>();
@@ -257,7 +277,6 @@ public class World implements InputProcessor{
         for (View view : mViews) {
             if (view.isTouching(mTouchEvent)) {
                 view.dispatchTouchEvent(mTouchEvent);
-                mViewFocus = view.requestFocus(mTouchEvent);
                 return true;
             }
         }
@@ -300,6 +319,10 @@ public class World implements InputProcessor{
         this.mViewport = viewport;
     }
 
+    public Viewport getForegroundViewport() {
+        return mForegroundViewport;
+    }
+
     public void dispose() {
         for (ParticleEmitter particleEmitter: mParticleEmitters) {
             particleEmitter.dispose();
@@ -314,6 +337,14 @@ public class World implements InputProcessor{
 
     public List<ParticleEmitter> getParticleEmitters() {
         return mParticleEmitters;
+    }
+
+    public void requestFocus(View view) {
+        for (View v : mViews) {
+            v.clearFocus();
+        }
+        mViewFocus = view;
+        mViewFocus.setFocus(true);
     }
 
     @Override

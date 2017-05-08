@@ -129,7 +129,7 @@ public class GameScreen implements Screen {
         mForegroundTouchPos = new Vector3(0, 0, 0);
 
         if (world == null) {
-            mWorld = new World(mCam, mViewport);
+            mWorld = new World(mCam, mViewport, mForegroundCam, mForegroundViewport);
         } else {
             mWorld = world;
         }

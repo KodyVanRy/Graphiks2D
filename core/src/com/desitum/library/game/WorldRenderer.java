@@ -39,7 +39,7 @@ public class WorldRenderer {
 
     public void drawForeground(Batch batch) {
         for (View view : mWorld.getViews()) {
-            view.draw(batch, mWorld.getViewport());
+            view.draw(batch, mWorld.getForegroundViewport());
         }
         batch.flush();
     }
