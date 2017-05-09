@@ -1,31 +1,21 @@
 package com.desitum.library;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.steer.behaviors.Seek;
-import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.desitum.library.animation.Animator;
-import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.GameScreen;
 import com.desitum.library.game_objects.GameObject;
-import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.view.Button;
 import com.desitum.library.view.EditText;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
-import com.desitum.library.widgets.LinearLayout;
-import com.desitum.library.widgets.MenuBuilder;
-import com.desitum.library.widgets.Slider;
-import com.desitum.library.widgets.Widget;
 
 /**
  * Created by kody on 12/12/15.
@@ -68,13 +58,13 @@ public class MenuScreen extends GameScreen {
 
         ProgressBar seekBar = new SeekBar(getWorld());
         seekBar.setProgress(0.5f);
-        seekBar.setProgressBackgroundDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.BLUE)));
-        ((SeekBar) seekBar).setSeekerDrawable(new Drawable(Drawing.getFilledCircle(40, Color.BLUE)));
+        seekBar.setProgressBackgroundDrawable(Drawable.loadDrawable("progress_bg.png", true));
+        ((SeekBar) seekBar).setSeekerDrawable(new Drawable(Drawing.getFilledCircle(200, Color.RED)));
         seekBar.setProgressDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.CORAL)));
         getWorld().addView(seekBar);
-        seekBar.setSize(40, 10);
+        seekBar.setSize(800, 100);
         seekBar.setPosition(0, 0);
-        seekBar.startAnimator(new MovementAnimator(seekBar, -20, 20, 1, 1, Interpolation.DECELERATE_INTERPOLATOR, false, true));
+        seekBar.setProgressBarHeight(100);
 
         progressBar = new ProgressBar(getWorld());
         progressBar.setProgress(0.5f);

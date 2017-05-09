@@ -15,6 +15,7 @@ public class SeekBar extends ProgressBar {
 
     private Drawable mSeekerDrawable;
     private OnSeekBarChangeListener mOnSeekBarChangeListener;
+    private float mSeekerSize = SEEKER_SIZE;
 
     public SeekBar(World world) {
         super(world);
@@ -52,15 +53,19 @@ public class SeekBar extends ProgressBar {
         if (mSeekerDrawable != null)
             mSeekerDrawable.draw(
                     batch,
-                    getX() + getWidth() * getProgress() - SEEKER_SIZE / 2,
-                    getY() + getHeight() / 2 - SEEKER_SIZE / 2,
-                    SEEKER_SIZE,
-                    SEEKER_SIZE
+                    getX() + getWidth() * getProgress() - mSeekerSize / 2,
+                    getY() + getHeight() / 2 - mSeekerSize / 2,
+                    mSeekerSize,
+                    mSeekerSize
                     );
     }
 
     public void setSeekerDrawable(Drawable seekerDrawable) {
         this.mSeekerDrawable = seekerDrawable;
+    }
+
+    public void setSeekerSize(float seekerSize) {
+        mSeekerSize = seekerSize;
     }
 
     public void setOnSeekBarChangeListener(OnSeekBarChangeListener onSeekBarChangeListener) {
