@@ -82,6 +82,12 @@ public class EditText extends View {
     }
 
     @Override
+    protected void dispatchLayout() {
+        super.dispatchLayout();
+        setupFontSize();
+    }
+
+    @Override
     public boolean onTouchEvent(TouchEvent touchEvent) {
         if (isEnabled()) {
             switch (touchEvent.getAction()) {
@@ -119,10 +125,10 @@ public class EditText extends View {
 
     @Override
     public void draw(Batch batch, Viewport camera) {
-        Rectangle scissor = new Rectangle();
-        Rectangle clipBounds = new Rectangle(getX(), getY(), getWidth() + 1, getHeight() + 1);
-        camera.calculateScissors(batch.getTransformMatrix(), clipBounds, scissor);
-        ScissorStack.pushScissors(scissor);
+//        Rectangle scissor = new Rectangle();
+//        Rectangle clipBounds = new Rectangle(getX(), getY(), getWidth() + 1, getHeight() + 1);
+//        camera.calculateScissors(batch.getTransformMatrix(), clipBounds, scissor);
+//        ScissorStack.pushScissors(scissor);
 
         super.draw(batch, camera);
         mFont.setColor(mTextColor);
@@ -141,9 +147,9 @@ public class EditText extends View {
             if (mAlignment == LinearLayout.ALIGNMENT_RIGHT)
                 mFont.draw(batch, mHint, getX() + getWidth() - getHintWidth() - getHeight() * 0.2f, getY() + getHeight() * 0.8f);
         }
-        batch.flush();
+//        batch.flush();
 
-        ScissorStack.popScissors();
+//        ScissorStack.popScissors();
     }
 
     private String getDisplayText() {

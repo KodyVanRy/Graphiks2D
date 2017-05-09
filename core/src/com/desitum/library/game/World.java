@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.game_objects.GameObject;
+import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleEmitter;
 import com.desitum.library.view.TouchEvent;
 import com.desitum.library.view.View;
@@ -234,7 +235,8 @@ public class World implements InputProcessor{
 
     public boolean onTouchDownForeground() {
         mTouchEvent.setAction(TouchEvent.Action.DOWN);
-        for (View view : mViews) {
+        for (int i = mViews.size() - 1; i >= 0; i--) { // Touch needs to be backwards to touch top views first
+            View view = mViews.get(i);
             if (view.isTouching(mTouchEvent)) {
                 view.dispatchTouchEvent(mTouchEvent);
                 return true;

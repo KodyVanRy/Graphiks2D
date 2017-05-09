@@ -2,7 +2,6 @@ package com.desitum.library.view;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.animation.Animator;
 import com.desitum.library.drawing.Drawable;
@@ -25,6 +24,9 @@ public class View extends G2DSprite {
     public static final int INVISIBLE = 1 << 1;
     public static final int GONE = 1 << 2;
 
+    public static final float MATCH_PARENT = LayoutConstraints.MATCH_PARENT;
+    public static final float WRAP_CONTENT = LayoutConstraints.WRAP_CONTENT;
+
     // TOUCH
     private boolean mFocus = false;
     private boolean mEnabled = true;
@@ -41,6 +43,7 @@ public class View extends G2DSprite {
 
     // LAYOUT
     private LayoutConstraints mLayoutConstraints;
+    private boolean mDirty = true;
 
     // CLASS VARS
     private World mWorld;
@@ -66,6 +69,8 @@ public class View extends G2DSprite {
     // -----------------------------
     @Override
     public void update(float delta) {
+        if (mDirty)
+            dispatchLayout();
         for (Animator animator : mAnimators) {
             animator.update(delta);
         }
@@ -93,22 +98,33 @@ public class View extends G2DSprite {
         return mLayoutConstraints;
     }
 
-    private void dispatchLayout() {
+    protected void dispatchLayout() {
         if ((mVisibility & GONE) != 0) { // VISIBILITY IS SET TO GONE
-            setX(0);
-            setY(0);
-            setSize(0, 0);
-        } else {
-            if (mParent != null) {
-                setX(mParent.getX() + mLayoutConstraints.x);
-                setY(mParent.getY() + mLayoutConstraints.y);
-            } else {
-                setX(mLayoutConstraints.x);
-                setY(mLayoutConstraints.y);
-            }
+            super.setX(0);
+            super.setY(0);
+            super.setSize(0, 0);
+        } else if (mLayoutConstraints != null) {
+            if (mLayoutConstraints.width == LayoutConstraints.MATCH_PARENT && mParent != null)
+                super.setSize(mParent.getWidth(), mLayoutConstraints.height);
+            else if (mLayoutConstraints.height == LayoutConstraints.MATCH_PARENT && mParent != null)
+                super.setSize(mLayoutConstraints.width, mParent.getHeight());
+            else
+                super.setSize(mLayoutConstraints.width, mLayoutConstraints.height);
 
-            setSize(mLayoutConstraints.width, mLayoutConstraints.height);
+            if (mParent != null) {
+                if (mLayoutConstraints.x == LayoutConstraints.CENTER_HORIZONTAL)
+                    super.setX(mParent.getX() + mParent.getWidth() - getWidth() / 2);
+                else
+                    super.setX(mParent.getX() + mLayoutConstraints.x);
+                if (mLayoutConstraints.y == LayoutConstraints.CENTER_VERTICAL)
+                    super.setY(mParent.getY() + mParent.getHeight() - getHeight() / 2);
+                super.setY(mParent.getY() + mLayoutConstraints.y);
+            } else {
+                super.setX(mLayoutConstraints.x);
+                super.setY(mLayoutConstraints.y);
+            }
         }
+        mDirty = false;
     }
     // -----------------------------
     // endregion
@@ -170,7 +186,7 @@ public class View extends G2DSprite {
                 mOnClickListener.onClick(this);
             }
         }
-        if (isEnabled()) {
+        if (isEnabled() || this instanceof EditText) {
             if (touchEvent.getAction() == TouchEvent.Action.DOWN) {
                 mWorld.requestFocus(this);
             }
@@ -272,6 +288,39 @@ public class View extends G2DSprite {
         this.mParent = parent;
     }
 
+    @Override
+    public void setSize(float width, float height) {
+        if (mLayoutConstraints == null)
+            mLayoutConstraints = new LayoutConstraints(getX(), getY(), width, height);
+
+        mLayoutConstraints.width = width;
+        mLayoutConstraints.height = height;
+        invalidate();
+    }
+
+    @Override
+    public void setX(float x) {
+        if (mLayoutConstraints == null)
+            mLayoutConstraints = new LayoutConstraints(getX(), getY(), getWidth(), getHeight());
+        mLayoutConstraints.x = x;
+    }
+
+    @Override
+    public void setY(float y) {
+        if (mLayoutConstraints == null)
+            mLayoutConstraints = new LayoutConstraints(getX(), getY(), getWidth(), getHeight());
+        mLayoutConstraints.y = y;
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        if (mLayoutConstraints == null)
+            mLayoutConstraints = new LayoutConstraints(getX(), getY(), getWidth(), getHeight());
+        mLayoutConstraints.x = x;
+        mLayoutConstraints.y = y;
+        invalidate();
+    }
+
     public int getId() {
         return mId;
     }
@@ -333,6 +382,10 @@ public class View extends G2DSprite {
     @Override
     public void setColor(Color tint) {
         super.setColor(tint);
+    }
+
+    public void invalidate() {
+        mDirty = true;
     }
     // -----------------------------
     // endregion

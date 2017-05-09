@@ -14,8 +14,12 @@ import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.view.Button;
 import com.desitum.library.view.EditText;
+import com.desitum.library.view.LayoutConstraints;
+import com.desitum.library.view.LinearLayout;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
+import com.desitum.library.view.View;
+import com.desitum.library.widgets.Layout;
 
 /**
  * Created by kody on 12/12/15.
@@ -27,6 +31,8 @@ public class MenuScreen extends GameScreen {
     public static final float SCREEN_HEIGHT = 1080.0f;
 
     private ProgressBar progressBar;
+    private SeekBar seekBar;
+    private LinearLayout layout;
 
     public MenuScreen() {
         super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, ASPECT_FILL);
@@ -56,15 +62,20 @@ public class MenuScreen extends GameScreen {
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
 
-        ProgressBar seekBar = new SeekBar(getWorld());
+        final LayoutConstraints linearLayoutConstraints = new LayoutConstraints(100, 100, 800, 600);
+        layout = new LinearLayout(getWorld(), linearLayoutConstraints);
+        layout.setBackgroundDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.CHARTREUSE)));
+        getWorld().addView(layout);
+
+        seekBar = new SeekBar(getWorld());
         seekBar.setProgress(0.5f);
         seekBar.setProgressBackgroundDrawable(Drawable.loadDrawable("progress_bg.png", true));
         ((SeekBar) seekBar).setSeekerDrawable(new Drawable(Drawing.getFilledCircle(200, Color.RED)));
         seekBar.setProgressDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.CORAL)));
-        getWorld().addView(seekBar);
-        seekBar.setSize(800, 100);
-        seekBar.setPosition(0, 0);
-        seekBar.setProgressBarHeight(100);
+        seekBar.setSize(View.MATCH_PARENT, 200);
+        seekBar.setProgressBarHeight(200);
+        layout.addView(seekBar);
+
 
         progressBar = new ProgressBar(getWorld());
         progressBar.setProgress(0.5f);
@@ -76,9 +87,8 @@ public class MenuScreen extends GameScreen {
                 new NinePatch(new Texture("progress_bar.png"), 99, 99, 99, 99)));
 //        progressBar.setProgressDrawable(Drawable.loadDrawable(Drawing.getFilledCircle(20, Color.RED), true));
         progressBar.setProgressBarHeight(200);
-        getWorld().addView(progressBar);
         progressBar.setSize(800, 200);
-        progressBar.setPosition(200, 200);
+        layout.addView(progressBar);
 
         Button button = new Button(getWorld());
         button.setSize(200, 200);
@@ -91,10 +101,11 @@ public class MenuScreen extends GameScreen {
         EditText editText = new EditText(getWorld(), null,
                 new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
         editText.setSize(400, 100);
-        editText.setPosition(400, 400);
+        editText.setPosition(400, 500);
         editText.setBackgroundDrawable(Drawable.loadDrawable("particle.png", true));
         editText.setHint("Hello");
         editText.setOriginCenter();
+        editText.setLayer(4);
         getWorld().addView(editText);
 
         new Thread(new Runnable() {
@@ -103,6 +114,7 @@ public class MenuScreen extends GameScreen {
                 long endTime = System.currentTimeMillis() + 4000;
                 while (System.currentTimeMillis() < endTime) {
                     progressBar.setProgress(1 - (endTime - System.currentTimeMillis()) / 4000.0f);
+                    layout.setPosition(layout.getX() + 1, layout.getY());
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {

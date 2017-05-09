@@ -9,6 +9,9 @@ public class LayoutConstraints {
     public static final float WRAP_CONTENT = -1;
     public static final float MATCH_PARENT = -2;
 
+    public static final float CENTER_HORIZONTAL = -1;
+    public static final float CENTER_VERTICAL = -2;
+
     float x;
     float y;
 
