@@ -3,6 +3,7 @@ package com.desitum.library.game;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.particles.ParticleEmitter;
+import com.desitum.library.view.View;
 import com.desitum.library.widgets.Widget;
 
 /**
@@ -30,15 +31,11 @@ public class WorldRenderer {
             particleEmitter.draw(batch);
         }
         batch.flush();
-        for (Widget widget : mWorld.getWidgets()) {
-            widget.draw(batch, mWorld.getViewport());
-        }
-        batch.flush();
     }
 
     public void drawForeground(Batch batch) {
-        for (Widget widget : mWorld.getForegroundWidgets()) {
-            widget.draw(batch, mWorld.getViewport());
+        for (View view : mWorld.getViews()) {
+            view.draw(batch, mWorld.getForegroundViewport());
         }
         batch.flush();
     }

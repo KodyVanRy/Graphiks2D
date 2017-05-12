@@ -3,7 +3,6 @@ package com.desitum.library.widgets;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.listener.OnValueChangeListener;
@@ -19,7 +18,7 @@ public class Slider extends Widget {
     private OnValueChangeListener onValueChangeListener;
 
     public Slider(Texture text, String name, float width, float height, float x, float y, Layout parent) {
-        super(text, name, width, height, x, y, parent);
+        super(name, width, height, x, y);
 
         sliderImage = Drawing.getDiamondFilled(100, 100, Color.WHITE);
         sliderWidth = height / 2;
@@ -30,7 +29,7 @@ public class Slider extends Widget {
     }
 
     public Slider(Texture text, Texture sliderText, Texture barText, String name, float width, float height, float x, float y, Layout parent) {
-        super(text, name, width, height, x, y, parent);
+        super(name, width, height, x, y);
 
         this.sliderImage = sliderText;
         sliderWidth = height / 2;
@@ -55,8 +54,11 @@ public class Slider extends Widget {
 //    }
 
     @Override
-    public boolean onTouchEvent(TouchEvent touchEvent) {
+    public boolean onTouchEvent(com.desitum.library.view.TouchEvent touchEvent) {
         value = Math.max(Math.min((touchEvent.getX() - getX()) / getWidth(), 1), 0);
+//        if (touchEvent.getAction() == TouchEvent.Action.MOVE) {
+//            throw new RuntimeException("WTH");
+//        }
         return true;
     }
 

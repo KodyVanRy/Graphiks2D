@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.desitum.library.logging.Log;
+import com.desitum.library.widgets.Layout;
 
 /**
  * Created by kody on 12/27/15.
@@ -19,6 +21,8 @@ public class GameScreen implements Screen {
 
     private float mViewportWidth;
     private float mViewportHeight;
+    private float mForegroundViewportWidth;
+    private float mForegroundViewportHeight;
 
     private OrthographicCamera mCam;
     private OrthographicCamera mForegroundCam;
@@ -44,7 +48,7 @@ public class GameScreen implements Screen {
      * @param world          mWorld class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
-        init(viewportWidth, viewportHeight, world, worldRenderer, flags);
+        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, world, worldRenderer, flags);
     }
 
     /**
@@ -55,7 +59,7 @@ public class GameScreen implements Screen {
      * @param world          mWorld class controller
      */
     public GameScreen(float viewportWidth, float viewportHeight, World world, int flags) {
-        init(viewportWidth, viewportHeight, world, null, flags);
+        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, world, null, flags);
     }
 
     /**
@@ -65,7 +69,20 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight, int flags) {
-        init(viewportWidth, viewportHeight, null, null, flags);
+        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, null, null, flags);
+    }
+
+    /**
+     * Create a new {@link GameScreen} object
+     *
+     * @param viewportWidth  Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     */
+    public GameScreen(float viewportWidth, float viewportHeight,
+                      float foregroundViewportWidth, float foregroundViewportHeight, int flags) {
+
+        init(viewportWidth, viewportHeight, foregroundViewportWidth, foregroundViewportHeight,
+                null, null, flags);
     }
 
     /**
@@ -75,27 +92,44 @@ public class GameScreen implements Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     public GameScreen(float viewportWidth, float viewportHeight) {
-        init(viewportWidth, viewportHeight, null, null, ASPECT_FILL);
+        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, null, null, ASPECT_FIT);
     }
 
-    private void init(float viewportWidth, float viewportHeight, World world, WorldRenderer worldRenderer, int flags) {
+    /**
+     * Create a new {@link GameScreen} object
+     *
+     * @param viewportWidth  Viewport width to fit to screen
+     * @param viewportHeight Viewport height to fit to screen
+     */
+    public GameScreen(float viewportWidth, float viewportHeight,
+                      float foregroundViewportWidth, float foregroundViewportHeight) {
+
+        init(viewportWidth, viewportHeight, foregroundViewportWidth, foregroundViewportHeight,
+                null, null, ASPECT_FIT);
+    }
+
+    private void init(float viewportWidth, float viewportHeight,
+                      float foregroundViewportWidth, float foregroundViewportHeight,
+                      World world, WorldRenderer worldRenderer, int flags) {
         mSpriteBatch = new SpriteBatch();
         mCam = new OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
                 getScreenHeight(viewportWidth, viewportHeight, flags));
-        mForegroundCam = new OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
-                getScreenHeight(viewportWidth, viewportHeight, flags));
-        mCam.position.set(mCam.viewportWidth/2, mCam.viewportHeight / 2, 0);
+        mForegroundCam = new OrthographicCamera(getScreenWidth(foregroundViewportWidth, foregroundViewportHeight, flags),
+                getScreenHeight(foregroundViewportWidth, foregroundViewportHeight, flags));
+        mCam.position.set(mCam.viewportWidth / 2, mCam.viewportHeight / 2, 0);
         mForegroundCam.position.set(mForegroundCam.viewportWidth / 2, mForegroundCam.viewportHeight / 2, 0);
         mViewport = getViewport(mCam, flags);
         mForegroundViewport = getViewport(mForegroundCam, flags);
         mViewportWidth = mCam.viewportWidth;
         mViewportHeight = mCam.viewportHeight;
+        mForegroundViewportWidth = mForegroundCam.viewportWidth;
+        mForegroundViewportHeight = mForegroundCam.viewportHeight;
 
         mTouchPos = new Vector3(0, 0, 0);
         mForegroundTouchPos = new Vector3(0, 0, 0);
 
         if (world == null) {
-            mWorld = new World(mCam, mViewport);
+            mWorld = new World(mCam, mViewport, mForegroundCam, mForegroundViewport);
         } else {
             mWorld = world;
         }
@@ -128,8 +162,8 @@ public class GameScreen implements Screen {
      * @param delta time since last frame
      */
     public void update(float delta) {
-        mForegroundTouchPos = mForegroundViewport.unproject(mTouchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        if (!mWorld.updateForegroundTouchInput(mTouchPos, Gdx.input.isTouched())) {
+        mForegroundTouchPos = mForegroundViewport.unproject(mForegroundTouchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+        if (!mWorld.updateForegroundTouchInput(mForegroundTouchPos, Gdx.input.isTouched())) {
             mTouchPos = mViewport.unproject(mTouchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             mWorld.updateTouchInput(mTouchPos, Gdx.input.isTouched());
         }
@@ -164,6 +198,7 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         mViewport.update(width, height);
+        mForegroundViewport.update(width, height);
     }
 
     @Override
@@ -258,6 +293,14 @@ public class GameScreen implements Screen {
 
     public float getViewportHeight() {
         return mViewportHeight;
+    }
+
+    public float getForegroundViewportWidth() {
+        return mForegroundViewportWidth;
+    }
+
+    public float getForegroundViewportHeight() {
+        return mForegroundViewportHeight;
     }
 
     protected static float getScreenWidth(float desiredWidth, float desiredHeight,

@@ -25,7 +25,7 @@ public class Button extends Widget {
     private Texture mClickTexture;
 
     public Button(Texture text, String name, float width, float height, float x, float y, Layout parent) {
-        super(text, name, width, height, x, y, parent);
+        super(name, width, height, x, y);
         mRestTexture = text;
     }
 
@@ -54,7 +54,7 @@ public class Button extends Widget {
 //    }
 
     @Override
-    public boolean onTouchEvent(TouchEvent touchEvent) {
+    public boolean onTouchEvent(com.desitum.library.view.TouchEvent touchEvent) {
         super.onTouchEvent(touchEvent);
         if (isVisible()) {
             switch (touchEvent.getAction()) {

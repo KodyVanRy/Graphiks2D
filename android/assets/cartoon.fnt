@@ -1,6 +1,6 @@
 info face=BD Cartoon Shout,Normal size=20 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=0 aa=1 padding=0,0,0,0 spacing=1,1
 common lineHeight=73 base=57 scaleW=512 scaleH=512 pages=1 packed=0
-page id=0 file=cartoon_00.png
+page id=0 file="cartoon.png"
 chars count=361
 char id=32 x=450 y=477 width=1 height=1 xoffset=-1 yoffset=56 xadvance=34 page=0 chnl=0
 char id=33 x=223 y=64 width=24 height=61 xoffset=-1 yoffset=-4 xadvance=24 page=0 chnl=0

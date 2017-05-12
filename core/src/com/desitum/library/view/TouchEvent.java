@@ -1,4 +1,4 @@
-package com.desitum.library.widgets;
+package com.desitum.library.view;
 
 /**
  * Created by kodyvanry on 4/19/17.

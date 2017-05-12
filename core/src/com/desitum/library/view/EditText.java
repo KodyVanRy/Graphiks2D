@@ -1,53 +1,63 @@
-package com.desitum.library.widgets;
+package com.desitum.library.view;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.desitum.library.drawing.Drawing;
+import com.desitum.library.game.World;
+import com.desitum.library.logging.Log;
+import com.desitum.library.widgets.LinearLayout;
 
 /**
  * Created by kody on 12/15/15.
  * can be used by kody and people in [kody}]
  */
-public class EditText extends Widget {
+public class EditText extends View {
 
     public static final int TEXT = 0;
     public static final int PASSWORD = 1;
 
     public static final String INPUT_TEXT = "mText";
     public static final String INPUT_PASSWORD = "password";
+    public static final float KEY_REPEAT = 0.05f;
 
     private String mText, mHint, mDisplayText;
     private int mAlignment, mType;
-    private float mUnderlineHeight, mBlinkOnTime, mBlinkOffTime, mBlinkTime;
-    private boolean mBlink, mFocus;
+    private float mBlinkOnTime, mBlinkOffTime, mBlinkTime;
+    private boolean mBlink;
     private BitmapFont mFont;
-    private Texture mUnderline;
     private GlyphLayout mGlyphLayout;
     private Color mTextColor;
     private Color mHintColor;
 
-    public EditText(Texture background, String name, float width, float height, float x, float y, Layout parent, BitmapFont font) {
-        super(name, width, height, x, y);
+    public EditText(World world) {
+        this(world, null);
+    }
+
+    public EditText(World world, LayoutConstraints layoutConstraints) {
+        this(world, layoutConstraints, null);
+    }
+
+    public EditText(World world, LayoutConstraints layoutConstraints, BitmapFont font) {
+        super(world, layoutConstraints);
         this.mText = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         this.mFont = font;
         mGlyphLayout = new GlyphLayout(font, mText);
         setupFontSize();
         mDisplayText = "";
         mText = "";
-        mHint = "Name";
-        mTextColor = Color.WHITE;
+        mHint = "";
+        mTextColor = Color.BLACK;
         mHintColor = new Color(0.2f, 0.2f, 0.2f, 0.3f);
         this.mBlinkOffTime = 0.4f;
         this.mBlinkOnTime = 0.6f;
-        this.mFocus = false;
         this.mAlignment = LinearLayout.ALIGNMENT_LEFT;
-        this.mUnderlineHeight = height * 0.05f;
         this.mType = TEXT;
     }
 
@@ -63,46 +73,44 @@ public class EditText extends Widget {
     @Override
     public void update(float delta) {
         super.update(delta);
-
-        if (mFocus) {
-            updateTextInput();
+        if (hasFocus()) {
+            updateTextInput(delta);
             updateBlink(delta);
+        } else {
+            mBlink = false;
         }
     }
 
-//    @Override
-//    public void updateTouchInput(Vector3 mousePos, boolean clickDown) {
-//        // Android has to come before super.updateTouchInput due to complications with 4 popups.
-//        if (isVisible()) {
-//            if (Gdx.app.getType() == Application.ApplicationType.Android) {
-//                if (isClickDown() && !clickDown && isPointInWidget(mousePos)) {
-//                    Input.TextInputListener inputListener = new Input.TextInputListener() {
-//                        @Override
-//                        public void input(String input) {
-//                            mText = input;
-//                        }
-//
-//                        @Override
-//                        public void canceled() {
-//
-//                        }
-//                    };
-//                    Gdx.input.getTextInput(inputListener, mHint, mText, "");
-//                }
-//            }
-//
-////            super.updateTouchInput(mousePos, clickDown);
-//
-//            if (clickDown) {
-//                mFocus = false;
-//                if (CollisionDetection.pointInRectangle(getBoundingRectangle(), mousePos)) {
-//                    if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
-//                        mFocus = true;
-//                    }
-//                }
-//            }
-//        }
-//    }
+    @Override
+    protected void dispatchLayout() {
+        super.dispatchLayout();
+        setupFontSize();
+    }
+
+    @Override
+    public boolean onTouchEvent(TouchEvent touchEvent) {
+        if (isEnabled()) {
+            switch (touchEvent.getAction()) {
+                case UP:
+                    if (Gdx.app.getType() == Application.ApplicationType.Android) {
+                        Input.TextInputListener inputListener = new Input.TextInputListener() {
+                            @Override
+                            public void input(String input) {
+                                mText = input;
+                            }
+
+                            @Override
+                            public void canceled() {
+
+                            }
+                        };
+                        Gdx.input.getTextInput(inputListener, mHint, mText, "");
+                    }
+                    break;
+            }
+        }
+        return super.onTouchEvent(touchEvent);
+    }
 
     private void setupFontSize() {
         float x = 0;
@@ -115,23 +123,14 @@ public class EditText extends Widget {
         mFont.getData().setScale(z - 0.01f);
     }
 
-    public void setUnderline(Texture texture) {
-        this.mUnderline = texture;
-    }
-
-    public void setUnderlineHeight(float underlineHeight) {
-        this.mUnderlineHeight = underlineHeight;
-    }
-
-    public void setUnderlineColor(Color color) {
-        float scale = 50 / this.mUnderlineHeight;
-        this.mUnderline = Drawing.getTextureRoundedRectangle((int) (this.getWidth() * scale), (int) (mUnderlineHeight * scale), (int) (mUnderlineHeight * scale), color);
-    }
-
     @Override
     public void draw(Batch batch, Viewport camera) {
+//        Rectangle scissor = new Rectangle();
+//        Rectangle clipBounds = new Rectangle(getX(), getY(), getWidth() + 1, getHeight() + 1);
+//        camera.calculateScissors(batch.getTransformMatrix(), clipBounds, scissor);
+//        ScissorStack.pushScissors(scissor);
+
         super.draw(batch, camera);
-        if (mUnderline != null) batch.draw(mUnderline, getX(), getY(), getWidth(), mUnderlineHeight);
         mFont.setColor(mTextColor);
         if (mAlignment == LinearLayout.ALIGNMENT_LEFT)
             mFont.draw(batch, getDisplayText() + getBlinkString(), getX() + getHeight() * 0.2f, getY() + getHeight() * 0.8f);
@@ -139,7 +138,7 @@ public class EditText extends Widget {
             mFont.draw(batch, getDisplayText() + getBlinkString(), getX() + getWidth() / 2 - getTextWidth() / 2, getY() + getHeight() * 0.8f);
         if (mAlignment == LinearLayout.ALIGNMENT_RIGHT)
             mFont.draw(batch, getDisplayText() + getBlinkString(), getX() + getWidth() - getTextWidth() - getHeight() * 0.2f, getY() + getHeight() * 0.8f);
-        if (mText.length() == 0 && !mFocus) {
+        if (mText.length() == 0 && !hasFocus()) {
             mFont.setColor(mHintColor);
             if (mAlignment == LinearLayout.ALIGNMENT_LEFT)
                 mFont.draw(batch, mHint, getX() + getHeight() * 0.2f, getY() + getHeight() * 0.8f);
@@ -148,6 +147,9 @@ public class EditText extends Widget {
             if (mAlignment == LinearLayout.ALIGNMENT_RIGHT)
                 mFont.draw(batch, mHint, getX() + getWidth() - getHintWidth() - getHeight() * 0.2f, getY() + getHeight() * 0.8f);
         }
+//        batch.flush();
+
+//        ScissorStack.popScissors();
     }
 
     private String getDisplayText() {
@@ -165,7 +167,7 @@ public class EditText extends Widget {
         return mGlyphLayout.width;
     }
 
-    public void updateTextInput() {
+    public void updateTextInput(float delta) {
         String toAppend = "";
         if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             toAppend = "a";
@@ -263,7 +265,7 @@ public class EditText extends Widget {
             toAppend = "-";
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             toAppend = " ";
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
             toAppend = "";
             if (mText.length() > 0) mText = mText.substring(0, mText.length() - 1);
             if (mDisplayText.length() > 0)
@@ -295,16 +297,8 @@ public class EditText extends Widget {
     }
 
     private String getBlinkString() {
-        if (mBlink && mFocus) return "|";
+        if (mBlink) return "|";
         return "";
-    }
-
-    public boolean hasFocus() {
-        return mFocus;
-    }
-
-    public void setFocus(boolean focus) {
-        this.mFocus = focus;
     }
 
     public String getText() {
@@ -365,5 +359,11 @@ public class EditText extends Widget {
 
     public void setInputType(int inputType) {
         this.mType = inputType;
+    }
+
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+        setupFontSize();
     }
 }

@@ -55,15 +55,14 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     /**
      * Create a new {@link Widget}
-     * @param text {@link Texture} to be used as the background
      * @param name String used to identify {@link Widget}
      * @param width Width of widget
      * @param height height of widget
      * @param x x position of widget
      * @param y y position of widget
      */
-    public Widget(Texture text, String name, float width, float height, float x, float y, Layout parent) {
-        super(text, text.getWidth(), text.getHeight());
+    public Widget(String name, float width, float height, float x, float y) {
+        super();
         setSize(width, height);
         this.mName = name;
         this.mScaleX = 1.0f;
@@ -155,7 +154,6 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public void draw(Batch batch, Viewport camera) {
         if (mVisibility == VISIBLE) {
             if (getParent() == null) drawShadow(batch);
-            super.draw(batch);
         }
     }
 
@@ -174,7 +172,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
                 mShadow.getWidth(), mShadow.getHeight(), false, false);
     }
 
-    public boolean onTouchEvent(TouchEvent touchEvent) {
+    public boolean onTouchEvent(com.desitum.library.view.TouchEvent touchEvent) {
         return isPointInWidget(touchEvent.getX(), touchEvent.getY());
     }
 
