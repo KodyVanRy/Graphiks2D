@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
+import com.desitum.library.game.AssetManager;
 import com.desitum.library.game.GameScreen;
 import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.logging.Log;
@@ -19,7 +20,6 @@ import com.desitum.library.view.LinearLayout;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
 import com.desitum.library.view.View;
-import com.desitum.library.widgets.Layout;
 
 /**
  * Created by kody on 12/12/15.
@@ -29,6 +29,18 @@ public class MenuScreen extends GameScreen {
 
     public static final float SCREEN_WIDTH = 1920.0f;
     public static final float SCREEN_HEIGHT = 1080.0f;
+
+    public static final int BUTTON_HOVER = 1;
+    public static final int BUTTON_REST = 2;
+    public static final int BUTTON_DOWN = 3;
+    public static final int BADLOGIC = 4;
+    public static final int CIRCLE_SHADOW = 5;
+    public static final int PROGRESS_BAR = 6;
+    public static final int PROGRESS_BG = 7;
+    public static final int SLIDER = 8;
+    public static final int GRAPHIKS2D = 9;
+    public static final int PARTICLE = 10;
+
 
     private ProgressBar progressBar;
     private SeekBar seekBar;
@@ -46,21 +58,31 @@ public class MenuScreen extends GameScreen {
     }
 
     private void setupWorld() {
-//        Widget widget = MenuBuilder.build(Gdx.files.internal("layout.json"), getCam());
-//        LinearLayout ll = (LinearLayout) widget.findByName("myLayout");
-//
-//        MovementAnimator animator = new MovementAnimator(-100, 90, 0.9f, Interpolation.DECELERATE_INTERPOLATOR);
-//        animator.setControllingY(true);
-//
-//        Slider mSlider = new Slider(Drawing.getFilledRectangle(1, 1, new Color(0, 0, 0, 0)), new Texture(Gdx.files.internal("slider.png")), Drawing.getHollowRectangle(100, 3, 3, Color.WHITE), "", 100, 10, 0, 0, null);
-//        ll.addWidget(mSlider);
+        AssetManager mAssetManager = AssetManager.getInstance();
+        mAssetManager.addTexture("big_picture_a_1.png");
+        mAssetManager.addDrawable(BUTTON_HOVER, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 0, 0, 1000, 100)));
+        mAssetManager.addDrawable(BUTTON_REST, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 0, 100, 1000, 100)));
+        mAssetManager.addDrawable(BUTTON_DOWN, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 0, 200, 500, 50)));
+        mAssetManager.addDrawable(BADLOGIC, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 500, 200, 256, 256)));
+        mAssetManager.addDrawable(CIRCLE_SHADOW, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 756, 200, 200, 200)));
+        mAssetManager.addDrawable(PROGRESS_BAR, new Drawable(new NinePatch(new TextureRegion(mAssetManager.getTexture(0), 0, 250, 200, 200), 66, 66, 66, 66)));
+        mAssetManager.addDrawable(PROGRESS_BG, new Drawable(new NinePatch(new TextureRegion(mAssetManager.getTexture(0), 200, 250, 200, 200), 66, 66, 66, 66)));
+        mAssetManager.addDrawable(SLIDER, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 756, 400, 200, 200)));
+        mAssetManager.addDrawable(GRAPHIKS2D, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 0, 450, 128, 128)));
+        mAssetManager.addDrawable(PARTICLE, new Drawable(new NinePatch(new TextureRegion(mAssetManager.getTexture(0), 1000, 0, 10, 10), 3, 3, 3, 3)));
 
-//        getWorld().addWidget(ll);
         getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
-//        getCam().position.set(0, 0, 0);
 
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
+
+        Button button = new Button(getWorld());
+        button.setSize(200, 200);
+        button.setPosition(10, 10);
+        button.setRestDrawable(mAssetManager.getDrawable(PARTICLE));
+        button.setHoverDrawable(mAssetManager.getDrawable(BADLOGIC));
+        button.setOriginCenter();
+        getWorld().addView(button);
 
         final LayoutConstraints linearLayoutConstraints = new LayoutConstraints(100, 100, 800, 600);
         layout = new LinearLayout(getWorld(), linearLayoutConstraints);
@@ -69,44 +91,30 @@ public class MenuScreen extends GameScreen {
 
         seekBar = new SeekBar(getWorld());
         seekBar.setProgress(0.5f);
-        seekBar.setProgressBackgroundDrawable(Drawable.loadDrawable("progress_bg.png", true));
-        ((SeekBar) seekBar).setSeekerDrawable(new Drawable(Drawing.getFilledCircle(200, Color.RED)));
+        seekBar.setProgressBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
+        seekBar.setSeekerDrawable(new Drawable(Drawing.getFilledCircle(200, Color.RED)));
         seekBar.setProgressDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.CORAL)));
-        seekBar.setSize(View.MATCH_PARENT, 200);
-        seekBar.setProgressBarHeight(200);
+        seekBar.setSize(600, 200);
+        seekBar.setProgressBarHeight(50);
         layout.addView(seekBar);
 
 
         progressBar = new ProgressBar(getWorld());
         progressBar.setProgress(0.5f);
-//        progressBar.setProgressBackgroundDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.BLUE)));
-        progressBar.setProgressBackgroundDrawable(Drawable.loadDrawable("progress_bg.png", true));
+        progressBar.setProgressBackgroundDrawable(mAssetManager.getDrawable(PROGRESS_BG));
 //        progressBar.getProgressBackgroundDrawable().setColor(Color.BLUE);
 //        progressBar.setProgressDrawable(Drawable.loadDrawable("progress.png", true));
-        progressBar.setProgressDrawable(new Drawable(
-                new NinePatch(new Texture("progress_bar.png"), 99, 99, 99, 99)));
-//        progressBar.setProgressDrawable(Drawable.loadDrawable(Drawing.getFilledCircle(20, Color.RED), true));
+        progressBar.setProgressDrawable(mAssetManager.getDrawable(PROGRESS_BAR));
         progressBar.setProgressBarHeight(200);
         progressBar.setSize(800, 200);
         layout.addView(progressBar);
 
-        Button button = new Button(getWorld());
-        button.setSize(200, 200);
-        button.setPosition(10, 10);
-        button.setRestDrawable(Drawable.loadDrawable("particle.png", true));
-        button.setHoverDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.PINK)));
-        button.setOriginCenter();
-        getWorld().addView(button);
-
         EditText editText = new EditText(getWorld(), null,
                 new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
-        editText.setSize(400, 100);
-        editText.setPosition(400, 500);
-        editText.setBackgroundDrawable(Drawable.loadDrawable("particle.png", true));
+        editText.setSize(View.MATCH_PARENT, 100);
+        editText.setBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
         editText.setHint("Hello");
-        editText.setOriginCenter();
-        editText.setLayer(4);
-        getWorld().addView(editText);
+        layout.addView(editText);
 
         new Thread(new Runnable() {
             @Override
@@ -114,7 +122,7 @@ public class MenuScreen extends GameScreen {
                 long endTime = System.currentTimeMillis() + 4000;
                 while (System.currentTimeMillis() < endTime) {
                     progressBar.setProgress(1 - (endTime - System.currentTimeMillis()) / 4000.0f);
-                    layout.setPosition(layout.getX() + 1, layout.getY());
+                    layout.setPosition(layout.getX() + 1, layout.getY() + 1);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {

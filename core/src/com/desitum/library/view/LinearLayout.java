@@ -81,7 +81,7 @@ public class LinearLayout extends ViewGroup {
         for (View v : getChildren()) {
             returnY -= v.getLayoutConstraints().height;
         }
-        returnY = returnY + getLayoutConstraints().height + getLayoutConstraints().y;
+        returnY = returnY + getLayoutConstraints().height;
         return returnY;
     }
 }
