@@ -1,5 +1,7 @@
 package com.desitum.library.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -23,6 +25,7 @@ public class AssetManager {
     private AssetManager() {
         mTextureList = new ArrayList<Texture>();
         mDrawableMap = new HashMap<Integer, Drawable>();
+//        new Texture(new FileHandle(Gdx.files.internal()))
     }
 
     public static AssetManager getInstance() {

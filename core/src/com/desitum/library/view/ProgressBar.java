@@ -13,10 +13,10 @@ public class ProgressBar extends View {
 
     protected static final float DEFAULT_PROGRESS_BAR_HEIGHT = 50;
 
-    private float mProgress;
-    private float mProgressBarHeight;
-    private Drawable mProgressDrawable;
-    private Drawable mProgressBackgroundDrawable;
+    protected float mProgress;
+    protected float mProgressBarHeight;
+    protected Drawable mProgressDrawable;
+    protected Drawable mProgressBackgroundDrawable;
 
     public ProgressBar(World world) {
         this(world, null);

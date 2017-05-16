@@ -11,7 +11,6 @@ import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.AssetManager;
 import com.desitum.library.game.GameScreen;
 import com.desitum.library.game_objects.GameObject;
-import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.view.Button;
 import com.desitum.library.view.EditText;
@@ -23,10 +22,10 @@ import com.desitum.library.view.View;
 import com.desitum.library.widgets.CircularProgressBar;
 
 /**
- * Created by kody on 12/12/15.
- * can be used by kody and people in [kody}]
+ * Created by kodyvanry on 5/15/17.
  */
-public class MenuScreen extends GameScreen {
+
+public class BuildMenuScreen extends GameScreen {
 
     public static final float SCREEN_WIDTH = 1920.0f;
     public static final float SCREEN_HEIGHT = 1080.0f;
@@ -44,21 +43,17 @@ public class MenuScreen extends GameScreen {
     public static final int CIRCULAR_PROGRESS_BAR = 11;
     public static final int PARTICLE = 12;
 
-
     private ProgressBar progressBar;
     private ProgressBar circularProgressBar;
     private SeekBar seekBar;
     private LinearLayout layout;
 
-    public MenuScreen() {
+    public BuildMenuScreen() {
         super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, ASPECT_FILL);
 //        super(getScreenWidth(), getScreenHeight());
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
 
         setupWorld();
-        Log.d(this, "Hello world");
-        Log.d(this.getClass(), "Hello world");
-        Log.d("Hello I am a muffin", "Hello world");
     }
 
     private void setupWorld() {
@@ -151,31 +146,5 @@ public class MenuScreen extends GameScreen {
                 progressBar.setProgress(1);
             }
         }).start();
-    }
-
-    @Override
-    public void show() {
-
-    }
-
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 }
