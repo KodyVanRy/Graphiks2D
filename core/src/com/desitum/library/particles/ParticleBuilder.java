@@ -84,7 +84,7 @@ public class ParticleBuilder {
             String textureString = (String) jsonObject.get(PARTICLE_TEXTURE);
 
             if (textureString.startsWith("#")) {
-                particleEmitter.setParticleTexture(Drawing.getFilledRectangle(50, 50, Color.valueOf(textureString)));
+                particleEmitter.setParticleTexture(Drawing.INSTANCE.getFilledRectangle(50, 50, Color.valueOf(textureString)));
             } else {
                 particleEmitter.setParticleTexture(new Texture(textureString));
             }

@@ -20,10 +20,10 @@ public class Slider extends Widget {
     public Slider(Texture text, String name, float width, float height, float x, float y, Layout parent) {
         super(name, width, height, x, y);
 
-        sliderImage = Drawing.getDiamondFilled(100, 100, Color.WHITE);
+        sliderImage = Drawing.INSTANCE.getDiamondFilled(100, 100, Color.WHITE);
         sliderWidth = height / 2;
         sliderHeight = height / 2;
-        barImage = Drawing.getHollowRectangle(100, 3, 3, Color.WHITE);
+        barImage = Drawing.INSTANCE.getHollowRectangle(100, 3, 3, Color.WHITE);
         padding = width / 100;
         barImageHeight = height / 10;
     }
