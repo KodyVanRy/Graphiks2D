@@ -53,7 +53,7 @@ public class MenuScreen extends GameScreen {
     private LinearLayout layout;
 
     public MenuScreen() {
-        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, ASPECT_FILL);
+        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, Companion.getASPECT_FILL());
 //        super(getScreenWidth(), getScreenHeight());
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
 
@@ -178,6 +178,6 @@ public class MenuScreen extends GameScreen {
 
     @Override
     public void dispose() {
-
+        AssetManager.dispose();
     }
 }

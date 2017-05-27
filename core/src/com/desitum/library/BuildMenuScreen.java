@@ -49,7 +49,7 @@ public class BuildMenuScreen extends GameScreen {
     private LinearLayout layout;
 
     public BuildMenuScreen() {
-        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, ASPECT_FILL);
+        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, Companion.getASPECT_FILL());
 //        super(getScreenWidth(), getScreenHeight());
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
 
@@ -57,7 +57,7 @@ public class BuildMenuScreen extends GameScreen {
     }
 
     private void setupWorld() {
-        AssetManager mAssetManager = AssetManager.getInstance();
+        AssetManager mAssetManager = AssetManager.Companion.getInstance();
         mAssetManager.addTexture("big_picture_a_1.png");
         mAssetManager.addDrawable(BUTTON_HOVER, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 0, 0, 1000, 100)));
         mAssetManager.addDrawable(BUTTON_REST, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 0, 100, 1000, 100)));

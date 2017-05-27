@@ -35,14 +35,10 @@ class Drawable {
 
     fun draw(batch: Batch, x: Float, y: Float, width: Float, height: Float) {
         ninePatch?.draw(batch, x, y, Math.max(width, ninePatch!!.totalWidth), Math.max(height, ninePatch!!.totalHeight))
-        if (color != null && textureRegion != null) {
-            val originalColor = batch.color
-            batch.color = color
-            batch.draw(textureRegion, x, y, width, height)
-            batch.color = originalColor
-        } else {
-            batch.draw(textureRegion, x, y, width, height)
-        }
+        val originalColor = batch.color
+        color?.let { batch.color = it }
+        textureRegion?.let { batch.draw(it, x, y, width, height) }
+        batch.color = originalColor
     }
 
     companion object {
