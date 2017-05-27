@@ -73,7 +73,7 @@ public class BuildMenuScreen extends GameScreen {
         mAssetManager.addDrawable(PARTICLE, new Drawable(new NinePatch(new TextureRegion(mAssetManager.getTexture(0), 1000, 0, 10, 10), 3, 3, 3, 3)));
 
 
-        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
+//        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
 
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
