@@ -27,10 +27,10 @@ class MovementAnimator : Animator {
         private set
 
     var controllingX: Boolean = false
-        @JvmName("controllingX") get
+        @JvmName("isControllingX") get
         private set
     var controllingY: Boolean = false
-        @JvmName("controllingY") get
+        @JvmName("isControllingY") get
         private set
     private var interpolator: Interpolator? = null
 
@@ -81,10 +81,10 @@ class MovementAnimator : Animator {
     override fun updateAnimation() {
         currentPos = interpolator!!.getInterpolation(timeInAnimation) * distance + startPos
 
-        if (this.controllingX) {
+        if (controllingX) {
             this.sprite?.x = currentPos
         }
-        if (this.controllingY) {
+        if (controllingY) {
             this.sprite?.y = currentPos
         }
     }

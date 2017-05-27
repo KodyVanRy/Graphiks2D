@@ -303,6 +303,7 @@ public class View extends G2DSprite {
         if (mLayoutConstraints == null)
             mLayoutConstraints = new LayoutConstraints(getX(), getY(), getWidth(), getHeight());
         mLayoutConstraints.x = x;
+        invalidate();
     }
 
     @Override
@@ -310,6 +311,7 @@ public class View extends G2DSprite {
         if (mLayoutConstraints == null)
             mLayoutConstraints = new LayoutConstraints(getX(), getY(), getWidth(), getHeight());
         mLayoutConstraints.y = y;
+        invalidate();
     }
 
     @Override

@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.AssetManager;
 import com.desitum.library.game.GameScreen;
 import com.desitum.library.game_objects.GameObject;
+import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.view.Button;
@@ -120,8 +122,6 @@ public class MenuScreen extends GameScreen {
         circularProgressBar = new CircularProgressBar(getWorld());
         circularProgressBar.setProgress(0.5f);
         circularProgressBar.setProgressBackgroundDrawable(mAssetManager.getDrawable(CIRCULAR_PROGRESS));
-//        progressBar.getProgressBackgroundDrawable().setColor(Color.BLUE);
-//        progressBar.setProgressDrawable(Drawable.loadDrawable("progress.png", true));
         circularProgressBar.setProgressDrawable(mAssetManager.getDrawable(CIRCULAR_PROGRESS_BAR));
         circularProgressBar.setProgressBarHeight(100);
         circularProgressBar.setSize(800, 100);
@@ -134,6 +134,8 @@ public class MenuScreen extends GameScreen {
         editText.setHint("Hello");
         layout.addView(editText);
 
+        layout.startAnimator(new MovementAnimator(layout, 0, 400, 4, 0, Interpolation.DECELERATE_INTERPOLATOR, true, true));
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -141,7 +143,7 @@ public class MenuScreen extends GameScreen {
                 while (System.currentTimeMillis() < endTime) {
                     progressBar.setProgress(1 - (endTime - System.currentTimeMillis()) / 4000.0f);
                     circularProgressBar.setProgress(1 - (endTime - System.currentTimeMillis()) / 4000.0f);
-                    layout.setPosition(layout.getX() + 1, layout.getY() + 1);
+//                    layout.setPosition(layout.getX() + 1, layout.getY() + 1);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
