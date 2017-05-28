@@ -21,21 +21,21 @@ class World {
     private var clickDown = false
     private var foregroundClickDown = false
 
-    var gameObjects: MutableList<GameObject>? = null
+    var gameObjects: MutableList<GameObject>
         private set
-    var sprites: List<G2DSprite>? = null
+    var sprites: List<G2DSprite>
         private set
-    var views: MutableList<View>? = null
+    var views: MutableList<View>
         private set
-    var particleEmitters: MutableList<ParticleEmitter>? = null
+    var particleEmitters: MutableList<ParticleEmitter>
         private set
 
-    var camera: OrthographicCamera? = null
+    var camera: OrthographicCamera
     var foregroundCamera: OrthographicCamera? = null
-    var viewport: Viewport? = null
+    var viewport: Viewport
     var foregroundViewport: Viewport? = null
     private var viewFocus: View? = null
-    private var touchEvent: TouchEvent? = null
+    private var touchEvent: TouchEvent
 
     /**
      * Create new [World]
@@ -72,16 +72,16 @@ class World {
      * @param delta time since last update
      */
     fun update(delta: Float) {
-        for (gameObject in gameObjects!!) {
+        for (gameObject in gameObjects) {
             gameObject.update(delta)
         }
-        for (particleEmitter in particleEmitters!!) {
+        for (particleEmitter in particleEmitters) {
             particleEmitter.update(delta)
         }
-        for (g2DSprite in sprites!!) {
+        for (g2DSprite in sprites) {
             g2DSprite.update(delta)
         }
-        for (g2DSprite in views!!) {
+        for (g2DSprite in views) {
             g2DSprite.update(delta)
         }
     }
@@ -95,8 +95,8 @@ class World {
      */
     fun updateTouchInput(touchPos: Vector3, touchDown: Boolean): Boolean {
         var returnVal = false
-        touchEvent!!.x = touchPos.x
-        touchEvent!!.y = touchPos.y
+        touchEvent.x = touchPos.x
+        touchEvent.y = touchPos.y
         if (touchDown && !clickDown) {
             returnVal = onTouchDown(touchPos)
         } else if (!touchDown && clickDown) {
@@ -104,7 +104,7 @@ class World {
         } else if (touchDown && clickDown) {
             returnVal = onTouchMoved()
         }
-        for (gameObject2D in gameObjects!!) {
+        for (gameObject2D in gameObjects) {
             gameObject2D.updateTouchInput(touchPos, touchDown)
         }
         clickDown = touchDown
@@ -120,9 +120,9 @@ class World {
      */
     fun updateForegroundTouchInput(touchPos: Vector3, touchDown: Boolean): Boolean {
         var returnValue = false
-        if (!views!!.isEmpty()) {
-            touchEvent!!.x = touchPos.x
-            touchEvent!!.y = touchPos.y
+        if (!views.isEmpty()) {
+            touchEvent.x = touchPos.x
+            touchEvent.y = touchPos.y
             if (touchDown && !foregroundClickDown) {
                 returnValue = onTouchDownForeground()
             } else if (!touchDown && foregroundClickDown) {
@@ -140,9 +140,9 @@ class World {
      * @param gameObject2D [GameObject] to be handled
      */
     fun addGameObject(gameObject2D: GameObject) {
-        this.gameObjects!!.add(gameObject2D)
+        this.gameObjects.add(gameObject2D)
         if (layerGameObjects) {
-            Collections.sort(gameObjects!!)
+            Collections.sort(gameObjects)
         }
     }
 
@@ -151,7 +151,7 @@ class World {
      * @param particleEmitter [ParticleEmitter] to be handled
      */
     fun addParticleEmitter(particleEmitter: ParticleEmitter) {
-        this.particleEmitters!!.add(particleEmitter)
+        this.particleEmitters.add(particleEmitter)
     }
 
     /**
@@ -159,8 +159,8 @@ class World {
      * @param view [View] to be handled
      */
     fun addView(view: View) {
-        this.views!!.add(view)
-        Collections.sort(views!!)
+        this.views.add(view)
+        Collections.sort(views)
     }
 
     /**
@@ -168,7 +168,7 @@ class World {
      * @param gameObject [GameObject] to remove
      */
     fun removeGameObject(gameObject: GameObject) {
-        gameObjects!!.remove(gameObject)
+        gameObjects.remove(gameObject)
     }
 
     /**
@@ -176,30 +176,30 @@ class World {
      * @param view [View] to remove
      */
     fun removeView(view: View) {
-        views!!.remove(view)
+        views.remove(view)
     }
 
     fun onTouchDown(clickPos: Vector3): Boolean {
-        touchEvent!!.action = TouchEvent.Action.DOWN
+        touchEvent.action = TouchEvent.Action.DOWN
         // TODO Game Object Touch Events
         return false
     }
 
     fun onTouchUp(): Boolean {
-        touchEvent!!.action = TouchEvent.Action.UP
+        touchEvent.action = TouchEvent.Action.UP
         // TODO Game Object Touch Events
         return false
     }
 
     private fun onTouchMoved(): Boolean {
-        touchEvent!!.action = TouchEvent.Action.MOVE
+        touchEvent.action = TouchEvent.Action.MOVE
         // TODO Game Object Touch Events
         return false
     }
 
     fun onTouchDownForeground(): Boolean {
-        touchEvent!!.action = TouchEvent.Action.DOWN
-        for (view in views!!.reversed()) { // Touch needs to be backwards to touch top views first
+        touchEvent.action = TouchEvent.Action.DOWN
+        for (view in views.reversed()) { // Touch needs to be backwards to touch top views first
             if (view.isTouching(touchEvent)) {
                 view.dispatchTouchEvent(touchEvent)
                 return true
@@ -209,7 +209,7 @@ class World {
     }
 
     fun onTouchUpForeground(): Boolean {
-        touchEvent!!.action = TouchEvent.Action.UP
+        touchEvent.action = TouchEvent.Action.UP
         if (viewFocus != null) {
             viewFocus!!.dispatchTouchEvent(touchEvent)
             viewFocus = null
@@ -219,25 +219,21 @@ class World {
     }
 
     private fun onTouchMovedForeground(): Boolean {
-        touchEvent!!.action = TouchEvent.Action.MOVE
-        if (viewFocus != null) {
-            viewFocus!!.dispatchTouchEvent(touchEvent)
-            return true
-        }
-        return false
+        touchEvent.action = TouchEvent.Action.MOVE
+        return viewFocus?.dispatchTouchEvent(touchEvent) ?: false
     }
 
     fun dispose() {
-        for (particleEmitter in particleEmitters!!) {
+        for (particleEmitter in particleEmitters) {
             particleEmitter.dispose()
         }
-        for (gameObject in gameObjects!!) {
+        for (gameObject in gameObjects) {
             gameObject.dispose()
         }
     }
 
     fun requestFocus(view: View) {
-        for (v in views!!) {
+        for (v in views) {
             v.clearFocus()
         }
         viewFocus = view

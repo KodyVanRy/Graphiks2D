@@ -82,16 +82,16 @@ public class MenuScreen extends GameScreen {
 
 //        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
 
-        getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
+        getWorld().addParticleEmitter(ParticleBuilder.INSTANCE.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
 
-        Button button = new Button(getWorld());
-        button.setSize(200, 200);
-        button.setPosition(10, 10);
-        button.setRestDrawable(mAssetManager.getDrawable(PARTICLE));
-        button.setHoverDrawable(mAssetManager.getDrawable(BADLOGIC));
-        button.setOriginCenter();
-        getWorld().addView(button);
+//        Button button = new Button(getWorld());
+//        button.setSize(200, 200);
+//        button.setPosition(10, 10);
+//        button.setRestDrawable(mAssetManager.getDrawable(PARTICLE));
+//        button.setHoverDrawable(mAssetManager.getDrawable(BADLOGIC));
+//        button.setOriginCenter();
+//        getWorld().addView(button);
 
         final LayoutConstraints linearLayoutConstraints = new LayoutConstraints(100, 100, 800, 600);
         layout = new LinearLayout(getWorld(), linearLayoutConstraints);

@@ -26,23 +26,23 @@ open class GameScreen : Screen {
     var foregroundViewportHeight: Float = 0f
         private set
 
-    var cam: OrthographicCamera? = null
-    var mForegroundCam: OrthographicCamera? = null
-    var viewport: Viewport? = null
-    var mForegroundViewport: Viewport? = null
-    var spriteBatch: SpriteBatch? = null
-    var worldRenderer: WorldRenderer? = null
-    var world: World? = null
+    var cam: OrthographicCamera
+    var foregroundCam: OrthographicCamera
+    var viewport: Viewport
+    var foregroundViewport: Viewport
+    var spriteBatch: SpriteBatch = SpriteBatch()
+    var worldRenderer: WorldRenderer
+    var world: World
         set(world) {
             println(world)
-            world!!.camera = cam
-            world!!.viewport = viewport
+            world.camera = cam
+            world.viewport = viewport
             field = world
         }
 
-    var touchPos: Vector3? = null
-    private var mForegroundTouchPos: Vector3? = null
-    private var mClearColor: Color? = null
+    var touchPos: Vector3
+    private var foregroundTouchPos: Vector3
+    private var clearColor: Color
 
     // region constructors
     /**
@@ -54,8 +54,32 @@ open class GameScreen : Screen {
      * *
      * @param world          mWorld class controller
      */
-    constructor(viewportWidth: Float, viewportHeight: Float, world: World, worldRenderer: WorldRenderer, flags: Int) {
-        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, world, worldRenderer, flags)
+    constructor(viewportWidth: Float, viewportHeight: Float, foregroundViewportWidth: Float, foregroundViewportHeight: Float, world: World?, worldRenderer: WorldRenderer?, flags: Int) {
+
+        cam = OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
+                getScreenHeight(viewportWidth, viewportHeight, flags))
+        foregroundCam = OrthographicCamera(
+                getScreenWidth(foregroundViewportWidth, foregroundViewportHeight, flags),
+                getScreenHeight(foregroundViewportWidth, foregroundViewportHeight, flags))
+
+        cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0f)
+        foregroundCam.position.set(foregroundCam.viewportWidth / 2, foregroundCam.viewportHeight / 2, 0f)
+
+        viewport = getViewport(cam, flags)
+        foregroundViewport = getViewport(foregroundCam, flags)
+
+        this.viewportWidth = cam.viewportWidth
+        this.viewportHeight = cam.viewportHeight
+        this.foregroundViewportWidth = foregroundCam.viewportWidth
+        this.foregroundViewportHeight = foregroundCam.viewportHeight
+
+        touchPos = Vector3(0f, 0f, 0f)
+        foregroundTouchPos = Vector3(0f, 0f, 0f)
+
+        this.world = world ?: World(cam, viewport, foregroundCam, foregroundViewport)
+        this.worldRenderer = worldRenderer ?: WorldRenderer(this.world)
+
+        clearColor = Color(0f, 0f, 0f, 1f)
     }
 
     /**
@@ -67,9 +91,8 @@ open class GameScreen : Screen {
      * *
      * @param world          mWorld class controller
      */
-    constructor(viewportWidth: Float, viewportHeight: Float, world: World, flags: Int) {
-        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, world, null, flags)
-    }
+    constructor(viewportWidth: Float, viewportHeight: Float, world: World, flags: Int) :
+            this(viewportWidth, viewportHeight, viewportWidth, viewportHeight, world, null, flags)
 
     /**
      * Create a new [GameScreen] object
@@ -78,33 +101,9 @@ open class GameScreen : Screen {
      * *
      * @param viewportHeight Viewport height to fit to screen
      */
-    constructor(viewportWidth: Float, viewportHeight: Float, flags: Int) {
-        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, null, null, flags)
-    }
+    constructor(viewportWidth: Float, viewportHeight: Float, flags: Int) :
+            this(viewportWidth, viewportHeight, viewportWidth, viewportHeight, null, null, flags)
 
-    /**
-     * Create a new [GameScreen] object
-
-     * @param viewportWidth  Viewport width to fit to screen
-     * *
-     * @param viewportHeight Viewport height to fit to screen
-     */
-    constructor(viewportWidth: Float, viewportHeight: Float,
-                foregroundViewportWidth: Float, foregroundViewportHeight: Float, flags: Int) {
-
-        init(viewportWidth, viewportHeight, foregroundViewportWidth, foregroundViewportHeight, null, null, flags)
-    }
-
-    /**
-     * Create a new [GameScreen] object
-
-     * @param viewportWidth  Viewport width to fit to screen
-     * *
-     * @param viewportHeight Viewport height to fit to screen
-     */
-    constructor(viewportWidth: Float, viewportHeight: Float) {
-        init(viewportWidth, viewportHeight, viewportWidth, viewportHeight, null, null, ASPECT_FIT)
-    }
 
     /**
      * Create a new [GameScreen] object
@@ -114,45 +113,30 @@ open class GameScreen : Screen {
      * @param viewportHeight Viewport height to fit to screen
      */
     constructor(viewportWidth: Float, viewportHeight: Float,
-                foregroundViewportWidth: Float, foregroundViewportHeight: Float) {
+                foregroundViewportWidth: Float, foregroundViewportHeight: Float, flags: Int) :
+            this(viewportWidth, viewportHeight, foregroundViewportWidth, foregroundViewportHeight, null, null, flags)
 
-        init(viewportWidth, viewportHeight, foregroundViewportWidth, foregroundViewportHeight, null, null, ASPECT_FIT)
-    }
+    /**
+     * Create a new [GameScreen] object
+
+     * @param viewportWidth  Viewport width to fit to screen
+     * *
+     * @param viewportHeight Viewport height to fit to screen
+     */
+    constructor(viewportWidth: Float, viewportHeight: Float) :
+            this(viewportWidth, viewportHeight, viewportWidth, viewportHeight, null, null, ASPECT_FIT)
+
+    /**
+     * Create a new [GameScreen] object
+
+     * @param viewportWidth  Viewport width to fit to screen
+     * *
+     * @param viewportHeight Viewport height to fit to screen
+     */
+    constructor(viewportWidth: Float, viewportHeight: Float,
+                foregroundViewportWidth: Float, foregroundViewportHeight: Float) :
+            this(viewportWidth, viewportHeight, foregroundViewportWidth, foregroundViewportHeight, null, null, ASPECT_FIT)
     // endregion
-
-    private fun init(viewportWidth: Float, viewportHeight: Float,
-                     foregroundViewportWidth: Float, foregroundViewportHeight: Float,
-                     world: World?, worldRenderer: WorldRenderer?, flags: Int) {
-        spriteBatch = SpriteBatch()
-
-        cam = OrthographicCamera(getScreenWidth(viewportWidth, viewportHeight, flags),
-                getScreenHeight(viewportWidth, viewportHeight, flags))
-        mForegroundCam = OrthographicCamera(getScreenWidth(foregroundViewportWidth, foregroundViewportHeight, flags),
-                getScreenHeight(foregroundViewportWidth, foregroundViewportHeight, flags))
-
-        cam?.position?.set(cam!!.viewportWidth / 2, cam!!.viewportHeight / 2, 0f)
-        mForegroundCam!!.position.set(mForegroundCam!!.viewportWidth / 2, mForegroundCam!!.viewportHeight / 2, 0f)
-
-        viewport = getViewport(cam!!, flags)
-        mForegroundViewport = getViewport(mForegroundCam!!, flags)
-
-        this.viewportWidth = cam!!.viewportWidth
-        this.viewportHeight = cam!!.viewportHeight
-        this.foregroundViewportWidth = mForegroundCam!!.viewportWidth
-        this.foregroundViewportHeight = mForegroundCam!!.viewportHeight
-
-        touchPos = Vector3(0f, 0f, 0f)
-        mForegroundTouchPos = Vector3(0f, 0f, 0f)
-
-        this.world = world ?: World(cam!!, viewport!!, mForegroundCam!!, mForegroundViewport!!)
-//        if (this.world == null) {
-//            this.world = World(cam, viewport, mForegroundCam, mForegroundViewport)
-//        }
-        println(this.world)
-        this.worldRenderer = worldRenderer ?: WorldRenderer(this.world!!)
-
-        mClearColor = Color(0f, 0f, 0f, 1f)
-    }
 
     private fun getViewport(cam: OrthographicCamera, flags: Int): Viewport {
         if (flags and (ASPECT_FIT or ASPECT_FILL) != 0) {
@@ -174,42 +158,42 @@ open class GameScreen : Screen {
      * @param delta time since last frame
      */
     fun update(delta: Float) {
-        mForegroundTouchPos = mForegroundViewport!!.unproject(mForegroundTouchPos!!.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
-        if (!world!!.updateForegroundTouchInput(mForegroundTouchPos!!, Gdx.input.isTouched)) {
-            touchPos = viewport!!.unproject(touchPos!!.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
-            world!!.updateTouchInput(touchPos!!, Gdx.input.isTouched)
+        foregroundTouchPos = foregroundViewport.unproject(foregroundTouchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
+        if (!world.updateForegroundTouchInput(foregroundTouchPos, Gdx.input.isTouched)) {
+            touchPos = viewport.unproject(touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
+            world.updateTouchInput(touchPos, Gdx.input.isTouched)
         }
-        world!!.update(delta)
+        world.update(delta)
     }
 
     /**
      * Draw the mWorld to the screen
      */
     fun draw() {
-        cam!!.update()
-        mForegroundCam!!.update()
-        spriteBatch!!.projectionMatrix = cam!!.combined
+        cam.update()
+        foregroundCam.update()
+        spriteBatch.projectionMatrix = cam.combined
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        Gdx.gl.glClearColor(mClearColor!!.r, mClearColor!!.g, mClearColor!!.b, mClearColor!!.a)
+        Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a)
 
-        spriteBatch!!.begin()
+        spriteBatch.begin()
 
-        worldRenderer!!.draw(spriteBatch!!)
+        worldRenderer.draw(spriteBatch)
 
-        spriteBatch!!.end()
+        spriteBatch.end()
 
-        spriteBatch!!.projectionMatrix = mForegroundCam!!.combined
+        spriteBatch.projectionMatrix = foregroundCam.combined
 
-        spriteBatch!!.begin()
+        spriteBatch.begin()
 
-        worldRenderer!!.drawForeground(spriteBatch!!)
+        worldRenderer.drawForeground(spriteBatch)
 
-        spriteBatch!!.end()
+        spriteBatch.end()
     }
 
     override fun resize(width: Int, height: Int) {
-        viewport!!.update(width, height)
-        mForegroundViewport!!.update(width, height)
+        viewport.update(width, height)
+        foregroundViewport.update(width, height)
     }
 
     override fun show() {
@@ -230,8 +214,8 @@ open class GameScreen : Screen {
 
     override fun dispose() {
         try {
-            spriteBatch!!.dispose()
-            world!!.dispose()
+            spriteBatch.dispose()
+            world.dispose()
         } catch (e: IllegalArgumentException) {
             // Never got initialized
         }
@@ -239,7 +223,7 @@ open class GameScreen : Screen {
     }
 
     fun setClearColor(clearColor: Color) {
-        this.mClearColor = clearColor
+        this.clearColor = clearColor
     }
 
     companion object {

@@ -1,14 +1,10 @@
 package com.desitum.library.game
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.desitum.library.drawing.Drawable
-
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 /**
  * Created by kodyvanry on 5/11/17.
@@ -16,17 +12,11 @@ import java.util.HashMap
 
 class AssetManager private constructor() {
 
-    private var mTextureList: MutableList<Texture>? = null
-    private val mDrawableMap: HashMap<Int, Drawable>
-
-    init {
-        mTextureList = ArrayList<Texture>()
-        mDrawableMap = HashMap<Int, Drawable>()
-        //        new Texture(new FileHandle(Gdx.files.internal()))
-    }
+    private var mTextureList: MutableList<Texture> = ArrayList<Texture>()
+    private val mDrawableMap: HashMap<Int, Drawable> = HashMap<Int, Drawable>()
 
     fun addTexture(texture: Texture) {
-        mTextureList!!.add(texture)
+        mTextureList.add(texture)
     }
 
     fun addTexture(texture: String) {
@@ -34,7 +24,7 @@ class AssetManager private constructor() {
     }
 
     fun getTexture(text: Int): Texture {
-        return mTextureList!![text]
+        return mTextureList[text]
     }
 
     fun addDrawable(key: Int, textureRegion: TextureRegion) {
@@ -63,10 +53,9 @@ class AssetManager private constructor() {
 
         @JvmStatic fun dispose() {
             val assetManager: AssetManager = instance
-            for (texture in assetManager.mTextureList!!) {
+            for (texture in assetManager.mTextureList) {
                 texture.dispose()
             }
-            assetManager.mTextureList = null
         }
     }
 }

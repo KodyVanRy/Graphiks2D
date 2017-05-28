@@ -13,20 +13,14 @@ import com.desitum.library.widgets.Widget
 class WorldRenderer(var world: World) {
 
     fun draw(batch: Batch) {
-        for (gameObject in world!!.gameObjects!!) {
-            gameObject.draw(batch)
-        }
+        world.gameObjects.forEach { it.draw(batch) }
         batch.flush()
-        for (particleEmitter in world!!.particleEmitters!!) {
-            particleEmitter.draw(batch)
-        }
+        world.particleEmitters.forEach { it.draw(batch) }
         batch.flush()
     }
 
     fun drawForeground(batch: Batch) {
-        for (view in world!!.views!!) {
-            view.draw(batch, world!!.foregroundViewport)
-        }
+        world.views.forEach { it.draw(batch, world.foregroundViewport) }
         batch.flush()
     }
 }

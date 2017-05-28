@@ -75,7 +75,7 @@ public class BuildMenuScreen extends GameScreen {
 
 //        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
 
-        getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
+        getWorld().addParticleEmitter(ParticleBuilder.INSTANCE.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
 
         Button button = new Button(getWorld());
