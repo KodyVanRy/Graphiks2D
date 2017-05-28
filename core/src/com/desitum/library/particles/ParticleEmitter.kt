@@ -78,7 +78,7 @@ class ParticleEmitter {
             if (it.remove)
                 deadParticles.add(it)
         }
-        particles.removeIf { it.remove }
+        particles.removeAll { it.remove }
     }
 
     private fun updateEmitter(delta: Float) {
@@ -98,8 +98,7 @@ class ParticleEmitter {
     fun createNewParticle(): Particle {
         val particleSettings = particleSettingsArrayList[randomSettingsChooser.nextInt(particleSettingsArrayList.size)]
         if (deadParticles.size > 0) {
-            val returnParticle: Particle = deadParticles[0]
-            deadParticles.removeAt(0)
+            val returnParticle: Particle = deadParticles.removeAt(0)
             returnParticle.setup(particleSettings.lifespan,
                     particleSettings.gravityX,
                     particleSettings.gravityY,
@@ -140,8 +139,8 @@ class ParticleEmitter {
     }
 
     fun addParticle(particle: Particle) {
-        particle.color = color!!
-        particles!!.add(particle)
+        particle.color = color
+        particles.add(particle)
     }
 
     fun clearAndAddSettings(particleSettings: ParticleSettings) {

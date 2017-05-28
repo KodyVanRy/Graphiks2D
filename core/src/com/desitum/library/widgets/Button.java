@@ -44,10 +44,10 @@ public class Button extends Widget {
 //                } else if (getHoverTexture() != null) {
 //                    setTexture(getHoverTexture());
 //                } else {
-//                    setTexture(getRestTexture());
+//                    setTexture(getRestDrawable());
 //                }
 //            } else {
-//                setTexture(getRestTexture());
+//                setTexture(getRestDrawable());
 //            }
 //        }
 //        super.updateTouchInput(mousePos, touchDown);
