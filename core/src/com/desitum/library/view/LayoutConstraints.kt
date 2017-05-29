@@ -4,7 +4,7 @@ package com.desitum.library.view
  * Created by kodyvanry on 5/1/17.
  */
 
-class LayoutConstraints(var x: Float, var y: Float, var width: Float, var height: Float) {
+open class LayoutConstraints(var x: Float, var y: Float, var width: Float, var height: Float) {
 
     companion object {
         val WRAP_CONTENT = -1f

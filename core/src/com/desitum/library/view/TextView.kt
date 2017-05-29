@@ -13,7 +13,7 @@ import com.desitum.library.game.World
  * can be used by kody and people in [kody}]
  */
 
-class TextView @JvmOverloads constructor(world: World, layoutConstraints: LayoutConstraints? = null, var font: BitmapFont) : View(world, layoutConstraints) {
+open class TextView @JvmOverloads constructor(world: World, layoutConstraints: LayoutConstraints? = null, var font: BitmapFont) : View(world, layoutConstraints) {
 
     var text: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     var alignment: Int = 0

@@ -7,7 +7,7 @@ import com.desitum.library.game.World
  * Created by kodyvanry on 5/1/17.
  */
 
-class Button @JvmOverloads constructor(world: World, layoutConstraints: LayoutConstraints? = null) : View(world, layoutConstraints) {
+open class Button @JvmOverloads constructor(world: World, layoutConstraints: LayoutConstraints? = null) : View(world, layoutConstraints) {
 
     // DRAWING
     var restDrawable: Drawable? = null

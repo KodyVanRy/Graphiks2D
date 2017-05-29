@@ -15,7 +15,7 @@ import com.desitum.library.widgets.LinearLayout
  * Created by kody on 12/15/15.
  * can be used by kody and people in [kody}]
  */
-class EditText @JvmOverloads constructor(world: World, layoutConstraints: LayoutConstraints? = null, var font: BitmapFont) : View(world, layoutConstraints) {
+open class EditText @JvmOverloads constructor(world: World, layoutConstraints: LayoutConstraints? = null, var font: BitmapFont) : View(world, layoutConstraints) {
 
     var text: String
     var hint: String
