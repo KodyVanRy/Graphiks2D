@@ -1,4 +1,4 @@
-package com.desitum.library.widgets;
+package com.desitum.library;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -22,22 +22,22 @@ public class CircularProgressBar extends ProgressBar {
 
     @Override
     public void onDraw(Batch batch, Viewport viewport) {
-        if (mProgressBackgroundDrawable != null) {
-            mProgressBackgroundDrawable.draw(
+        if (getProgressBackgroundDrawable() != null) {
+            getProgressBackgroundDrawable().draw(
                     batch,
                     getX(),
-                    getY() + getHeight() / 2 - mProgressBarHeight / 2,
+                    getY() + getHeight() / 2 - getProgressBarHeight() / 2,
                     getWidth(),
-                    mProgressBarHeight
+                    getProgressBarHeight()
             );
         }
-        if (mProgressDrawable != null) {
-            mProgressDrawable.draw(
+        if (getProgressDrawable() != null) {
+            getProgressDrawable().draw(
                     batch,
-                    getX() + (getHeight() - (mProgressBarHeight * 0.46f)) / 2,
-                    getY() + getHeight() / 2 - (mProgressBarHeight * 0.46f) / 2,
-                    (getWidth() - (getHeight() - (mProgressBarHeight * 0.46f))) * mProgress,
-                    mProgressBarHeight * 0.46f
+                    getX() + (getHeight() - (getProgressBarHeight() * 0.46f)) / 2,
+                    getY() + getHeight() / 2 - (getProgressBarHeight() * 0.46f) / 2,
+                    (getWidth() - (getHeight() - (getProgressBarHeight() * 0.46f))) * getProgress(),
+                    getProgressBarHeight() * 0.46f
             );
         }
     }

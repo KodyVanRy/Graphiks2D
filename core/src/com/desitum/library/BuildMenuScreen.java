@@ -10,7 +10,6 @@ import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.AssetManager;
 import com.desitum.library.game.GameScreen;
-import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.view.Button;
 import com.desitum.library.view.EditText;
@@ -19,7 +18,6 @@ import com.desitum.library.view.LinearLayout;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
 import com.desitum.library.view.View;
-import com.desitum.library.widgets.CircularProgressBar;
 
 /**
  * Created by kodyvanry on 5/15/17.
@@ -124,7 +122,7 @@ public class BuildMenuScreen extends GameScreen {
 
         EditText editText = new EditText(getWorld(), null,
                 new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
-        editText.setSize(View.MATCH_PARENT, 100);
+        editText.setSize(View.Companion.getMATCH_PARENT(), 100);
         editText.setBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
         editText.setHint("Hello");
         layout.addView(editText);

@@ -20,7 +20,7 @@ class WorldRenderer(var world: World) {
     }
 
     fun drawForeground(batch: Batch) {
-        world.views.forEach { it.draw(batch, world.foregroundViewport) }
+        world.views.forEach { it.draw(batch, world.foregroundViewport!!) }
         batch.flush()
     }
 }

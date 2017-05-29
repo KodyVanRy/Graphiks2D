@@ -48,7 +48,7 @@ object ParticleBuilder {
     val LIFESPAN = "lifespan"
     val FADE_OUT = "fade_out"
 
-    fun buildParticleEmitter(file: FileHandle): ParticleEmitter {
+    @JvmStatic fun buildParticleEmitter(file: FileHandle): ParticleEmitter {
         val json = file.readString()
         val jsonParser = JSONParser()
         val jsonObject = jsonParser.parse(json) as JSONObject

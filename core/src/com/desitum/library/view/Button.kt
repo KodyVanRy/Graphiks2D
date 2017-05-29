@@ -24,7 +24,7 @@ class Button @JvmOverloads constructor(world: World, layoutConstraints: LayoutCo
         }
 
     init {
-        isClickable = true
+        clickable = true
     }
 
     override fun onTouchEvent(touchEvent: TouchEvent): Boolean {

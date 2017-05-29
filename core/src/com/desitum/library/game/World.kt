@@ -15,7 +15,11 @@ import java.util.Collections
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]
  */
-class World {
+class World
+/**
+ * Create new [World]
+ * @param camera camera from [GameScreen]
+ */(var camera: OrthographicCamera, var viewport: Viewport, var foregroundCamera: OrthographicCamera, var foregroundViewport: Viewport) {
 
     var layerGameObjects = true
     private var clickDown = false
@@ -30,60 +34,18 @@ class World {
     var particleEmitters: MutableList<ParticleEmitter>
         private set
 
-    var camera: OrthographicCamera
-    var foregroundCamera: OrthographicCamera? = null
-    var viewport: Viewport
-    var foregroundViewport: Viewport? = null
     private var viewFocus: View? = null
     private var touchEvent: TouchEvent
-
-    /**
-     * Create new [World]
-     * @param camera camera from [GameScreen]
-     */
-    constructor(camera: OrthographicCamera, viewport: Viewport) {
-        this.camera = camera
-        this.viewport = viewport
-        this.gameObjects = ArrayList<GameObject>()
-        this.sprites = ArrayList<G2DSprite>()
-        this.views = ArrayList<View>()
-        this.particleEmitters = ArrayList<ParticleEmitter>()
-        this.touchEvent = TouchEvent()
-    }
-
-    /**
-     * Create new [World]
-     * @param camera camera from [GameScreen]
-     */
-    constructor(camera: OrthographicCamera, viewport: Viewport, foregroundCamera: OrthographicCamera, foregroundViewport: Viewport) {
-        this.camera = camera
-        this.viewport = viewport
-        this.foregroundCamera = foregroundCamera
-        this.foregroundViewport = foregroundViewport
-        this.gameObjects = ArrayList<GameObject>()
-        this.sprites = ArrayList<G2DSprite>()
-        this.views = ArrayList<View>()
-        this.particleEmitters = ArrayList<ParticleEmitter>()
-        this.touchEvent = TouchEvent()
-    }
 
     /**
      * update the world every frame using this method
      * @param delta time since last update
      */
     fun update(delta: Float) {
-        for (gameObject in gameObjects) {
-            gameObject.update(delta)
-        }
-        for (particleEmitter in particleEmitters) {
-            particleEmitter.update(delta)
-        }
-        for (g2DSprite in sprites) {
-            g2DSprite.update(delta)
-        }
-        for (g2DSprite in views) {
-            g2DSprite.update(delta)
-        }
+        gameObjects.forEach { it.update(delta) }
+        particleEmitters.forEach { it.update(delta) }
+        sprites.forEach { it.update(delta) }
+        views.forEach { it.update(delta) }
     }
 
     /**
@@ -104,9 +66,7 @@ class World {
         } else if (touchDown && clickDown) {
             returnVal = onTouchMoved()
         }
-        for (gameObject2D in gameObjects) {
-            gameObject2D.updateTouchInput(touchPos, touchDown)
-        }
+        gameObjects.forEach { updateTouchInput(touchPos, touchDown) }
         clickDown = touchDown
         return returnVal
     }
@@ -237,6 +197,14 @@ class World {
             v.clearFocus()
         }
         viewFocus = view
-        viewFocus!!.setFocus(true)
+        viewFocus!!.focus = true
+    }
+
+    init {
+        this.gameObjects = ArrayList<GameObject>()
+        this.sprites = ArrayList<G2DSprite>()
+        this.views = ArrayList<View>()
+        this.particleEmitters = ArrayList<ParticleEmitter>()
+        this.touchEvent = TouchEvent()
     }
 }

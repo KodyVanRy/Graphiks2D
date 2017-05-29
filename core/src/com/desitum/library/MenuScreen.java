@@ -11,18 +11,15 @@ import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.AssetManager;
 import com.desitum.library.game.GameScreen;
-import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
-import com.desitum.library.view.Button;
 import com.desitum.library.view.EditText;
 import com.desitum.library.view.LayoutConstraints;
 import com.desitum.library.view.LinearLayout;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
 import com.desitum.library.view.View;
-import com.desitum.library.widgets.CircularProgressBar;
 
 /**
  * Created by kody on 12/12/15.
@@ -52,7 +49,7 @@ public class MenuScreen extends GameScreen {
     private SeekBar seekBar;
     private LinearLayout layout;
 
-    public MenuScreen() {
+    MenuScreen() {
         super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, Companion.getASPECT_FILL());
 //        super(getScreenWidth(), getScreenHeight());
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
@@ -82,7 +79,7 @@ public class MenuScreen extends GameScreen {
 
 //        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
 
-        getWorld().addParticleEmitter(ParticleBuilder.INSTANCE.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
+        getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
 
 //        Button button = new Button(getWorld());
@@ -100,11 +97,11 @@ public class MenuScreen extends GameScreen {
 
         seekBar = new SeekBar(getWorld());
         seekBar.setProgress(0.5f);
-        seekBar.setProgressBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
+        seekBar.setProgressBackgroundDrawable(mAssetManager.getDrawable(CIRCULAR_PROGRESS));
         seekBar.setSeekerDrawable(new Drawable(Drawing.getFilledCircle(200, Color.RED)));
-        seekBar.setProgressDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.CORAL)));
+        seekBar.setProgressDrawable(mAssetManager.getDrawable(CIRCULAR_PROGRESS_BAR));
         seekBar.setSize(600, 200);
-        seekBar.setProgressBarHeight(50);
+        seekBar.setProgressBarHeight(100);
         layout.addView(seekBar);
 
 
@@ -129,7 +126,7 @@ public class MenuScreen extends GameScreen {
 
         EditText editText = new EditText(getWorld(), null,
                 new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
-        editText.setSize(View.MATCH_PARENT, 100);
+        editText.setSize(View.Companion.getMATCH_PARENT(), 100);
         editText.setBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
         editText.setHint("Hello");
         layout.addView(editText);
