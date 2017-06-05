@@ -12,7 +12,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 
 class Drawable {
 
-    private var textureRegion: TextureRegion? = null
+    var textureRegion: TextureRegion? = null
+    private set
     private var ninePatch: NinePatch? = null
     private var color: Color? = null
 
@@ -30,7 +31,7 @@ class Drawable {
 
     fun setColor(color: Color) {
         this.color = color
-        ninePatch?.let { ninePatch = NinePatch(ninePatch!!, color) }
+        ninePatch?.let { ninePatch = NinePatch(it, color) }
     }
 
     fun draw(batch: Batch, x: Float, y: Float, width: Float, height: Float) {

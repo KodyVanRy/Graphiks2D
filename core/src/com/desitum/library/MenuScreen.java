@@ -11,6 +11,7 @@ import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.AssetManager;
 import com.desitum.library.game.GameScreen;
+import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
@@ -77,8 +78,11 @@ public class MenuScreen extends GameScreen {
         mAssetManager.addDrawable(PARTICLE, new Drawable(new NinePatch(new TextureRegion(mAssetManager.getTexture(0), 1000, 0, 10, 10), 3, 3, 3, 3)));
 
 
-//        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
+//        getWorld().addGameObject(new GameObject(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50), getWorld()));
 
+        GameObject gameObject = new GameObject(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.BLUE)), getWorld());
+        gameObject.setSize(100, 100);
+        getWorld().addGameObject(gameObject);
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
 

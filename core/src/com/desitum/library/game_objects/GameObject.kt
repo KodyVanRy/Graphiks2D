@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector3
 import com.desitum.library.animation.Animator
 import com.desitum.library.animation.MovementAnimator
+import com.desitum.library.game.World
+import com.desitum.library.view.EditText
+import com.desitum.library.view.TouchEvent
 
 import java.util.ArrayList
 
@@ -13,7 +16,7 @@ import java.util.ArrayList
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]
  */
-open class GameObject : Sprite, Comparable<GameObject> {
+open class GameObject(textureRegion: TextureRegion, world: World?) : Sprite(textureRegion), Comparable<GameObject> {
     private var mAnimators: ArrayList<Animator>
     private var mAnimatorsToRemove: ArrayList<Animator>
     var onFinishedMovingListener: OnFinishedMovingListener? = null
@@ -26,18 +29,12 @@ open class GameObject : Sprite, Comparable<GameObject> {
     var gravityY: Float = 0f
     var rotationSpeed: Float = 0f
     var rotationResistance: Float = 0f
+    var focus: Boolean = false
     private var moveTo: FloatArray? = null
+    private var world: World? = null
 
-    constructor(textureRegion: TextureRegion) : super(textureRegion) {
-        mAnimators = ArrayList<Animator>()
-        mAnimatorsToRemove = ArrayList<Animator>()
-        z = DEFAULT_Z
-    }
-
-    constructor(texture: Texture) : super(texture) {
-        mAnimators = ArrayList<Animator>()
-        mAnimatorsToRemove = ArrayList<Animator>()
-        z = DEFAULT_Z
+    init {
+        this.world = world
     }
 
     fun update(delta: Float) {
@@ -59,7 +56,7 @@ open class GameObject : Sprite, Comparable<GameObject> {
     private fun updateAnimators(delta: Float) {
         if (!mAnimators.isEmpty()) {
             mAnimators.forEach { animator -> animator.update(delta) }
-            mAnimators.removeIf{ animator -> animator.didFinish() }
+            mAnimators.removeIf { animator -> animator.didFinish() }
         }
     }
 
@@ -136,10 +133,38 @@ open class GameObject : Sprite, Comparable<GameObject> {
         } catch (e: Exception) {
             // Texture has been disposed of elsewhere
         }
+    }
 
+    // -----------------------------
+    // region Input methods
+    // -----------------------------
+    fun dispatchTouchEvent(touchEvent: TouchEvent): Boolean {
+        if (touchEvent.action === TouchEvent.Action.DOWN) {
+            world?.requestFocus(this)
+        }
+        return onTouchEvent(touchEvent)
+        return true
+    }
+
+    open fun onTouchEvent(touchEvent: TouchEvent): Boolean {
+        return true
+    }
+
+    fun isTouching(touchEvent: TouchEvent): Boolean {
+        return boundingRectangle.contains(touchEvent.x, touchEvent.y)
+    }
+
+    fun clearFocus() {
+        focus = false
     }
 
     companion object {
         val DEFAULT_Z = 0
+    }
+
+    init {
+        mAnimators = ArrayList<Animator>()
+        mAnimatorsToRemove = ArrayList<Animator>()
+        z = DEFAULT_Z
     }
 }

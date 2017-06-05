@@ -35,6 +35,7 @@ class World
         private set
 
     private var viewFocus: View? = null
+    private var gameObjectFocus: GameObject? = null
     private var touchEvent: TouchEvent
 
     /**
@@ -60,13 +61,13 @@ class World
         touchEvent.x = touchPos.x
         touchEvent.y = touchPos.y
         if (touchDown && !clickDown) {
-            returnVal = onTouchDown(touchPos)
+            returnVal = onTouchDown()
         } else if (!touchDown && clickDown) {
             returnVal = onTouchUp()
         } else if (touchDown && clickDown) {
             returnVal = onTouchMoved()
         }
-        gameObjects.forEach { updateTouchInput(touchPos, touchDown) }
+//        gameObjects.forEach { it.updateTouchInput(touchPos, touchDown) }
         clickDown = touchDown
         return returnVal
     }
@@ -139,33 +140,34 @@ class World
         views.remove(view)
     }
 
-    fun onTouchDown(clickPos: Vector3): Boolean {
+    fun onTouchDown(): Boolean {
         touchEvent.action = TouchEvent.Action.DOWN
-        // TODO Game Object Touch Events
+        gameObjects.reversed()
+                .filter { it.isTouching(touchEvent) }
+                .forEach { it.dispatchTouchEvent(touchEvent) }
         return false
     }
 
     fun onTouchUp(): Boolean {
         touchEvent.action = TouchEvent.Action.UP
-        // TODO Game Object Touch Events
+        if (gameObjectFocus != null) {
+            gameObjectFocus!!.dispatchTouchEvent(touchEvent)
+            gameObjectFocus = null
+            return true
+        }
         return false
     }
 
     private fun onTouchMoved(): Boolean {
         touchEvent.action = TouchEvent.Action.MOVE
-        // TODO Game Object Touch Events
-        return false
+        return gameObjectFocus?.dispatchTouchEvent(touchEvent) ?: false
     }
 
     fun onTouchDownForeground(): Boolean {
         touchEvent.action = TouchEvent.Action.DOWN
-        for (view in views.reversed()) { // Touch needs to be backwards to touch top views first
-            if (view.isTouching(touchEvent)) {
-                view.dispatchTouchEvent(touchEvent)
-                return true
-            }
-        }
-        return false
+        return views.reversed()
+                .filter { it.isTouching(touchEvent) }
+                .firstOrNull()?.dispatchTouchEvent(touchEvent) ?: false
     }
 
     fun onTouchUpForeground(): Boolean {
@@ -198,6 +200,12 @@ class World
         }
         viewFocus = view
         viewFocus!!.focus = true
+    }
+
+    fun requestFocus(gameObject: GameObject) {
+        gameObjects.forEach { it.clearFocus() }
+        gameObjectFocus = gameObject
+        gameObjectFocus!!.focus = true
     }
 
     init {
