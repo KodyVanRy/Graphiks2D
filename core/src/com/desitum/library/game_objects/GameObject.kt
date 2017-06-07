@@ -1,13 +1,14 @@
 package com.desitum.library.game_objects
 
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.desitum.library.animation.Animator
 import com.desitum.library.animation.MovementAnimator
+import com.desitum.library.drawing.Drawable
+import com.desitum.library.game.G2DSprite
 import com.desitum.library.game.World
-import com.desitum.library.view.EditText
 import com.desitum.library.view.TouchEvent
 
 import java.util.ArrayList
@@ -16,11 +17,10 @@ import java.util.ArrayList
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]
  */
-open class GameObject(textureRegion: TextureRegion, world: World?) : Sprite(textureRegion), Comparable<GameObject> {
-    private var mAnimators: ArrayList<Animator>
-    private var mAnimatorsToRemove: ArrayList<Animator>
+open class GameObject(textureRegion: TextureRegion?, world: World?) : G2DSprite() {
+    var animators: ArrayList<Animator>
+        private set
     var onFinishedMovingListener: OnFinishedMovingListener? = null
-    var z: Int = 0
 
     var speed: Float = 0f
     private var speedX: Float = 0f
@@ -30,14 +30,18 @@ open class GameObject(textureRegion: TextureRegion, world: World?) : Sprite(text
     var rotationSpeed: Float = 0f
     var rotationResistance: Float = 0f
     var focus: Boolean = false
+    var focusable = false
+        @JvmName("isFocusable") get
+    var drawable: Drawable? = null
     private var moveTo: FloatArray? = null
     private var world: World? = null
 
     init {
         this.world = world
+        textureRegion?.let { setRegion(it) }
     }
 
-    fun update(delta: Float) {
+    override fun update(delta: Float) {
         updateAnimators(delta)
         updatePosition(delta)
     }
@@ -54,9 +58,9 @@ open class GameObject(textureRegion: TextureRegion, world: World?) : Sprite(text
     }
 
     private fun updateAnimators(delta: Float) {
-        if (!mAnimators.isEmpty()) {
-            mAnimators.forEach { animator -> animator.update(delta) }
-            mAnimators.removeIf { animator -> animator.didFinish() }
+        if (!animators.isEmpty()) {
+            animators.forEach { animator -> animator.update(delta) }
+            animators.removeIf { animator -> animator.didFinish() }
         }
     }
 
@@ -99,32 +103,24 @@ open class GameObject(textureRegion: TextureRegion, world: World?) : Sprite(text
         moveTo = floatArrayOf(x, y)
     }
 
-    /**
-     * Called when user touches the [GameObject]
-     * @param touchPos position of touch in [com.badlogic.gdx.graphics.Camera] coordinates
-     * *
-     * @param touchDown whether the touch was down or not (touchDown, touchUp)
-     */
-    open fun updateTouchInput(touchPos: Vector3, touchDown: Boolean) {
-
-    }
-
     fun smoothMoveTo(x: Float, y: Float, duration: Float, interpolation: Int) {
         val xAnimator = MovementAnimator(this, getX(), x, duration, 0f, interpolation, true, false)
         val yAnimator = MovementAnimator(this, getY(), y, duration, 0f, interpolation, false, true)
         xAnimator.start(true)
         yAnimator.start(true)
-        this.mAnimators.add(xAnimator)
-        this.mAnimators.add(yAnimator)
+        this.animators.add(xAnimator)
+        this.animators.add(yAnimator)
     }
 
     fun addAndStartAnimator(anim: Animator) {
         anim.sprite = this
-        mAnimators.add(anim)
+        animators.add(anim)
+        anim.start(false)
     }
 
-    override fun compareTo(other: GameObject): Int {
-        return this.z - other.z
+    fun addAnimator(anim: Animator) {
+        anim.sprite = this
+        animators.add(anim)
     }
 
     fun dispose() {
@@ -139,11 +135,10 @@ open class GameObject(textureRegion: TextureRegion, world: World?) : Sprite(text
     // region Input methods
     // -----------------------------
     fun dispatchTouchEvent(touchEvent: TouchEvent): Boolean {
-        if (touchEvent.action === TouchEvent.Action.DOWN) {
+        if (touchEvent.action === TouchEvent.Action.DOWN && focusable) {
             world?.requestFocus(this)
         }
         return onTouchEvent(touchEvent)
-        return true
     }
 
     open fun onTouchEvent(touchEvent: TouchEvent): Boolean {
@@ -153,6 +148,50 @@ open class GameObject(textureRegion: TextureRegion, world: World?) : Sprite(text
     fun isTouching(touchEvent: TouchEvent): Boolean {
         return boundingRectangle.contains(touchEvent.x, touchEvent.y)
     }
+    // -----------------------------
+    // endregion
+    // -----------------------------
+
+//    // -----------------------------
+//    // region Drawing methods
+//    // -----------------------------
+    fun draw(batch: Batch, viewport: Viewport) {
+        if (texture != null) draw(batch)
+        /*
+        Need to draw in the following order
+
+        1. Background
+        2. Draw view itself
+        3. Draw any possible children
+        4. Draw foreground
+         */
+        // 1. Draw background
+        drawable?.draw(batch, x, y, width, height)
+
+        // 2. Draw view itself
+        onDraw(batch, viewport)
+
+        // 3. Draw any possible children
+        dispatchDraw(batch, viewport)
+
+        // 4. Draw the foreground / view decorations
+        drawForeground(batch, viewport)
+    }
+
+    open fun onDraw(spriteBatch: Batch, viewport: Viewport) {
+
+    }
+
+    fun dispatchDraw(spriteBatch: Batch, viewport: Viewport) {
+
+    }
+
+    fun drawForeground(spriteBatch: Batch, viewport: Viewport) {
+
+    }
+//    // -----------------------------
+//    // endregion
+//    // -----------------------------
 
     fun clearFocus() {
         focus = false
@@ -163,8 +202,7 @@ open class GameObject(textureRegion: TextureRegion, world: World?) : Sprite(text
     }
 
     init {
-        mAnimators = ArrayList<Animator>()
-        mAnimatorsToRemove = ArrayList<Animator>()
+        animators = ArrayList<Animator>()
         z = DEFAULT_Z
     }
 }

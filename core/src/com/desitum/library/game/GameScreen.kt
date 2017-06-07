@@ -157,7 +157,7 @@ open class GameScreen : Screen {
 
      * @param delta time since last frame
      */
-    fun update(delta: Float) {
+    open fun update(delta: Float) {
         foregroundTouchPos = foregroundViewport.unproject(foregroundTouchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
         if (!world.updateForegroundTouchInput(foregroundTouchPos, Gdx.input.isTouched)) {
             touchPos = viewport.unproject(touchPos.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))

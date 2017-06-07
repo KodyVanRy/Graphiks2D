@@ -1,7 +1,5 @@
 package com.desitum.library.game
 
-import com.badlogic.gdx.graphics.g2d.NinePatch
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.desitum.library.view.TouchEvent
 
 /**
@@ -10,10 +8,10 @@ import com.desitum.library.view.TouchEvent
 
 abstract class G2DSprite : com.badlogic.gdx.graphics.g2d.Sprite(), Comparable<G2DSprite> {
 
-    var layer = 0
+    var z = 0
 
     override fun compareTo(other: G2DSprite): Int {
-        return layer - other.layer
+        return z - other.z
     }
 
     abstract fun update(delta: Float)

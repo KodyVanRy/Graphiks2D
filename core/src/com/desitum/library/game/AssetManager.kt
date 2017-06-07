@@ -44,7 +44,7 @@ class AssetManager private constructor() {
     }
 
     fun getDrawable(key: Int): Drawable {
-        return mDrawableMap[key].let { it!! }
+        return Drawable(mDrawableMap[key].let { it!! })
     }
 
     companion object {

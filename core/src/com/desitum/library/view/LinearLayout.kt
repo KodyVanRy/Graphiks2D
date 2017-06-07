@@ -1,7 +1,5 @@
 package com.desitum.library.view
 
-import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.utils.viewport.Viewport
 import com.desitum.library.game.World
 
 /**
@@ -20,7 +18,7 @@ open class LinearLayout @JvmOverloads constructor(world: World, layoutConstraint
     override fun addView(v: View) {
         super.addView(v)
         v.layoutConstraints = getNewLayoutConstraints(v)
-        v.layer = layer + 1
+        v.z = z + 1
         v.parent = this
         world?.addView(v)
     }

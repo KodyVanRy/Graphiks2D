@@ -29,6 +29,12 @@ class Drawable {
         this.ninePatch = ninePatch
     }
 
+    constructor(drawable: Drawable) {
+        this.textureRegion = drawable.textureRegion
+        this.ninePatch = drawable.ninePatch
+        this.color = drawable.color
+    }
+
     fun setColor(color: Color) {
         this.color = color
         ninePatch?.let { ninePatch = NinePatch(it, color) }

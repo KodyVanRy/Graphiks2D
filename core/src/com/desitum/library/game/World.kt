@@ -34,9 +34,12 @@ class World
     var particleEmitters: MutableList<ParticleEmitter>
         private set
 
-    private var viewFocus: View? = null
-    private var gameObjectFocus: GameObject? = null
-    private var touchEvent: TouchEvent
+    var viewFocus: View? = null
+        private set
+    var gameObjectFocus: GameObject? = null
+        private set
+    var touchEvent: TouchEvent
+        private set
 
     /**
      * update the world every frame using this method
@@ -102,6 +105,10 @@ class World
      */
     fun addGameObject(gameObject2D: GameObject) {
         this.gameObjects.add(gameObject2D)
+        sortGameObjects()
+    }
+
+    fun sortGameObjects() {
         if (layerGameObjects) {
             Collections.sort(gameObjects)
         }
@@ -144,7 +151,7 @@ class World
         touchEvent.action = TouchEvent.Action.DOWN
         gameObjects.reversed()
                 .filter { it.isTouching(touchEvent) }
-                .forEach { it.dispatchTouchEvent(touchEvent) }
+                .firstOrNull()?.dispatchTouchEvent(touchEvent)
         return false
     }
 
