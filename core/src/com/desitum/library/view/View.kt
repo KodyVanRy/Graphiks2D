@@ -2,6 +2,7 @@ package com.desitum.library.view
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.utils.NumberUtils
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.desitum.library.animation.Animator
 import com.desitum.library.drawing.Drawable
@@ -17,7 +18,6 @@ import java.util.ArrayList
 open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DSprite() {
 
     var layoutConstraints: LayoutConstraints
-
 
     // TOUCH
     var focus = false
@@ -226,6 +226,22 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
 
     open fun invalidate() {
         dirty = true
+    }
+
+
+    override fun setColor(color: Float) {
+        super.setColor(color)
+        backgroundDrawable?.color = Color(NumberUtils.floatToIntColor(color))
+    }
+
+    override fun setColor(r: Float, g: Float, b: Float, a: Float) {
+        super.setColor(r, g, b, a)
+        backgroundDrawable?.color = Color(r, g, b, a)
+    }
+
+    override fun setColor(tint: Color) {
+        super.setColor(tint)
+        backgroundDrawable?.color = tint
     }
 // -----------------------------
 // endregion

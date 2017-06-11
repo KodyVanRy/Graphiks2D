@@ -20,6 +20,7 @@ import com.desitum.library.view.LayoutConstraints;
 import com.desitum.library.view.LinearLayout;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
+import com.desitum.library.view.TextView;
 import com.desitum.library.view.View;
 
 /**
@@ -127,6 +128,12 @@ public class MenuScreen extends GameScreen {
         circularProgressBar.setProgressBarHeight(100);
         circularProgressBar.setSize(800, 100);
         layout.addView(circularProgressBar);
+
+        TextView textView = new TextView(getWorld(), null,
+                new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
+        textView.setSize(View.Companion.getMATCH_PARENT(), 100);
+        textView.setBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
+        layout.addView(textView);
 
         EditText editText = new EditText(getWorld(), null,
                 new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));

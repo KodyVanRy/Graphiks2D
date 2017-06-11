@@ -1,7 +1,6 @@
 package com.desitum.library.game_objects
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.desitum.library.animation.Animator
@@ -10,8 +9,7 @@ import com.desitum.library.drawing.Drawable
 import com.desitum.library.game.G2DSprite
 import com.desitum.library.game.World
 import com.desitum.library.view.TouchEvent
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by kody on 12/27/15.

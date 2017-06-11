@@ -18,9 +18,6 @@ open class LinearLayout @JvmOverloads constructor(world: World, layoutConstraint
     override fun addView(v: View) {
         super.addView(v)
         v.layoutConstraints = getNewLayoutConstraints(v)
-        v.z = z + 1
-        v.parent = this
-        world?.addView(v)
     }
 
     open protected fun getNewLayoutConstraints(v: View): LayoutConstraints {

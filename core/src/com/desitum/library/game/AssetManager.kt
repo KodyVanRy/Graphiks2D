@@ -1,6 +1,7 @@
 package com.desitum.library.game
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.desitum.library.drawing.Drawable
@@ -14,9 +15,14 @@ class AssetManager private constructor() {
 
     private var mTextureList: MutableList<Texture> = ArrayList<Texture>()
     private val mDrawableMap: HashMap<Int, Drawable> = HashMap<Int, Drawable>()
+    private val mBitmapFonts: HashMap<Int, BitmapFont> = HashMap<Int, BitmapFont>()
 
     fun addTexture(texture: Texture) {
         mTextureList.add(texture)
+    }
+
+    fun addFont(key: Int, bitmapFont: BitmapFont) {
+        mBitmapFonts.put(key, bitmapFont)
     }
 
     fun addTexture(texture: String) {
@@ -25,6 +31,10 @@ class AssetManager private constructor() {
 
     fun getTexture(text: Int): Texture {
         return mTextureList[text]
+    }
+
+    fun getFont(key: Int): BitmapFont {
+        return mBitmapFonts[key]!!
     }
 
     fun addDrawable(key: Int, textureRegion: TextureRegion) {

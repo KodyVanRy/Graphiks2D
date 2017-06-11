@@ -47,9 +47,8 @@ open class TextView @JvmOverloads constructor(world: World, layoutConstraints: L
         font.data.setScale(z - 0.01f)
     }
 
-    override fun draw(batch: Batch, camera: Viewport) {
-
-        super.draw(batch, camera)
+    override fun draw(batch: Batch, viewport: Viewport) {
+        super.draw(batch, viewport)
         font.color = textColor
         if (alignment == LinearLayout.ALIGNMENT_LEFT)
             font.draw(batch, text, x + height * 0.2f, y + height * 0.8f)
@@ -67,6 +66,11 @@ open class TextView @JvmOverloads constructor(world: World, layoutConstraints: L
 
     override fun setSize(width: Float, height: Float) {
         super.setSize(width, height)
+        setupFontSize()
+    }
+
+    override fun dispatchLayout() {
+        super.dispatchLayout()
         setupFontSize()
     }
 }

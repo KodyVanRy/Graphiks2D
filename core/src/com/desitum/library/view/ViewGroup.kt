@@ -14,6 +14,9 @@ open class ViewGroup @JvmOverloads constructor(world: World, layoutConstraints: 
 
     open fun addView(v: View) {
         children.add(v)
+        v.z = z + 1
+        v.parent = this
+        world?.addView(v)
     }
 
     open fun removeView(v: View) {
