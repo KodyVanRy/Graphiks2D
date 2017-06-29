@@ -23,6 +23,9 @@ package com.desitum.library.interpolation;
  */
 public interface Interpolator {
 
+    float ANIMATION_SHORT = 0.25f;
+    float ANIMATION_LONG = 0.5f;
+
     /**
      * Maps a point in the com.desitum.library.animation duration to a multiplier to be applied to the transformations of an com.desitum.library.animation. The Input is a
      * percentage of the elapsed com.desitum.library.animation duration.

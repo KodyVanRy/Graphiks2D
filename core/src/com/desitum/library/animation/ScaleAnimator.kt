@@ -34,7 +34,7 @@ class ScaleAnimator : Animator {
         private set
         @JvmName("isControllingY") get
 
-    constructor(duration: Float, startScale: Float, endScale: Float, interpolator: Int) : this(duration, 0f, startScale, endScale, interpolator)
+    constructor(endScale: Float, startScale: Float, duration: Float, interpolator: Int) : this(duration, 0f, startScale, endScale, interpolator)
 
     constructor(duration: Float, delay: Float, startScale: Float, endScale: Float, interpolator: Int) : this(null, duration, delay, startScale, endScale, interpolator, false, false)
 

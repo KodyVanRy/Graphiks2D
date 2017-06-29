@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.NumberUtils
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.desitum.library.animation.Animation
 import com.desitum.library.animation.Animator
 import com.desitum.library.drawing.Drawable
 import com.desitum.library.game.G2DSprite
@@ -242,6 +243,11 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
     override fun setColor(tint: Color) {
         super.setColor(tint)
         backgroundDrawable?.color = tint
+    }
+
+    open fun hideView(animation: Animation) {
+        animation.animator.sprite = this
+        animation.animator.start(false)
     }
 // -----------------------------
 // endregion

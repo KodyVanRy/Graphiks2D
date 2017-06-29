@@ -28,4 +28,9 @@ open class ViewGroup @JvmOverloads constructor(world: World, layoutConstraints: 
         super.invalidate()
         children.forEach { it.invalidate() }
     }
+
+    fun hideViews(vararg ids: String) {
+        ids.forEach {
+        }
+    }
 }
