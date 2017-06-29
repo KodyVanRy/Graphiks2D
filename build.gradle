@@ -77,6 +77,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile files('libraries/jsonsimple.jar')
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
     }
 }
 tasks.eclipse.doLast {

@@ -125,7 +125,7 @@ public class EditText extends Widget {
 
     public void setUnderlineColor(Color color) {
         float scale = 50 / this.mUnderlineHeight;
-        this.mUnderline = Drawing.getTextureRoundedRectangle((int) (this.getWidth() * scale), (int) (mUnderlineHeight * scale), (int) (mUnderlineHeight * scale), color);
+        this.mUnderline = Drawing.INSTANCE.getTextureRoundedRectangle((int) (this.getWidth() * scale), (int) (mUnderlineHeight * scale), (int) (mUnderlineHeight * scale), color);
     }
 
     @Override

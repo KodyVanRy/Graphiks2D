@@ -6,21 +6,22 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.AssetManager;
 import com.desitum.library.game.GameScreen;
 import com.desitum.library.game_objects.GameObject;
+import com.desitum.library.interpolation.Interpolation;
 import com.desitum.library.logging.Log;
 import com.desitum.library.particles.ParticleBuilder;
-import com.desitum.library.view.Button;
 import com.desitum.library.view.EditText;
 import com.desitum.library.view.LayoutConstraints;
 import com.desitum.library.view.LinearLayout;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
+import com.desitum.library.view.TextView;
 import com.desitum.library.view.View;
-import com.desitum.library.widgets.CircularProgressBar;
 
 /**
  * Created by kody on 12/12/15.
@@ -50,8 +51,8 @@ public class MenuScreen extends GameScreen {
     private SeekBar seekBar;
     private LinearLayout layout;
 
-    public MenuScreen() {
-        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, ASPECT_FILL);
+    MenuScreen() {
+        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, Companion.getASPECT_FILL());
 //        super(getScreenWidth(), getScreenHeight());
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
 
@@ -78,18 +79,21 @@ public class MenuScreen extends GameScreen {
         mAssetManager.addDrawable(PARTICLE, new Drawable(new NinePatch(new TextureRegion(mAssetManager.getTexture(0), 1000, 0, 10, 10), 3, 3, 3, 3)));
 
 
-        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
+//        getWorld().addGameObject(new GameObject(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50), getWorld()));
 
+        GameObject gameObject = new GameObject(new TextureRegion(Drawing.getFilledRectangle(1, 1, Color.BLUE)), getWorld());
+        gameObject.setSize(100, 100);
+        getWorld().addGameObject(gameObject);
         getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
 
-        Button button = new Button(getWorld());
-        button.setSize(200, 200);
-        button.setPosition(10, 10);
-        button.setRestDrawable(mAssetManager.getDrawable(PARTICLE));
-        button.setHoverDrawable(mAssetManager.getDrawable(BADLOGIC));
-        button.setOriginCenter();
-        getWorld().addView(button);
+//        Button button = new Button(getWorld());
+//        button.setSize(200, 200);
+//        button.setPosition(10, 10);
+//        button.setRestDrawable(mAssetManager.getDrawable(PARTICLE));
+//        button.setHoverDrawable(mAssetManager.getDrawable(BADLOGIC));
+//        button.setOriginCenter();
+//        getWorld().addView(button);
 
         final LayoutConstraints linearLayoutConstraints = new LayoutConstraints(100, 100, 800, 600);
         layout = new LinearLayout(getWorld(), linearLayoutConstraints);
@@ -98,11 +102,11 @@ public class MenuScreen extends GameScreen {
 
         seekBar = new SeekBar(getWorld());
         seekBar.setProgress(0.5f);
-        seekBar.setProgressBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
+        seekBar.setProgressBackgroundDrawable(mAssetManager.getDrawable(CIRCULAR_PROGRESS));
         seekBar.setSeekerDrawable(new Drawable(Drawing.getFilledCircle(200, Color.RED)));
-        seekBar.setProgressDrawable(new Drawable(Drawing.getFilledRectangle(1, 1, Color.CORAL)));
+        seekBar.setProgressDrawable(mAssetManager.getDrawable(CIRCULAR_PROGRESS_BAR));
         seekBar.setSize(600, 200);
-        seekBar.setProgressBarHeight(50);
+        seekBar.setProgressBarHeight(100);
         layout.addView(seekBar);
 
 
@@ -120,19 +124,25 @@ public class MenuScreen extends GameScreen {
         circularProgressBar = new CircularProgressBar(getWorld());
         circularProgressBar.setProgress(0.5f);
         circularProgressBar.setProgressBackgroundDrawable(mAssetManager.getDrawable(CIRCULAR_PROGRESS));
-//        progressBar.getProgressBackgroundDrawable().setColor(Color.BLUE);
-//        progressBar.setProgressDrawable(Drawable.loadDrawable("progress.png", true));
         circularProgressBar.setProgressDrawable(mAssetManager.getDrawable(CIRCULAR_PROGRESS_BAR));
         circularProgressBar.setProgressBarHeight(100);
         circularProgressBar.setSize(800, 100);
         layout.addView(circularProgressBar);
 
+        TextView textView = new TextView(getWorld(), null,
+                new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
+        textView.setSize(View.Companion.getMATCH_PARENT(), 100);
+        textView.setBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
+        layout.addView(textView);
+
         EditText editText = new EditText(getWorld(), null,
                 new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
-        editText.setSize(View.MATCH_PARENT, 100);
+        editText.setSize(View.Companion.getMATCH_PARENT(), 100);
         editText.setBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
         editText.setHint("Hello");
         layout.addView(editText);
+
+        layout.startAnimator(new MovementAnimator(layout, 0, 400, 4, 0, Interpolation.DECELERATE_INTERPOLATOR, true, true));
 
         new Thread(new Runnable() {
             @Override
@@ -141,7 +151,7 @@ public class MenuScreen extends GameScreen {
                 while (System.currentTimeMillis() < endTime) {
                     progressBar.setProgress(1 - (endTime - System.currentTimeMillis()) / 4000.0f);
                     circularProgressBar.setProgress(1 - (endTime - System.currentTimeMillis()) / 4000.0f);
-                    layout.setPosition(layout.getX() + 1, layout.getY() + 1);
+//                    layout.setPosition(layout.getX() + 1, layout.getY() + 1);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
@@ -176,6 +186,6 @@ public class MenuScreen extends GameScreen {
 
     @Override
     public void dispose() {
-
+        AssetManager.dispose();
     }
 }

@@ -10,7 +10,6 @@ import com.desitum.library.drawing.Drawable;
 import com.desitum.library.drawing.Drawing;
 import com.desitum.library.game.AssetManager;
 import com.desitum.library.game.GameScreen;
-import com.desitum.library.game_objects.GameObject;
 import com.desitum.library.particles.ParticleBuilder;
 import com.desitum.library.view.Button;
 import com.desitum.library.view.EditText;
@@ -18,8 +17,8 @@ import com.desitum.library.view.LayoutConstraints;
 import com.desitum.library.view.LinearLayout;
 import com.desitum.library.view.ProgressBar;
 import com.desitum.library.view.SeekBar;
+import com.desitum.library.view.TextView;
 import com.desitum.library.view.View;
-import com.desitum.library.widgets.CircularProgressBar;
 
 /**
  * Created by kodyvanry on 5/15/17.
@@ -49,7 +48,7 @@ public class BuildMenuScreen extends GameScreen {
     private LinearLayout layout;
 
     public BuildMenuScreen() {
-        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, ASPECT_FILL);
+        super(150, 100, SCREEN_WIDTH, SCREEN_HEIGHT, Companion.getASPECT_FILL());
 //        super(getScreenWidth(), getScreenHeight());
         setClearColor(new Color(0.5f, 0, 0.5f, 1));
 
@@ -57,7 +56,7 @@ public class BuildMenuScreen extends GameScreen {
     }
 
     private void setupWorld() {
-        AssetManager mAssetManager = AssetManager.getInstance();
+        AssetManager mAssetManager = AssetManager.Companion.getInstance();
         mAssetManager.addTexture("big_picture_a_1.png");
         mAssetManager.addDrawable(BUTTON_HOVER, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 0, 0, 1000, 100)));
         mAssetManager.addDrawable(BUTTON_REST, new Drawable(new TextureRegion(mAssetManager.getTexture(0), 0, 100, 1000, 100)));
@@ -73,9 +72,9 @@ public class BuildMenuScreen extends GameScreen {
         mAssetManager.addDrawable(PARTICLE, new Drawable(new NinePatch(new TextureRegion(mAssetManager.getTexture(0), 1000, 0, 10, 10), 3, 3, 3, 3)));
 
 
-        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
+//        getWorld().addGameObject(new GameObject(Drawing.getFilledRectangle(1, 1, Color.BLUE), 2000, 1500, -50, -50));
 
-        getWorld().addParticleEmitter(ParticleBuilder.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
+        getWorld().addParticleEmitter(ParticleBuilder.INSTANCE.buildParticleEmitter(Gdx.files.internal("wallParticles.prt")));
         getWorld().getParticleEmitters().get(0).turnOn();
 
         Button button = new Button(getWorld());
@@ -122,9 +121,15 @@ public class BuildMenuScreen extends GameScreen {
         circularProgressBar.setSize(800, 100);
         layout.addView(circularProgressBar);
 
+        TextView textView = new TextView(getWorld(), null,
+                new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
+        textView.setSize(View.Companion.getMATCH_PARENT(), 100);
+        textView.setBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
+        layout.addView(textView);
+
         EditText editText = new EditText(getWorld(), null,
                 new BitmapFont(Gdx.files.internal("cartoon.fnt"), new TextureRegion(new Texture("cartoon.png"))));
-        editText.setSize(View.MATCH_PARENT, 100);
+        editText.setSize(View.Companion.getMATCH_PARENT(), 100);
         editText.setBackgroundDrawable(mAssetManager.getDrawable(PARTICLE));
         editText.setHint("Hello");
         layout.addView(editText);
