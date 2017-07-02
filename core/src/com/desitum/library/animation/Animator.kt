@@ -17,6 +17,8 @@ abstract class Animator {
     var isRunning: Boolean = false
     var isRan: Boolean = false
     var onAnimationFinishedListener: OnAnimationFinishedListener? = null
+    val totalTime: Float
+        get() = delay + duration
 
     constructor(sprite: Sprite?, duration: Float, delay: Float) {
         this.sprite = sprite
@@ -26,7 +28,7 @@ abstract class Animator {
 
     constructor(duration: Float, delay: Float) : this(null, duration, delay)
 
-    fun update(delta: Float) {
+    open fun update(delta: Float) {
         if (!isRunning) {
             return
         }

@@ -8,7 +8,7 @@ import com.desitum.library.interpolation.Interpolator
  * Created by kodyvanry on 6/29/17.
  */
 
-enum class Animation private constructor(var animator: Animator) {
+enum class Animation constructor(var animator: Animator) {
     FADE_AWAY(ColorEffects(Color.WHITE, Color(1f, 1f, 1f, 0f), Interpolator.ANIMATION_LONG)),
     FADE_AWAY_FAST(ColorEffects(Color.WHITE, Color(1f, 1f, 1f, 0f), Interpolator.ANIMATION_SHORT)),
     FADE_IN(ColorEffects(Color(1f, 1f, 1f, 0f), Color.WHITE, Interpolator.ANIMATION_LONG)),
