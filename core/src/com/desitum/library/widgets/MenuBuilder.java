@@ -129,7 +129,7 @@ public class MenuBuilder {
         }
 
         if (background.startsWith("#")) {
-            backgroundTexture = Drawing.INSTANCE.getFilledRectangle(1, 1, Color.valueOf(background));
+            backgroundTexture = Drawing.getFilledRectangle(1, 1, Color.valueOf(background));
         } else {
             backgroundTexture = new Texture(background);
         }

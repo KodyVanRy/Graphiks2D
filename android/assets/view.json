@@ -1,0 +1,6 @@
+{
+  "CLASS": "com.desitum.library.view.Button",
+  "INSTANCE": {
+    "_restDrawable": "R.drawable."
+  }
+}

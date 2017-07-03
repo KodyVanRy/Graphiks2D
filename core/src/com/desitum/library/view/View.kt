@@ -35,15 +35,14 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
     // DRAWING
     var backgroundDrawable: Drawable? = null
     var visibility: Int = 0
-    private var dirty = true
+    @Transient private var dirty = true
     var parent: ViewGroup? = null
 
     var id: Int = 0
     var name: String? = null
-    private var animators: MutableList<Animator>
+    private var animators: MutableList<Animator> = ArrayList()
 
     init {
-        animators = ArrayList<Animator>()
         this.layoutConstraints = layoutConstraints ?: LayoutConstraints(0f, 0f, 0f, 0f)
     }
 

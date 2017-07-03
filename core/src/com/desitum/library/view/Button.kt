@@ -1,6 +1,7 @@
 package com.desitum.library.view
 
 import com.desitum.library.drawing.Drawable
+import com.desitum.library.game.AssetManager
 import com.desitum.library.game.World
 
 /**
@@ -16,6 +17,8 @@ open class Button @JvmOverloads constructor(world: World, layoutConstraints: Lay
             field = value
         }
 
+    private var _restDrawable: Int = -1
+
 
     var hoverDrawable: Drawable? = null
         set(value) {
@@ -25,6 +28,8 @@ open class Button @JvmOverloads constructor(world: World, layoutConstraints: Lay
 
     init {
         clickable = true
+        if (_restDrawable != -1)
+            restDrawable = AssetManager.instance.getDrawable(_restDrawable)
     }
 
     override fun onTouchEvent(touchEvent: TouchEvent): Boolean {
