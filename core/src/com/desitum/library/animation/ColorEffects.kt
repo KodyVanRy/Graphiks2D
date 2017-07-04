@@ -92,9 +92,23 @@ class ColorEffects @JvmOverloads constructor(startColor: Color, endColor: Color,
         sprite?.color = currentColor
     }
 
+    override fun equals(other: Any?): Boolean {
+        return other is ColorEffects &&
+                other.duration == duration &&
+                other.delay == delay &&
+                other.startAlpha == startAlpha &&
+                other.startRed == startRed &&
+                other.startGreen == startGreen &&
+                other.startBlue == startBlue &&
+                other.endRed == endRed &&
+                other.endGreen == endGreen &&
+                other.endBlue == endBlue &&
+                other.endAlpha == endAlpha
+    }
+
     companion object {
 
-        fun colorsMatch(color1: Color, color2: Color, marginOfError: Float): Boolean {
+        @JvmStatic fun colorsMatch(color1: Color, color2: Color, marginOfError: Float): Boolean {
             if (color1 == color2) return true
 
             var error = 0f
