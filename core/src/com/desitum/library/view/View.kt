@@ -18,7 +18,7 @@ import java.util.ArrayList
 
 open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DSprite() {
 
-    var layoutConstraints: LayoutConstraints
+    var layoutConstraints: LayoutConstraints = layoutConstraints ?: LayoutConstraints(0f, 0f, 0f, 0f)
 
     // TOUCH
     var focus = false
@@ -41,10 +41,6 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
     var id: Int = 0
     var name: String? = null
     private var animators: MutableList<Animator> = ArrayList()
-
-    init {
-        this.layoutConstraints = layoutConstraints ?: LayoutConstraints(0f, 0f, 0f, 0f)
-    }
 
     // -----------------------------
     // region Animation methods
@@ -102,6 +98,19 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
                         else
                             it.y
                 )
+                if (it.alignParentStart)
+                    super.setX(parent!!.x + it.marginStart)
+                if (it.alignParentEnd)
+                    super.setX(parent!!.x + parent!!.width - it.marginEnd - it.width)
+                if (it.alignParentBottom)
+                    super.setY(parent!!.y + it.marginBottom)
+                if (it.alignParentTop)
+                    super.setY(parent!!.y + parent!!.height - it.marginTop - it.height)
+                if (it.alignCenterInParent)
+                    super.setPosition(
+                            parent!!.x + parent!!.width / 2f - width / 2f,
+                            parent!!.y + parent!!.height / 2f - height / 2f
+                    )
             }
         }
         dirty = false;

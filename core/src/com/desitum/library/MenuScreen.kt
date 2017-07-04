@@ -122,8 +122,8 @@ class MenuScreen internal constructor() : GameScreen(150f, 100f, MenuScreen.SCRE
 
         layout!!.startAnimator(MovementAnimator(layout!!, 0f, 400f, 4f, 0f, Interpolation.DECELERATE_INTERPOLATOR, true, true))
 
-        val view = LayoutInflater.inflate(FileHandle("view.json"), null)
-        Log.d(MenuScreen::class.java, "{$view}")
+//        val view = LayoutInflater.inflate(FileHandle("view.json"), null)
+//        Log.d(MenuScreen::class.java, "{$view}")
 
         Thread(Runnable {
             val endTime = System.currentTimeMillis() + 4000
