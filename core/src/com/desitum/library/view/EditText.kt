@@ -113,13 +113,13 @@ open class EditText @JvmOverloads constructor(world: World, layoutConstraints: L
         font.data.setScale(z - 0.01f)
     }
 
-    override fun draw(batch: Batch, viewport: Viewport) {
+    override fun onDraw(batch: Batch, viewport: Viewport) {
         //        Rectangle scissor = new Rectangle();
         //        Rectangle clipBounds = new Rectangle(getX(), getY(), getWidth() + 1, getHeight() + 1);
         //        camera.calculateScissors(batch.getTransformMatrix(), clipBounds, scissor);
         //        ScissorStack.pushScissors(scissor);
 
-        super.draw(batch, viewport)
+        super.onDraw(batch, viewport)
         font.color = textColor
         if (alignment == LinearLayout.ALIGNMENT_LEFT)
             font.draw(batch, displayText + blinkString, x + height * 0.2f, y + height * 0.8f)

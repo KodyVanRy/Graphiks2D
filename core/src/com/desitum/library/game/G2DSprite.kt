@@ -15,16 +15,4 @@ abstract class G2DSprite : com.badlogic.gdx.graphics.g2d.Sprite(), Comparable<G2
     }
 
     abstract fun update(delta: Float)
-
-    fun onTouchDown(touchEvent: TouchEvent): Boolean {
-        return false
-    }
-
-    fun onTouchMoved(touchEvent: TouchEvent): Boolean {
-        return false
-    }
-
-    fun onTouchUp(touchEvent: TouchEvent): Boolean {
-        return false
-    }
 }
