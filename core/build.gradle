@@ -21,10 +21,18 @@ buildscript {
     ext.kotlin_version = '1.1.2-3'
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.2-3"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.15"
     }
+}
+apply plugin: 'org.jetbrains.dokka'
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/javadoc"
 }
 
 task sourceJar(type: Jar) {

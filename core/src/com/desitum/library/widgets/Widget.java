@@ -257,7 +257,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     public void startAnimator(Animator animator) {
         animator.setSprite(this);
-        animator.start(true);
+        animator.start();
         mAnimators.add(animator);
     }
 
@@ -268,7 +268,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
 
     public void startAnimators() {
         for (Animator animator : mAnimators) {
-            animator.start(true);
+            animator.start();
         }
     }
 

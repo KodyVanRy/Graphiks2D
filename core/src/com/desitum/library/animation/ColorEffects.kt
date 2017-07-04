@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color
 /**
  * Created by dvan6234 on 2/17/2015.
  */
-class ColorEffects : Animator {
+class ColorEffects @JvmOverloads constructor(startColor: Color, endColor: Color, duration: Float, delay: Float = 0f) : Animator(duration, delay) {
     private var startRed: Float = 0f
     private var startGreen: Float = 0f
     private var startBlue: Float = 0f
@@ -30,28 +30,23 @@ class ColorEffects : Animator {
     var currentAlpha: Float = 0f
         private set
 
-    constructor(startColor: Color, endColor: Color, duration: Float) : super(duration, 0f) {
-
-        setupColors(startColor, endColor, duration)
-    }
-
-    constructor(startColor: Color, endColor: Color, duration: Float, delay: Float) : super(duration, delay) {
+    init {
         setupColors(startColor, endColor, duration)
     }
 
     private fun setupColors(startColor: Color, endColor: Color, duration: Float) {
         if (duration <= 0) {
             currentRed = endColor.r
-            endRed = endColor.r.toInt().toFloat()
+            endRed = endColor.r
             slopeRed = 0f
             currentGreen = endColor.r
-            endGreen = endColor.g.toInt().toFloat()
+            endGreen = endColor.g
             slopeGreen = 0f
             currentBlue = endColor.b
-            endBlue = endColor.b.toInt().toFloat()
+            endBlue = endColor.b
             slopeBlue = 0f
             currentAlpha = endColor.a
-            endAlpha = endColor.a.toInt().toFloat()
+            endAlpha = endColor.a
             slopeAlpha = 0f
             return
         }
@@ -80,6 +75,10 @@ class ColorEffects : Animator {
     val currentColor: Color
         get() = Color(currentRed, currentGreen, currentBlue, currentAlpha)
 
+    /**
+     * Duplicates this ColorEffects instance
+     * @return New instance of ColorEffects
+     */
     override fun duplicate(): Animator {
         return ColorEffects(Color(startRed, startGreen, startBlue, startAlpha), Color(endRed, endGreen, endBlue, endAlpha), duration)
     }

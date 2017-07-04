@@ -45,14 +45,9 @@ abstract class Animator {
         updateAnimation()
     }
 
-    fun start(isProtectedWhileRunning: Boolean) {
-        if (isProtectedWhileRunning && isRunning) {
-            reset()
-            isRunning = true
-        } else if (!isProtectedWhileRunning) {
-            reset()
-            isRunning = true
-        }
+    open fun start() {
+        reset()
+        isRunning = true
     }
 
     open fun reset() {

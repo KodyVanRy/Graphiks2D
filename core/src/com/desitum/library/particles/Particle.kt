@@ -96,7 +96,7 @@ class Particle : Sprite {
         this.fadeOut = fadeOut
         if (fadeOut) {
             colorEffects = ColorEffects(Color(1f, 1f, 1f, 1f), Color(1f, 1f, 1f, 0.0f), lifespan)
-            colorEffects!!.start(false)
+            colorEffects!!.start()
         }
 
         setOrigin(width / 2, height / 2)

@@ -104,8 +104,8 @@ open class GameObject(textureRegion: TextureRegion?, world: World?) : G2DSprite(
     fun smoothMoveTo(x: Float, y: Float, duration: Float, interpolation: Int) {
         val xAnimator = MovementAnimator(this, getX(), x, duration, 0f, interpolation, true, false)
         val yAnimator = MovementAnimator(this, getY(), y, duration, 0f, interpolation, false, true)
-        xAnimator.start(true)
-        yAnimator.start(true)
+        xAnimator.start()
+        yAnimator.start()
         this.animators.add(xAnimator)
         this.animators.add(yAnimator)
     }
@@ -113,7 +113,7 @@ open class GameObject(textureRegion: TextureRegion?, world: World?) : G2DSprite(
     fun addAndStartAnimator(anim: Animator) {
         anim.sprite = this
         animators.add(anim)
-        anim.start(false)
+        anim.start()
     }
 
     fun addAnimator(anim: Animator) {

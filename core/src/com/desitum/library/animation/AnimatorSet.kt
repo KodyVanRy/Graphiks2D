@@ -8,10 +8,25 @@ class AnimatorSet(vararg animators: Animator) : Animator(animators.sortedByDesce
 
     var animators: Array<Animator> = animators.asList().toTypedArray()
 
+    val size: Int
+        get() = animators.size
+
+    val totalDuration: Float
+        get() {
+            animators.maxBy { it.duration + it.delay }?.let {
+                return it.duration + it.delay
+            }
+            return 0f
+        }
 
     override fun update(delta: Float) {
         super.update(delta)
         animators.forEach { it.update(delta) }
+    }
+
+    override fun start() {
+        super.start()
+        animators.forEach { it.start() }
     }
 
     override fun duplicate(): Animator {
@@ -21,5 +36,4 @@ class AnimatorSet(vararg animators: Animator) : Animator(animators.sortedByDesce
     override fun updateAnimation() {
         // Empty. Animator set doesn't do anything itself. It just holds multiple animators.
     }
-
 }

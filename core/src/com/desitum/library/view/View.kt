@@ -57,7 +57,7 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
 
     fun startAnimator(animator: Animator) {
         addAnimation(animator)
-        animator.start(false)
+        animator.start()
     }
     // -----------------------------
     // endregion
@@ -255,7 +255,7 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
 
     open fun hideView(animation: Animation) {
         animation.animator.sprite = this
-        animation.animator.start(false)
+        animation.animator.start()
     }
 // -----------------------------
 // endregion
