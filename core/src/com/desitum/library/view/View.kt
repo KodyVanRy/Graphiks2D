@@ -122,7 +122,7 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
     // -----------------------------
     // region Drawing methods
     // -----------------------------
-    open fun draw(batch: Batch, viewport: Viewport) {
+    fun draw(batch: Batch, viewport: Viewport) {
         /*
         Need to draw in the following order
 
@@ -144,15 +144,15 @@ open class View(var world: World?, layoutConstraints: LayoutConstraints?) : G2DS
         drawForeground(batch, viewport)
     }
 
-    open fun onDraw(spriteBatch: Batch, viewport: Viewport) {
+    open fun onDraw(batch: Batch, viewport: Viewport) {
 
     }
 
-    fun dispatchDraw(spriteBatch: Batch, viewport: Viewport) {
+    open fun dispatchDraw(batch: Batch, viewport: Viewport) {
 
     }
 
-    fun drawForeground(spriteBatch: Batch, viewport: Viewport) {
+    open fun drawForeground(batch: Batch, viewport: Viewport) {
 
     }
     // -----------------------------
