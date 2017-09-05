@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.desitum.library.animation.Animator;
 import com.desitum.library.animation.MovementAnimator;
 import com.desitum.library.animation.ScaleAnimator;
+import com.desitum.library.drawing.Drawing;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
     public static final int GONE = 2;
 
     private ArrayList<Animator> animators;
+    private ArrayList<Animator> animatorsToRemove;
 
     private Layout parent;
 
@@ -59,7 +61,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
      * @param y y position of widget
      */
     public Widget(Texture text, String name, float width, float height, float x, float y, Layout parent) {
-        super(text, text.getWidth(), text.getHeight());
+        super(getTexture(text), text.getWidth(), text.getHeight());
         setSize(width, height);
         this.name = name;
         this.mScaleX = 1.0f;
@@ -73,6 +75,7 @@ public class Widget extends Sprite implements Comparable<Widget> {
         this.setOriginCenter();
 
         this.animators = new ArrayList<Animator>();
+        this.animatorsToRemove = new ArrayList<Animator>();
     }
 
     /**
@@ -80,10 +83,18 @@ public class Widget extends Sprite implements Comparable<Widget> {
      * @param delta time since last update
      */
     public void update(float delta) {
-        for (Animator anim : animators) {
+        for (int i = 0; i < animators.size(); i++) {
+            Animator anim = animators.get(i);
             anim.update(delta);
             updateAnim(anim);
+            if (anim.isRemoveOnFinish() && anim.isRan()) {
+                animatorsToRemove.add(anim);
+            }
         }
+        for (int i = 0; i < animatorsToRemove.size(); i++) {
+            animators.remove(animatorsToRemove.get(i));
+        }
+        animatorsToRemove.clear();
 
         // Adjust the position (x, y); the scale of width and height to fit parent
         if (parent != null) {
@@ -268,6 +279,10 @@ public class Widget extends Sprite implements Comparable<Widget> {
         }
     }
 
+    public boolean removeAnimator(Animator animator) {
+        return animators.remove(animator);
+    }
+
     public Widget findByName(String name) {
         if (this.name.equals(name)) {
             return this;
@@ -298,5 +313,12 @@ public class Widget extends Sprite implements Comparable<Widget> {
         } catch (Exception e) {
             // Texture or shadow have been disposed elsewhere
         }
+    }
+
+    private static Texture getTexture(Texture texture) {
+        if (texture == null) {
+            return Drawing.getTransparentRectangle();
+        }
+        return texture;
     }
 }

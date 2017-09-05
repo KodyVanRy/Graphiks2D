@@ -107,4 +107,8 @@ public class Drawing {
         returnTexture.draw(pixmap, 0, 0);
         return returnTexture;
     }
+
+    public static Texture getTransparentRectangle() {
+        return getFilledRectangle(1, 1, Color.CLEAR);
+    }
 }

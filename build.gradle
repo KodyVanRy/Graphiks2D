@@ -1,32 +1,39 @@
 buildscript {
     repositories {
+        mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.2.0'
     }
 }
+
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
     version = '1.0'
     ext {
-        appName = "BuildingLibraries"
-        gdxVersion = '1.7.1'
-        roboVMVersion = '1.9.0'
+        appName = "my-gdx-game"
+        gdxVersion = '1.9.4'
+        roboVMVersion = '2.2.0'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
-        aiVersion = '1.6.0'
+        aiVersion = '1.8.0'
     }
 
     repositories {
+        mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
+
 project(":desktop") {
     apply plugin: "java"
 
@@ -36,10 +43,9 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
     }
 }
+
 project(":android") {
     apply plugin: "android"
 
@@ -50,22 +56,18 @@ project(":android") {
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a"
+        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
-        compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-x86"
-        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
     }
 }
+
 project(":core") {
     apply plugin: "java"
 
@@ -73,14 +75,9 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        compile files('libraries/jsonsimple.jar')
     }
 }
+
 tasks.eclipse.doLast {
     delete ".project"
-}
-dependencies {
 }

@@ -10,9 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Created by kody on 12/27/15.
  * can be used by kody and people in [kody}]

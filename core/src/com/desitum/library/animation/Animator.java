@@ -12,8 +12,7 @@ public abstract class Animator {
     private float timeInAnimation;
     private float delay;
     private float currentDelay;
-    private boolean running;
-    private boolean ran;
+    private boolean running, ran, removeOnFinish;
     private OnAnimationFinishedListener onAnimationFinishedListener;
 
     public Animator(Sprite sprite, float duration, float delay) {
@@ -39,12 +38,28 @@ public abstract class Animator {
     }
 
     public void update(float delta) {
+        if (this instanceof MovementAnimator) {
+            System.out.println("------------------------");
+            System.out.println("" + this);
+            System.out.println("running = " + running);
+        }
         if (!running) {
             return;
         }
         currentDelay += delta;
         if (currentDelay >= delay) {
-            timeInAnimation += delta / duration;
+            if (this instanceof MovementAnimator) {
+                System.out.println("------------------------");
+                System.out.println("" + this);
+                System.out.println("timeInAnimation = " + timeInAnimation);
+            }
+            timeInAnimation = timeInAnimation + (delta / duration);
+            if (this instanceof MovementAnimator) {
+                System.out.println("delta / duration = " + (delta / duration));
+                System.out.println("delta = " + (delta));
+                System.out.println("duration = " + (duration));
+                System.out.println("timeInAnimation = " + timeInAnimation);
+            }
         }
         if (timeInAnimation >= 1) {
             timeInAnimation = 1;
@@ -58,10 +73,9 @@ public abstract class Animator {
     }
 
     public void start(boolean isProtectedWhileRunning) {
-        if (isProtectedWhileRunning && running) {
-            reset();
+        if (isProtectedWhileRunning) {
             running = true;
-        } else if (!isProtectedWhileRunning) {
+        } else {
             reset();
             running = true;
         }
@@ -151,5 +165,13 @@ public abstract class Animator {
     }
 
     protected abstract void updateAnimation();
+
+    public boolean isRemoveOnFinish() {
+        return removeOnFinish;
+    }
+
+    public void setRemoveOnFinish(boolean removeOnFinish) {
+        this.removeOnFinish = removeOnFinish;
+    }
     //endregion
 }

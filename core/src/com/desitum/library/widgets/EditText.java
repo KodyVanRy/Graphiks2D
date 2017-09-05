@@ -273,6 +273,8 @@ public class EditText extends Widget {
                 displayText = displayText.substring(0, displayText.length() - 1);
         }
 
+        System.out.println("toAppend : " + toAppend);
+
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
             toAppend = toAppend.toUpperCase();
         }
